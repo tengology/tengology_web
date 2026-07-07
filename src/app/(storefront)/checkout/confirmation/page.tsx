@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { CheckCircle } from "lucide-react";
 
 export default async function ConfirmationPage({
   searchParams,
@@ -11,28 +10,69 @@ export default async function ConfirmationPage({
   const orderNumber = params.order;
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-24 text-center">
-      <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-6" />
-      <h1 className="font-heading text-3xl font-light mb-3">
-        Thank you for your order
-      </h1>
+    <div className="mx-auto max-w-xl px-4 py-24 text-center lg:py-32">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+        className="mx-auto mb-8 h-16 w-16"
+      >
+        <circle
+          cx="12"
+          cy="12"
+          r="9.5"
+          strokeWidth="1.25"
+          className="stroke-moss [stroke-dasharray:60] animate-[check-draw_700ms_var(--ease-soft)_both]"
+        />
+        <path
+          d="M7.5 12.5l3 3 6-6.5"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="stroke-moss [stroke-dasharray:60] animate-[check-draw_500ms_var(--ease-soft)_350ms_both]"
+        />
+      </svg>
+
+      <div className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both duration-500 delay-150">
+        <p className="eyebrow mb-4">Order confirmed</p>
+        <h1 className="font-heading text-4xl leading-[0.95] sm:text-5xl">
+          Thank <em>you</em>
+        </h1>
+      </div>
+
       {orderNumber && (
-        <p className="text-sm text-muted-foreground mb-2">
-          Order number: <span className="font-mono">{orderNumber}</span>
-        </p>
+        <div className="mt-8 inline-block border px-10 py-5 animate-in fade-in slide-in-from-bottom-2 fill-mode-both duration-500 delay-300">
+          <p className="eyebrow mb-2">Order number</p>
+          <p className="font-heading text-2xl">{orderNumber}</p>
+        </div>
       )}
-      <p className="text-muted-foreground mb-8 leading-relaxed">
-        We&apos;ll send you a confirmation email with your order details.
-        Each item is handmade with care, so please allow a few days for
-        preparation.
-      </p>
-      <div className="flex gap-3 justify-center">
-        <Button asChild>
-          <Link href="/shop">Continue Shopping</Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href="/account/orders">View Orders</Link>
-        </Button>
+
+      <div className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both duration-500 delay-500">
+        <p className="mx-auto mt-8 max-w-md leading-relaxed text-muted-foreground">
+          We&apos;ll send you a confirmation email with your order details.
+          Each item is handmade with care, so please allow a few days for
+          preparation.
+        </p>
+        <div className="mt-10 flex justify-center gap-3">
+          <Button asChild className="text-xs uppercase tracking-[0.2em]">
+            <Link href="/shop">Continue Shopping</Link>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="text-xs uppercase tracking-[0.2em]"
+          >
+            <Link href="/account/orders">View Orders</Link>
+          </Button>
+        </div>
+        <p className="mt-8 text-sm text-muted-foreground">
+          <Link
+            href="/orders/lookup"
+            className="link-underline text-foreground transition-colors hover:text-moss"
+          >
+            Track your order
+          </Link>
+        </p>
       </div>
     </div>
   );

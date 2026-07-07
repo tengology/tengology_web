@@ -7,11 +7,15 @@ export function formatPrice(price: number | string): string {
 }
 
 export function generateOrderNumber(): string {
-  const now = new Date();
-  const year = now.getFullYear();
-  const seq = Math.floor(Math.random() * 99999)
-    .toString()
-    .padStart(5, "0");
+  const year = new Date().getFullYear();
+  // 8 hex chars (~4.3bn values) — order numbers are used as a lookup
+  // credential alongside the buyer email, so they must not be guessable.
+  // Web Crypto keeps this module safe to import from client components.
+  const bytes = new Uint8Array(4);
+  crypto.getRandomValues(bytes);
+  const seq = Array.from(bytes, (b) => b.toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
   return `TNG-${year}-${seq}`;
 }
 

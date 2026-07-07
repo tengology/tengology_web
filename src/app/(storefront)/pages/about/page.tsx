@@ -1,6 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Reveal } from "@/components/storefront/Reveal";
 import type { Metadata } from "next";
+
+// Revalidate via ISR: only the layout's shipping ticker is DB-driven here.
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "About",
@@ -8,72 +12,100 @@ export const metadata: Metadata = {
     "The story behind Tengology — from wool felt to crystals, every piece is curated by hand in England with intention and care.",
 };
 
+const values = [
+  {
+    title: "Natural Materials",
+    body: "Wool felt, wood, crystals, natural stone. I choose materials that come from the earth and feel alive in your hands. No plastic, no shortcuts.",
+  },
+  {
+    title: "Intention",
+    body: "Every piece begins with purpose. From the colour I choose to the stone I select, nothing is random. I want you to feel that intention the moment it touches your skin.",
+  },
+  {
+    title: "Energy",
+    body: "I believe handmade things carry the energy of the person who shaped them. Each piece passes through my hands with care, focus, and a genuine wish for whoever receives it.",
+  },
+  {
+    title: "Craftsmanship",
+    body: "No machines, no mass production. Just patient, skilled handwork. The small imperfections aren’t flaws — they’re proof that a real person made this, just for you.",
+  },
+];
+
 export default function AboutPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative bg-muted overflow-hidden">
+      <section className="relative overflow-hidden bg-muted">
         <Image
-          src="/Gemini_Generated_Image_padxvnpadxvnpadx.png"
-          alt="Layered natural textures — wool felt, crystal, batik fabric, and stained glass"
+          src="/products/strawberries/flat-lay-top.jpg"
+          alt="Strawberry felt accessories photographed together on a white surface"
           fill
           priority
-          className="object-cover opacity-25"
+          sizes="100vw"
+          className="object-cover opacity-45 motion-safe:animate-[hero-zoom_14s_var(--ease-soft)_forwards]"
         />
-        <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-20 lg:py-32 text-center">
-          <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
-            The Story
-          </p>
-          <h1 className="font-heading text-4xl lg:text-6xl font-light leading-[1.15]">
+        <div className="absolute inset-0 bg-background/45" />
+        <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-32">
+          <p className="eyebrow mb-5">The story</p>
+          <h1 className="font-heading text-6xl leading-[0.95] sm:text-7xl lg:text-8xl">
             Where texture
             <br />
-            meets <span className="italic">energy</span>
+            meets <em>energy</em>
           </h1>
         </div>
       </section>
 
       {/* Opening */}
-      <section className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-        <p className="text-lg leading-relaxed text-muted-foreground">
-          For as long as I can remember, I&rsquo;ve been someone who
-          curates &mdash; drawn to beautiful materials, textures, and the
-          quiet art of bringing them together into something you can feel.
-          Give me a quiet afternoon, some natural materials, and a spark
-          of an idea, and I&rsquo;m happy. There&rsquo;s something in the
-          rhythm of working with your hands &mdash; the selecting, the
-          shaping, the stitching &mdash; that nothing else in life quite
-          matches. It&rsquo;s a sensory experience, from first touch to
-          finished piece. Curating isn&rsquo;t just what I do. It&rsquo;s
-          how I think, how I unwind, how I make sense of the world.
-        </p>
-        <p className="text-lg leading-relaxed text-muted-foreground mt-5">
-          Tengology grew from that love. It started with wool felt: soft,
-          honest, full of warmth. And it grew into something I never
-          expected.
-        </p>
+      <section className="mx-auto max-w-2xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+        <Reveal>
+          <p className="text-lg leading-relaxed text-muted-foreground first-letter:float-left first-letter:mr-3 first-letter:font-heading first-letter:text-6xl first-letter:leading-[0.8] first-letter:text-foreground">
+            For as long as I can remember, I&rsquo;ve been someone who
+            curates &mdash; drawn to beautiful materials, textures, and the
+            quiet art of bringing them together into something you can feel.
+            Give me a quiet afternoon, some natural materials, and a spark
+            of an idea, and I&rsquo;m happy. There&rsquo;s something in the
+            rhythm of working with your hands &mdash; the selecting, the
+            shaping, the stitching &mdash; that nothing else in life quite
+            matches. It&rsquo;s a sensory experience, from first touch to
+            finished piece. Curating isn&rsquo;t just what I do. It&rsquo;s
+            how I think, how I unwind, how I make sense of the world.
+          </p>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+            Tengology grew from that love. It started with wool felt: soft,
+            honest, full of warmth. And it grew into something I never
+            expected.
+          </p>
+        </Reveal>
       </section>
 
       {/* Chapter 1: Wool Felt */}
       <section className="border-t">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+        <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+          <div className="grid items-start gap-10 lg:grid-cols-5 lg:gap-16">
             <div className="lg:col-span-2">
-              <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-3">
-                Chapter One
+              <p className="eyebrow mb-4">
+                <span className="mr-3 text-foreground">01</span>
+                Chapter one
               </p>
-              <h2 className="font-heading text-3xl lg:text-4xl font-light mb-6">
-                The wool felt years
+              <h2 className="mb-8 font-heading text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
+                The wool felt <em>years</em>
               </h2>
-              <div className="relative aspect-[3/4] rounded-sm overflow-hidden">
-                <Image
-                  src="/Gemini_Generated_Image_x3kuaox3kuaox3ku.png"
-                  alt="Sheets of wool felt in jewel tones with scissors, thread, and handmade felt bows on a wooden table"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <Reveal variant="left">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-none bg-muted">
+                  <Image
+                    src="/products/dahlia/dahlia-collection.jpg"
+                    alt="Handmade felt flower headbands photographed on a pale blue surface"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 34vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
             </div>
-            <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">
+            <Reveal
+              delay={150}
+              className="space-y-5 leading-relaxed text-muted-foreground lg:col-span-3"
+            >
               <p>
                 I grew up watching my mother&rsquo;s hands. She was the kind
                 of person who was always making something &mdash; whatever
@@ -98,32 +130,39 @@ export default function AboutPage() {
                 Every conversation reminded me why I do this &mdash; to bring
                 a little bit of handmade joy into someone&rsquo;s day.
               </p>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Chapter 2: Crystals */}
-      <section className="border-t bg-muted/30">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+      <section className="border-t">
+        <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+          <div className="grid items-start gap-10 lg:grid-cols-5 lg:gap-16">
             <div className="lg:col-span-2">
-              <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-3">
-                Chapter Two
+              <p className="eyebrow mb-4">
+                <span className="mr-3 text-foreground">02</span>
+                Chapter two
               </p>
-              <h2 className="font-heading text-3xl lg:text-4xl font-light mb-6">
-                Discovering crystals
+              <h2 className="mb-8 font-heading text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
+                Discovering <em>crystals</em>
               </h2>
-              <div className="relative aspect-[3/4] rounded-sm overflow-hidden">
-                <Image
-                  src="/Gemini_Generated_Image_6rl2h86rl2h86rl2.png"
-                  alt="Amethyst geode with deep purple crystal formations and scattered crystal beads on linen"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <Reveal variant="left">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-none bg-muted">
+                  <Image
+                    src="/products/comet/clear-quartz-star-cluster-earrings-hero.jpg"
+                    alt="Clear quartz star cluster earrings photographed on a neutral surface"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 34vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
             </div>
-            <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">
+            <Reveal
+              delay={150}
+              className="space-y-5 leading-relaxed text-muted-foreground lg:col-span-3"
+            >
               <p>
                 I remember the first time I felt crystal energy. I was young,
                 visiting a crystal shop that had an enormous amethyst geode
@@ -160,32 +199,39 @@ export default function AboutPage() {
                 It&rsquo;s to honour it, and to pass it on to someone who
                 needs it.
               </p>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Chapter 3: Batik */}
       <section className="border-t">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+        <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+          <div className="grid items-start gap-10 lg:grid-cols-5 lg:gap-16">
             <div className="lg:col-span-2">
-              <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-3">
-                Chapter Three
+              <p className="eyebrow mb-4">
+                <span className="mr-3 text-foreground">03</span>
+                Chapter three
               </p>
-              <h2 className="font-heading text-3xl lg:text-4xl font-light mb-6">
-                Batik &amp; belonging
+              <h2 className="mb-8 font-heading text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
+                Batik &amp; <em>belonging</em>
               </h2>
-              <div className="relative aspect-[3/4] rounded-sm overflow-hidden">
-                <Image
-                  src="/Gemini_Generated_Image_8786gl8786gl8786.png"
-                  alt="Vibrant Indonesian batik fabric with bold floral patterns and handmade batik earrings"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <Reveal variant="left">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-none bg-muted">
+                  <Image
+                    src="/products/comet/pearl-carnelian-cluster-earrings-hero.jpg"
+                    alt="Pearl and carnelian cluster earrings photographed on a neutral surface"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 34vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
             </div>
-            <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">
+            <Reveal
+              delay={150}
+              className="space-y-5 leading-relaxed text-muted-foreground lg:col-span-3"
+            >
               <p>
                 I was born in Sabah, Malaysia &mdash; right on the edge of
                 Borneo, close enough to Indonesia that the cultures blend
@@ -212,34 +258,41 @@ export default function AboutPage() {
                 It feels like a conversation between two sets of hands,
                 separated by thousands of miles.
               </p>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Chapter 4: Stained Glass */}
-      <section className="border-t bg-muted/30">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+      <section className="border-t">
+        <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+          <div className="grid items-start gap-10 lg:grid-cols-5 lg:gap-16">
             <div className="lg:col-span-2">
-              <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-3">
-                Chapter Four
+              <p className="eyebrow mb-4">
+                <span className="mr-3 text-foreground">04</span>
+                Chapter four
               </p>
-              <h2 className="font-heading text-3xl lg:text-4xl font-light mb-6">
+              <h2 className="mb-8 font-heading text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
                 My father&rsquo;s
                 <br />
-                <span className="italic">glass</span>
+                <em>glass</em>
               </h2>
-              <div className="relative aspect-[3/4] rounded-sm overflow-hidden">
-                <Image
-                  src="/Gemini_Generated_Image_9yivvq9yivvq9yiv.png"
-                  alt="Sunlight streaming through begonia-patterned stained glass with handmade glass earrings and pendants"
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <Reveal variant="left">
+                <div className="relative aspect-[3/4] overflow-hidden rounded-none bg-muted">
+                  <Image
+                    src="/products/comet/green-fluorite-cluster-drop-earrings-hero.jpg"
+                    alt="Green fluorite cluster drop earrings photographed on a neutral surface"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 34vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
             </div>
-            <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">
+            <Reveal
+              delay={150}
+              className="space-y-5 leading-relaxed text-muted-foreground lg:col-span-3"
+            >
               <p>
                 My father ran a glass shop. I grew up surrounded by sheets
                 of colour &mdash; light pouring through textured panes,
@@ -263,26 +316,30 @@ export default function AboutPage() {
                 all the things I create, this is the collection closest to
                 my heart.
               </p>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* The Thread: The Connection */}
       <section className="border-t">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+        <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+          <div className="grid items-start gap-10 lg:grid-cols-5 lg:gap-16">
             <div className="lg:col-span-2">
-              <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-3">
-                The Thread
+              <p className="eyebrow mb-4">
+                <span className="mr-3 text-foreground">05</span>
+                The thread
               </p>
-              <h2 className="font-heading text-3xl lg:text-4xl font-light">
+              <h2 className="font-heading text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
                 What connects
                 <br />
-                <span className="italic">everything</span>
+                <em>everything</em>
               </h2>
             </div>
-            <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">
+            <Reveal
+              delay={150}
+              className="space-y-5 leading-relaxed text-muted-foreground lg:col-span-3"
+            >
               <p>
                 Wool felt, crystals, Batik, stained glass &mdash; people
                 sometimes ask how they all belong together. To me, the
@@ -308,88 +365,63 @@ export default function AboutPage() {
                 piece is a sensory experience, and every one is designed and
                 crafted by hand in England.
               </p>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       {/* Values */}
-      <section className="border-t bg-muted/30">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <h2 className="font-heading text-3xl font-light text-center mb-12">
-            What I believe in
+      <section className="border-t">
+        <div className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+          <p className="eyebrow mb-4">
+            <span className="mr-3 text-foreground">06</span>
+            The values
+          </p>
+          <h2 className="mb-12 font-heading text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
+            What I believe <em>in</em>
           </h2>
-          <div className="grid sm:grid-cols-2 gap-8 lg:gap-12">
-            <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase font-medium mb-3">
-                Natural Materials
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Wool felt, wood, crystals, natural stone. I choose materials
-                that come from the earth and feel alive in your hands. No
-                plastic, no shortcuts.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase font-medium mb-3">
-                Intention
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Every piece begins with purpose. From the colour I choose to
-                the stone I select, nothing is random. I want you to feel
-                that intention the moment it touches your skin.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase font-medium mb-3">
-                Energy
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                I believe handmade things carry the energy of the person who
-                shaped them. Each piece passes through my hands with care,
-                focus, and a genuine wish for whoever receives it.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xs tracking-[0.2em] uppercase font-medium mb-3">
-                Craftsmanship
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                No machines, no mass production. Just patient, skilled
-                handwork. The small imperfections aren&rsquo;t flaws &mdash;
-                they&rsquo;re proof that a real person made this, just for
-                you.
-              </p>
-            </div>
+          <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2">
+            {values.map((value, i) => (
+              <Reveal key={value.title} delay={(i % 2) * 80}>
+                <div className="border-t pt-5">
+                  <h3 className="eyebrow mb-3 !text-foreground">{value.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {value.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="border-t">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24 text-center">
-          <h2 className="font-heading text-3xl lg:text-4xl font-light mb-6">
-            Come and see for yourself
-          </h2>
-          <p className="text-muted-foreground leading-relaxed mb-8 max-w-lg mx-auto">
-            Whether you&rsquo;re drawn to the softness of wool felt or the
-            quiet power of crystals, there&rsquo;s something here that was
-            made with you in mind.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/shop"
-              className="inline-block border border-foreground px-8 py-3 text-xs tracking-[0.2em] uppercase hover:bg-foreground hover:text-background transition-colors"
-            >
-              Shop the Collection
-            </Link>
-            <Link
-              href="/pages/contact"
-              className="inline-block border border-border px-8 py-3 text-xs tracking-[0.2em] uppercase text-muted-foreground hover:border-foreground hover:text-foreground transition-colors"
-            >
-              Get in Touch
-            </Link>
-          </div>
+        <div className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-32">
+          <Reveal>
+            <h2 className="mb-6 font-heading text-4xl leading-[0.95] sm:text-5xl lg:text-6xl">
+              Come and see for <em>yourself</em>
+            </h2>
+            <p className="mx-auto mb-10 max-w-lg leading-relaxed text-muted-foreground">
+              Whether you&rsquo;re drawn to the softness of wool felt or the
+              quiet power of crystals, there&rsquo;s something here that was
+              made with you in mind.
+            </p>
+            <div className="flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href="/shop"
+                className="eyebrow inline-flex items-center justify-center border border-foreground bg-foreground px-8 py-3.5 !text-background transition-colors hover:bg-transparent hover:!text-foreground"
+              >
+                Shop the collection
+              </Link>
+              <Link
+                href="/pages/contact"
+                className="eyebrow inline-flex items-center justify-center border px-8 py-3.5 transition-colors hover:border-foreground hover:!text-foreground"
+              >
+                Get in touch
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
     </div>

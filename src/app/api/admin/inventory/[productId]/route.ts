@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { adjustInventory } from "@/lib/inventory";
+import { syncProductToEtsy } from "@/lib/etsy";
 
 export async function POST(
   request: Request,
@@ -29,6 +30,16 @@ export async function POST(
       note,
       triggeredBy: session.user.id,
     });
+
+    if (process.env.ETSY_AUTO_SYNC === "true") {
+      after(() =>
+        syncProductToEtsy(productId, {
+          dryRun: false,
+          syncImages: false,
+          publish: process.env.ETSY_PUBLISH_ON_SYNC === "true",
+        }).catch((error) => console.error("Etsy inventory sync failed:", error))
+      );
+    }
 
     return NextResponse.json(result);
   } catch (err) {

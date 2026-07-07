@@ -20,6 +20,7 @@ export default async function AdminProductsPage() {
 
   try {
     products = await prisma.product.findMany({
+      where: { isArchived: false },
       include: { images: { where: { isPrimary: true }, take: 1 } },
       orderBy: { createdAt: "desc" },
     });

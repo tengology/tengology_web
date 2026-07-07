@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { slugify } from "@/lib/format";
+import { syncProductToEtsy } from "@/lib/etsy";
 
 export async function GET() {
   const products = await prisma.product.findMany({
@@ -63,7 +64,7 @@ export async function POST(request: Request) {
       fullDescription: fullDescription || null,
       category: category || "OTHER",
       subcategory: subcategory || null,
-      materials: materials || [],
+      materials: Array.isArray(materials) ? materials.join(",") : materials || "",
       price,
       compareAtPrice: compareAtPrice || null,
       stockCount: stockCount || 0,
@@ -101,6 +102,16 @@ export async function POST(request: Request) {
         data: { productId: product.id, tagId: tag.id },
       });
     }
+  }
+
+  if (process.env.ETSY_AUTO_SYNC === "true") {
+    after(() =>
+      syncProductToEtsy(product.id, {
+        dryRun: false,
+        syncImages: true,
+        publish: process.env.ETSY_PUBLISH_ON_SYNC === "true",
+      }).catch((error) => console.error("Etsy product sync failed:", error))
+    );
   }
 
   return NextResponse.json({ id: product.id, slug: product.slug }, { status: 201 });

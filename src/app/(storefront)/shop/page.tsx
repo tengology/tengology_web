@@ -1,6 +1,8 @@
+import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/storefront/ProductCard";
+import { Reveal } from "@/components/storefront/Reveal";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,7 +22,14 @@ const categoryLabels: Record<string, string> = {
 const categoryIntros: Record<string, { heading: string; body: string }> = {
   JEWELLERY: {
     heading: "Grounded Luxury",
-    body: "Tengology is a boutique jewellery brand that bridges the gap between the raw power of the earth and the refined elegance of modern life. We create ritual jewellery for the intentional wearer: pieces that don\u2019t just look beautiful, but provide a physical point of connection to nature.",
+    body: "Tengology is a boutique jewellery brand that bridges the gap between the raw power of the earth and the refined elegance of modern life. We create ritual jewellery for the intentional wearer: pieces that don’t just look beautiful, but provide a physical point of connection to nature.",
+  },
+};
+
+const categoryIntroImages: Record<string, { src: string; alt: string }> = {
+  JEWELLERY: {
+    src: "/products/comet/clear-quartz-star-cluster-earrings-hero.jpg",
+    alt: "Clear quartz star cluster earrings photographed on a neutral surface",
   },
 };
 
@@ -109,15 +118,29 @@ const collectionShowcases: Record<
       tags: ["12mm charms", "7–8mm mini charms", "For Orbit base"],
     },
     {
+      name: "Comet",
+      slug: "Comet",
+      tagline: "A trail of light",
+      detail:
+        "Statement drop earrings — a hand-wired cluster of crystal, pearl, and faceted stone trailing into a single polished drop. Natural crystal on Sterling Silver (S925) hooks, most finished in 14k gold plating.",
+      tags: ["Natural crystal", "Cluster drops", "S925 hooks", "14k gold-plated", "Earrings"],
+    },
+    {
       name: "Asteroid",
       slug: "Asteroid",
       tagline: "Beautifully irregular",
       detail:
-        "One-of-a-kind charms crafted from raw, irregular-shaped crystals. No two are alike — nature\u2019s own design, ready to clip onto your Orbit.",
+        "One-of-a-kind charms crafted from raw, irregular-shaped crystals. No two are alike — nature’s own design, ready to clip onto your Orbit.",
       tags: ["Irregular crystals", "Raw shapes", "For Orbit base"],
     },
   ],
 };
+
+const pillBase =
+  "eyebrow whitespace-nowrap rounded-none border px-3.5 py-2 transition-colors";
+const pillIdle = "hover:border-foreground/40 hover:!text-foreground";
+const pillActive = "border-foreground bg-foreground !text-background";
+const intentionPillActive = "border-moss bg-moss-light !text-moss-dark";
 
 export default async function ShopPage({
   searchParams,
@@ -176,73 +199,174 @@ export default async function ShopPage({
         : category
           ? categoryLabels[category] || "Shop"
           : "All Products";
+  const categoryIntro = category ? categoryIntros[category] : undefined;
+  const categoryIntroImage = category ? categoryIntroImages[category] : undefined;
 
   return (
     <div>
-      {/* Shop Hero */}
-      <div className="relative h-48 lg:h-64 overflow-hidden bg-muted">
-        <Image
-          src="/Gemini_Generated_Image_x8rybfx8rybfx8ry.png"
-          alt="Handcrafted accessories on a rustic wooden shelf with succulents"
-          fill
-          priority
-          className="object-cover opacity-40"
-        />
-        <div className="relative flex items-center justify-center h-full">
-          <h1 className="font-heading text-4xl lg:text-5xl font-light">
-            Shop
-          </h1>
+      {/* Compact editorial header */}
+      <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8 lg:pt-14">
+        <div className="border-t pt-6 pb-10 lg:pb-14">
+          <p className="eyebrow mb-4">The catalogue</p>
+          <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+            <h1 className="font-heading text-5xl leading-[0.95] sm:text-6xl lg:text-7xl">
+              {title}
+            </h1>
+            <p className="eyebrow pb-1.5">
+              {products.length} {products.length === 1 ? "piece" : "pieces"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Sticky filter bar */}
+      <div className="sticky top-[var(--header-h,4rem)] z-30 border-b bg-background/95 backdrop-blur">
+        <div className="mx-auto max-w-7xl space-y-3 px-4 py-4 sm:px-6 lg:px-8">
+          {/* Category filter pills */}
+          <div className="-mx-4 flex flex-nowrap gap-2 overflow-x-auto px-4 no-scrollbar sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+            <Link
+              scroll={false}
+              href="/shop"
+              className={`${pillBase} ${!category ? pillActive : pillIdle}`}
+            >
+              All
+            </Link>
+            {Object.entries(categoryLabels).map(([key, label]) => (
+              <Link
+                scroll={false}
+                key={key}
+                href={`/shop?category=${key}`}
+                className={`${pillBase} ${category === key ? pillActive : pillIdle}`}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Subcategory filter pills */}
+          {category && subcategoryLabels[category] && (
+            <div className="-mx-4 flex flex-nowrap gap-2 overflow-x-auto px-4 no-scrollbar sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+              <Link
+                scroll={false}
+                href={`/shop?category=${category}`}
+                className={`${pillBase} ${!subcategory ? pillActive : pillIdle}`}
+              >
+                All {categoryLabels[category]}
+              </Link>
+              {Object.entries(subcategoryLabels[category]).map(([key, label]) => (
+                <Link
+                  scroll={false}
+                  key={key}
+                  href={`/shop?category=${category}&sub=${key}`}
+                  className={`${pillBase} ${subcategory === key ? pillActive : pillIdle}`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* Intention filter */}
+          {category === "JEWELLERY" && (
+            <div className="-mx-4 flex flex-nowrap items-center gap-2 overflow-x-auto px-4 no-scrollbar sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+              <span className="eyebrow mr-1 whitespace-nowrap">Intention</span>
+              <Link
+                scroll={false}
+                href={`/shop?category=JEWELLERY${subcategory ? `&sub=${subcategory}` : ""}${collection ? `&collection=${encodeURIComponent(collection)}` : ""}`}
+                className={`${pillBase} ${!intention ? intentionPillActive : pillIdle}`}
+              >
+                All
+              </Link>
+              {intentionOptions.map((opt) => (
+                <Link
+                  scroll={false}
+                  key={opt.value}
+                  href={`/shop?category=JEWELLERY${subcategory ? `&sub=${subcategory}` : ""}${collection ? `&collection=${encodeURIComponent(collection)}` : ""}&intention=${encodeURIComponent(opt.value)}`}
+                  className={`${pillBase} ${intention === opt.value ? intentionPillActive : pillIdle}`}
+                >
+                  {opt.label}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Category Introduction */}
-      {category && categoryIntros[category] && !collection && (
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16 text-center">
-          <h2 className="font-heading text-2xl lg:text-3xl font-light mb-4">
-            {categoryIntros[category].heading}
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            {categoryIntros[category].body}
-          </p>
+      {categoryIntro && !collection && (
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+          <div
+            className={`grid gap-8 ${
+              categoryIntroImage ? "items-center lg:grid-cols-[0.9fr_1.1fr]" : ""
+            }`}
+          >
+            {categoryIntroImage && (
+              <Reveal variant="left">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-none bg-muted">
+                  <Image
+                    src={categoryIntroImage.src}
+                    alt={categoryIntroImage.alt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 42vw"
+                    className="object-cover"
+                  />
+                </div>
+              </Reveal>
+            )}
+            <Reveal delay={120} className={categoryIntroImage ? "" : "mx-auto max-w-3xl text-center"}>
+              <h2 className="mb-4 font-heading text-3xl leading-[1.05] lg:text-4xl">
+                {categoryIntro.heading}
+              </h2>
+              <p className="leading-relaxed text-muted-foreground">
+                {categoryIntro.body}
+              </p>
+            </Reveal>
+          </div>
         </div>
       )}
 
       {/* Collection Showcase */}
       {category && collectionShowcases[category] && !collection && (
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-8">
-          <h3 className="text-xs tracking-[0.2em] uppercase text-muted-foreground text-center mb-8">
-            Our Collections
-          </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {collectionShowcases[category].map((col) => (
-              <a
-                key={col.slug}
-                href={`/shop?category=${category}&collection=${encodeURIComponent(col.slug)}`}
-                className="group border rounded-sm p-6 lg:p-8 transition-colors hover:bg-muted/50"
-              >
-                <h4 className="font-heading text-xl lg:text-2xl font-light mb-1">
-                  {col.name}
-                </h4>
-                <p className="text-sm italic text-muted-foreground mb-4">
-                  {col.tagline}
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-                  {col.detail}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {col.tags.map((tag) => (
+          <p className="eyebrow mb-8 text-center">Our collections</p>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {collectionShowcases[category].map((col, i) => (
+              <Reveal key={col.slug} delay={(i % 4) * 70} className="h-full">
+                <Link
+                  scroll={false}
+                  href={`/shop?category=${category}&collection=${encodeURIComponent(col.slug)}`}
+                  className="group flex h-full flex-col rounded-none border p-6 transition-[translate,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)] lg:p-8"
+                >
+                  <h4 className="mb-1 font-heading text-2xl lg:text-3xl">
+                    {col.name}
+                  </h4>
+                  <p className="mb-4 text-sm italic text-muted-foreground">
+                    {col.tagline}
+                  </p>
+                  <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+                    {col.detail}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {col.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-none border px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="eyebrow mt-auto inline-flex items-center gap-2 pt-5 transition-colors group-hover:text-moss">
+                    View collection
                     <span
-                      key={tag}
-                      className="text-[10px] tracking-wider uppercase px-2 py-0.5 border rounded-sm text-muted-foreground"
+                      aria-hidden="true"
+                      className="inline-block transition-transform duration-300 group-hover:translate-x-1"
                     >
-                      {tag}
+                      &rarr;
                     </span>
-                  ))}
-                </div>
-                <span className="inline-block mt-5 text-xs tracking-wider uppercase text-muted-foreground group-hover:text-foreground transition-colors">
-                  View Collection &rarr;
-                </span>
-              </a>
+                  </span>
+                </Link>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -251,137 +375,50 @@ export default async function ShopPage({
       {/* Collection back link */}
       {category && collection && (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10">
-          <a
+          <Link
+            scroll={false}
             href={`/shop?category=${category}`}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className="link-underline eyebrow transition-colors hover:text-moss"
           >
             &larr; All {categoryLabels[category]}
-          </a>
+          </Link>
         </div>
       )}
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-        <div>
-          <h2 className="font-heading text-3xl lg:text-4xl font-light">
-            {title}
-          </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {products.length} {products.length === 1 ? "product" : "products"}
-          </p>
-        </div>
-
-        {/* Category filter pills */}
-        <div className="flex flex-wrap gap-2">
-          <a
-            href="/shop"
-            className={`text-xs tracking-wider uppercase px-3 py-1.5 border rounded-sm transition-colors ${
-              !category
-                ? "bg-foreground text-background"
-                : "hover:bg-muted"
-            }`}
-          >
-            All
-          </a>
-          {Object.entries(categoryLabels).map(([key, label]) => (
-            <a
-              key={key}
-              href={`/shop?category=${key}`}
-              className={`text-xs tracking-wider uppercase px-3 py-1.5 border rounded-sm transition-colors ${
-                category === key
-                  ? "bg-foreground text-background"
-                  : "hover:bg-muted"
-              }`}
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-20">
+        {/* Products grid */}
+        {products.length > 0 ? (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+            {products.map((product: { id: string; slug: string; title: string; price: number; compareAtPrice?: number | null; category: string; images: { url: string }[] }, i: number) => (
+              <Reveal key={product.id} delay={(i % 4) * 70}>
+                <ProductCard
+                  slug={product.slug}
+                  title={product.title}
+                  price={product.price}
+                  compareAtPrice={product.compareAtPrice}
+                  image={product.images[0]?.url}
+                  category={product.category}
+                />
+              </Reveal>
+            ))}
+          </div>
+        ) : (
+          <div className="border-t py-24 text-center lg:py-32">
+            <p className="font-heading text-3xl leading-[1.05] sm:text-4xl">
+              Nothing here <em>yet</em>
+            </p>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
+              Check back soon — new pieces are always in the works.
+            </p>
+            <Link
+              scroll={false}
+              href="/shop"
+              className="eyebrow mt-8 inline-flex border border-foreground bg-foreground px-8 py-3.5 !text-background transition-colors hover:bg-transparent hover:!text-foreground"
             >
-              {label}
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* Subcategory filter pills */}
-      {category && subcategoryLabels[category] && (
-        <div className="flex flex-wrap gap-2 mb-8">
-          <a
-            href={`/shop?category=${category}`}
-            className={`text-xs tracking-wider uppercase px-3 py-1.5 border rounded-sm transition-colors ${
-              !subcategory
-                ? "bg-foreground text-background"
-                : "hover:bg-muted"
-            }`}
-          >
-            All {categoryLabels[category]}
-          </a>
-          {Object.entries(subcategoryLabels[category]).map(([key, label]) => (
-            <a
-              key={key}
-              href={`/shop?category=${category}&sub=${key}`}
-              className={`text-xs tracking-wider uppercase px-3 py-1.5 border rounded-sm transition-colors ${
-                subcategory === key
-                  ? "bg-foreground text-background"
-                  : "hover:bg-muted"
-              }`}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-      )}
-
-      {/* Intention filter */}
-      {category === "JEWELLERY" && (
-        <div className="flex flex-wrap items-center gap-2 mb-8">
-          <span className="text-xs tracking-[0.15em] uppercase text-muted-foreground mr-1">
-            Intention
-          </span>
-          <a
-            href={`/shop?category=JEWELLERY${subcategory ? `&sub=${subcategory}` : ""}${collection ? `&collection=${encodeURIComponent(collection)}` : ""}`}
-            className={`text-xs tracking-wider uppercase px-3 py-1.5 border rounded-sm transition-colors ${
-              !intention ? "bg-foreground text-background" : "hover:bg-muted"
-            }`}
-          >
-            All
-          </a>
-          {intentionOptions.map((opt) => (
-            <a
-              key={opt.value}
-              href={`/shop?category=JEWELLERY${subcategory ? `&sub=${subcategory}` : ""}${collection ? `&collection=${encodeURIComponent(collection)}` : ""}&intention=${encodeURIComponent(opt.value)}`}
-              className={`text-xs tracking-wider uppercase px-3 py-1.5 border rounded-sm transition-colors ${
-                intention === opt.value ? "bg-foreground text-background" : "hover:bg-muted"
-              }`}
-            >
-              {opt.label}
-            </a>
-          ))}
-        </div>
-      )}
-
-      {/* Products grid */}
-      {products.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-          {products.map((product: { id: string; slug: string; title: string; price: number; compareAtPrice?: number | null; category: string; images: { url: string }[] }) => (
-            <ProductCard
-              key={product.id}
-              slug={product.slug}
-              title={product.title}
-              price={product.price}
-              compareAtPrice={product.compareAtPrice}
-              image={product.images[0]?.url}
-              category={product.category}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-24">
-          <p className="font-heading text-2xl font-light mb-2">
-            No products yet
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Check back soon — new pieces are always in the works.
-          </p>
-        </div>
-      )}
+              Browse all
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+
 import { formatPrice } from "@/lib/format";
 
 const statusColors: Record<string, string> = {

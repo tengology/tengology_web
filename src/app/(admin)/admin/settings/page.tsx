@@ -1,6 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { prisma } from "@/lib/db";
+import { ShippingZonesForm } from "./shipping-zones-form";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const zones = await prisma.shippingZone.findMany({
+    orderBy: { name: "asc" },
+  });
+
   return (
     <div>
       <h1 className="font-heading text-2xl font-light mb-8">Settings</h1>
@@ -13,15 +19,7 @@ export default function SettingsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between py-2 border-b">
-                <span>UK Standard</span>
-                <span>&pound;3.95 (Free over &pound;50)</span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Additional shipping zones can be configured here.
-              </p>
-            </div>
+            <ShippingZonesForm zones={zones} />
           </CardContent>
         </Card>
 
