@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/storefront/Reveal";
+import { SectionHeading } from "@/components/storefront/SectionHeading";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import type { Metadata } from "next";
@@ -121,6 +122,37 @@ const collectionShowcases: Record<
   ],
 };
 
+const ALL_PREVIEW_COUNT = 8;
+
+type ShopProduct = {
+  id: string;
+  slug: string;
+  title: string;
+  price: number;
+  compareAtPrice?: number | null;
+  category: string;
+  images: { url: string }[];
+};
+
+function ProductGrid({ products }: { products: ShopProduct[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+      {products.map((product, i) => (
+        <Reveal key={product.id} delay={(i % 4) * 70}>
+          <ProductCard
+            slug={product.slug}
+            title={product.title}
+            price={product.price}
+            compareAtPrice={product.compareAtPrice}
+            image={product.images[0]?.url}
+            category={product.category}
+          />
+        </Reveal>
+      ))}
+    </div>
+  );
+}
+
 export default async function ShopPage({
   searchParams,
 }: {
@@ -141,8 +173,7 @@ export default async function ShopPage({
         ? { price: "desc" as const }
         : { createdAt: "desc" as const };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let products: any[] = [];
+  let products: ShopProduct[] = [];
 
   try {
     products = await prisma.product.findMany({
@@ -169,6 +200,21 @@ export default async function ShopPage({
   } catch {
     // DB not connected yet
   }
+
+  const isAllView = !category && !subcategory && !collection && !intention && !query;
+  const sections = isAllView
+    ? Object.entries(categoryLabels)
+        .map(([key, label]) => ({
+          key,
+          label,
+          items: products.filter((product) => product.category === key),
+        }))
+        .filter((section) => section.items.length > 0)
+        .map((section, i) => ({
+          ...section,
+          index: String(i + 1).padStart(2, "0"),
+        }))
+    : [];
 
   const subcatLabel = category && subcategory && subcategoryLabels[category]?.[subcategory];
   const title = intention
@@ -275,9 +321,11 @@ export default async function ShopPage({
           <h2 className="font-heading text-3xl lg:text-4xl font-light">
             {title}
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {products.length} {products.length === 1 ? "product" : "products"}
-          </p>
+          {!isAllView && (
+            <p className="text-sm text-muted-foreground mt-1">
+              {products.length} {products.length === 1 ? "product" : "products"}
+            </p>
+          )}
         </div>
 
         {/* Category filter pills */}
@@ -365,23 +413,8 @@ export default async function ShopPage({
         </div>
       )}
 
-      {/* Products grid */}
-      {products.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-          {products.map((product: { id: string; slug: string; title: string; price: number; compareAtPrice?: number | null; category: string; images: { url: string }[] }, i: number) => (
-            <Reveal key={product.id} delay={(i % 4) * 70}>
-              <ProductCard
-                slug={product.slug}
-                title={product.title}
-                price={product.price}
-                compareAtPrice={product.compareAtPrice}
-                image={product.images[0]?.url}
-                category={product.category}
-              />
-            </Reveal>
-          ))}
-        </div>
-      ) : (
+      {/* Products */}
+      {products.length === 0 ? (
         <div className="border-t py-24 text-center">
           <p className="eyebrow mb-4">Nothing here yet</p>
           <p className="font-heading mb-8 text-3xl leading-[0.95]">
@@ -394,6 +427,34 @@ export default async function ShopPage({
             Browse all
           </Link>
         </div>
+      ) : isAllView ? (
+        <div className="space-y-20 lg:space-y-32">
+          {sections.map((section) => {
+            const preview = section.items.slice(0, ALL_PREVIEW_COUNT);
+            return (
+              <section key={section.key}>
+                <SectionHeading
+                  index={section.index}
+                  eyebrow={`${section.items.length} ${section.items.length === 1 ? "piece" : "pieces"}`}
+                  title={section.label}
+                />
+                <div className="mt-12">
+                  <ProductGrid products={preview} />
+                </div>
+                <div className="mt-10">
+                  <Link
+                    href={`/shop?category=${section.key}`}
+                    className="eyebrow inline-flex border border-foreground px-8 py-4 !text-foreground transition-colors hover:bg-foreground hover:!text-background"
+                  >
+                    See more
+                  </Link>
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      ) : (
+        <ProductGrid products={products} />
       )}
       </div>
     </div>

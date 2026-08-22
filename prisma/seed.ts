@@ -1120,6 +1120,16 @@ async function main() {
   }
   console.log(`Seeded ${products.length} products`);
 
+  // Older additive seeds (batik, bracelets) left published products with no
+  // photography. Hide those so the storefront only shows pieces with images.
+  const hidden = await prisma.product.updateMany({
+    where: { isPublished: true, images: { none: {} } },
+    data: { isPublished: false, isFeatured: false },
+  });
+  if (hidden.count > 0) {
+    console.log(`Unpublished ${hidden.count} products with no images`);
+  }
+
   // Create shipping zone
   await prisma.shippingZone.upsert({
     where: { id: "uk-standard" },
