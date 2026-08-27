@@ -17,6 +17,7 @@ export default function AboutPage() {
           src="/Gemini_Generated_Image_padxvnpadxvnpadx.png"
           alt="Layered natural textures — wool felt, crystal, batik fabric, and stained glass"
           fill
+          sizes="100vw"
           priority
           className="object-cover opacity-25"
         />
@@ -64,11 +65,12 @@ export default function AboutPage() {
               <h2 className="font-heading text-4xl leading-[0.95] mb-6 lg:text-5xl">
                 The wool felt years
               </h2>
-              <div className="relative aspect-[3/4]  overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src="/lookbook/felt-flower-headband-portrait.jpg"
                   alt="A girl in a garden wearing a handmade wool felt flower headband"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -114,11 +116,12 @@ export default function AboutPage() {
               <h2 className="font-heading text-4xl leading-[0.95] mb-6 lg:text-5xl">
                 Discovering crystals
               </h2>
-              <div className="relative aspect-[3/4]  overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src="/Gemini_Generated_Image_6rl2h86rl2h86rl2.png"
                   alt="Amethyst geode with deep purple crystal formations and scattered crystal beads on linen"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -176,11 +179,12 @@ export default function AboutPage() {
               <h2 className="font-heading text-4xl leading-[0.95] mb-6 lg:text-5xl">
                 Batik &amp; belonging
               </h2>
-              <div className="relative aspect-[3/4]  overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
-                  src="/Gemini_Generated_Image_8786gl8786gl8786.png"
-                  alt="Vibrant Indonesian batik fabric with bold floral patterns and handmade batik earrings"
+                  src="/lookbook/batik-flower-brooches-earrings.jpg"
+                  alt="Batik flower brooches and earrings on the workbench — petals cut from Indonesian batik fabric, edged with tiny gold beads and backed on wool felt"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -230,11 +234,12 @@ export default function AboutPage() {
                 <br />
                 <span className="italic">glass</span>
               </h2>
-              <div className="relative aspect-[3/4]  overflow-hidden">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src="/Gemini_Generated_Image_9yivvq9yivvq9yiv.png"
                   alt="Sunlight streaming through begonia-patterned stained glass with handmade glass earrings and pendants"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
