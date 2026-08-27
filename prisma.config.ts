@@ -1,5 +1,11 @@
-import "dotenv/config";
+import { config } from "dotenv";
 import { defineConfig } from "prisma/config";
+
+// Match Next.js' env precedence so the CLI sees the same values the app does:
+// .env.local wins, .env fills in the rest. (dotenv never overwrites a variable
+// that is already set, so loading .env.local first gives it priority.)
+config({ path: ".env.local" });
+config();
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
