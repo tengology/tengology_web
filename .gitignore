@@ -31,6 +31,14 @@
 *.MOV
 *.mp4
 
+# raw photo exports dumped in the repo root — site assets belong in public/
+/*.jpg
+/*.jpeg
+/*.JPG
+/*.JPEG
+/*.png
+/*.PNG
+
 # debug
 npm-debug.log*
 yarn-debug.log*
