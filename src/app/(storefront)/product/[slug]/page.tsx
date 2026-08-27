@@ -1,10 +1,11 @@
-import Image from "next/image";
+import { ProductGallery } from "@/components/storefront/ProductGallery";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { formatPrice } from "@/lib/format";
 import { auth } from "@/lib/auth";
 import { AddToCartButton } from "@/components/storefront/AddToCartButton";
 import { WishlistButton } from "@/components/storefront/WishlistButton";
+import { bucketLabel } from "@/lib/taxonomy";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -69,53 +70,16 @@ export default async function ProductPage({
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
         {/* Images */}
-        <div className="space-y-3">
-          {product.images.length > 0 ? (
-            <>
-              <div className="relative aspect-square overflow-hidden bg-muted">
-                <Image
-                  src={product.images[0].url}
-                  alt={product.images[0].altText || product.title}
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
-              </div>
-              {product.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-3">
-                  {product.images.slice(1).map((img) => (
-                    <div
-                      key={img.id}
-                      className="relative aspect-square overflow-hidden bg-muted"
-                    >
-                      <Image
-                        src={img.url}
-                        alt={img.altText || product.title}
-                        fill
-                        sizes="(max-width: 1024px) 25vw, 12vw"
-                        className="object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </>
-          ) : (
-            <div className="flex aspect-square items-center justify-center bg-muted">
-              <span className="font-heading text-6xl text-muted-foreground/20">
-                T
-              </span>
-            </div>
-          )}
-        </div>
+        <ProductGallery images={product.images} title={product.title} />
 
         {/* Details */}
         <div className="lg:sticky lg:top-[calc(var(--header-h,5rem)+1.5rem)] lg:self-start lg:py-8">
           <div className="space-y-6">
             <div className="border-t pt-6">
               <p className="eyebrow mb-4">
-                {product.collection || product.category.replace(/_/g, " ")}
+                {product.collection ||
+                  bucketLabel(product.category, product.subcategory) ||
+                  product.category.replace(/_/g, " ")}
               </p>
               <h1 className="font-heading text-4xl leading-[0.95] lg:text-5xl">
                 {product.title}
