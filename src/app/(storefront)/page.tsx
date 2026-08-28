@@ -4,36 +4,40 @@ import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import { Reveal } from "@/components/storefront/Reveal";
 import { SectionHeading } from "@/components/storefront/SectionHeading";
+import { CATEGORY_LIST } from "@/lib/taxonomy";
+import { cn } from "@/lib/utils";
 
 // Revalidate via ISR: the home page shows DB-driven featured products.
 export const revalidate = 60;
 
-const collections = [
-  {
-    name: "Hair Accessories",
-    href: "/shop?category=HAIR_ACCESSORIES",
-    description: "Handcrafted clips, barrettes & headbands",
-    image: "/lookbook/felt-flower-headband-portrait.jpg",
-  },
-  {
-    name: "Jewellery",
-    href: "/shop?category=JEWELLERY",
-    description: "Unique earrings, rings & necklaces",
-    image: "/Gemini_Generated_Image_ukw8ilukw8ilukw8.png",
-  },
-  {
-    name: "Christmas",
-    href: "/shop?category=CHRISTMAS_ORNAMENTS",
-    description: "Festive ornaments & decorations",
-    image: "/lookbook/felt-sprout-ornaments-pair.jpg",
-  },
-  {
-    name: "Brooches",
-    href: "/shop?category=BROOCHES",
-    description: "Statement brooches & pins",
-    image: "/Gemini_Generated_Image_9wvh4a9wvh4a9wvh.png",
-  },
-];
+/**
+ * The maker photograph, and the shape it was actually taken in.
+ *
+ * The aspect travels with the picture rather than being fixed by the layout,
+ * so a portrait shot from the workbench is shown whole instead of being
+ * cropped to a landscape frame it never fitted. Swapping in a landscape photo
+ * later needs nothing but a new `aspect`.
+ */
+const makerPhoto = {
+  src: "/lookbook/felt-sunflower-workbench.jpg",
+  alt: "The Tengology workbench mid-make — hand-cut wool felt sunflowers and green leaves laid out on a cutting mat, beside pliers, scissors, a glue gun and the cutting machine",
+  aspect: "3/4",
+};
+
+/** A frame much taller than it is wide would tower over the text beside it. */
+const makerPhotoIsTall = (() => {
+  const [w, h] = makerPhoto.aspect.split("/").map(Number);
+  return h / w > 1.15;
+})();
+
+/** One card per material family — the top level of the shop taxonomy. */
+const collections = CATEGORY_LIST.map((c) => ({
+  name: c.label,
+  href: `/shop?category=${c.key}`,
+  description: c.blurb,
+  image: c.card.src,
+  imageAlt: c.card.alt,
+}));
 
 export default async function HomePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,19 +56,13 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-muted">
-        <Image
-          src="/lookbook/felt-flower-headbands-garden.jpg"
-          alt="Two girls lying in the grass wearing handmade wool felt flower headbands"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover opacity-30 motion-safe:animate-[hero-zoom_14s_var(--ease-soft)_forwards]"
-        />
-        <div className="relative mx-auto max-w-7xl px-4 py-28 sm:px-6 lg:px-8 lg:py-44">
-          <div className="max-w-3xl">
-            <p
+      {/* Hero — split so the portrait studio shot reads at full height
+          instead of being cropped into a letterbox. */}
+      <section className="border-b">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-10 py-14 lg:grid-cols-12 lg:gap-16 lg:py-20">
+            <div className="lg:col-span-6">
+              <p
               className="eyebrow mb-6 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:fill-mode-both motion-safe:duration-700"
               style={{ animationDelay: "0ms" }}
             >
@@ -101,6 +99,24 @@ export default async function HomePage() {
               >
                 Design your own
               </Link>
+              </div>
+            </div>
+
+            {/* Portrait studio shot */}
+            <div className="lg:col-span-6">
+              <figure className="relative aspect-[4/5] overflow-hidden bg-muted lg:aspect-[3/4]">
+                <Image
+                  src="/products/sunflower/sunflower-maker-table-wide-v2.jpeg"
+                  alt="Handmade felt sunflower headbands, brooches and clips laid out on the studio cutting mat"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover motion-safe:animate-[hero-zoom_14s_var(--ease-soft)_forwards]"
+                />
+              </figure>
+              <figcaption className="eyebrow mt-3">
+                The studio table &mdash; Oxford
+              </figcaption>
             </div>
           </div>
         </div>
@@ -109,7 +125,7 @@ export default async function HomePage() {
       {/* Collections */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
         <SectionHeading index="01" eyebrow="Shop by craft" title="Collections" />
-        <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
+        <div className="mt-12 grid gap-4 sm:grid-cols-3 lg:gap-6">
           {collections.map((col, i) => (
             <Reveal key={col.name} delay={i * 80}>
               <Link
@@ -119,9 +135,9 @@ export default async function HomePage() {
                 {col.image && (
                   <Image
                     src={col.image}
-                    alt={col.name}
+                    alt={col.imageAlt}
                     fill
-                    sizes="(max-width: 1024px) 50vw, 25vw"
+                    sizes="(max-width: 640px) 100vw, 33vw"
                     className="object-cover transition-transform duration-700 motion-safe:group-hover:scale-105"
                     style={{ transitionTimingFunction: "var(--ease-soft)" }}
                   />
@@ -196,12 +212,22 @@ export default async function HomePage() {
         />
         <div className="mt-12 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal variant="left">
-            <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+            <div
+              style={{ aspectRatio: makerPhoto.aspect }}
+              className={cn(
+                "relative overflow-hidden bg-muted",
+                makerPhotoIsTall && "mx-auto w-full max-w-sm lg:mx-0"
+              )}
+            >
               <Image
-                src="/lookbook/felt-sprout-ornaments-wreath.jpg"
-                alt="Hand-stitched wool felt sprout ornaments with brass bells, arranged on a willow wreath"
+                src={makerPhoto.src}
+                alt={makerPhoto.alt}
                 fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes={
+                  makerPhotoIsTall
+                    ? "(max-width: 1024px) 100vw, 384px"
+                    : "(max-width: 1024px) 100vw, 50vw"
+                }
                 className="object-cover"
               />
             </div>

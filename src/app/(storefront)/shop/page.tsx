@@ -2,127 +2,36 @@ import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/storefront/Reveal";
 import { SectionHeading } from "@/components/storefront/SectionHeading";
+import { CategoryStory } from "@/components/storefront/CategoryStory";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/storefront/ProductCard";
+import {
+  CATEGORY_LIST,
+  INTENTIONS,
+  SUBCATEGORY_LABELS,
+  bucketLabel,
+  getCategory,
+  isSubcategoryKey,
+  type SubcategoryKey,
+} from "@/lib/taxonomy";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shop",
   description:
-    "Browse our collection of handcrafted hair accessories, jewellery, and ornaments.",
-};
-
-const categoryLabels: Record<string, string> = {
-  HAIR_ACCESSORIES: "Hair Accessories",
-  JEWELLERY: "Jewellery",
-  CHRISTMAS_ORNAMENTS: "Christmas Ornaments",
-  BROOCHES: "Brooches",
-  OTHER: "Other",
-};
-
-const categoryIntros: Record<string, { heading: string; body: string }> = {
-  JEWELLERY: {
-    heading: "Grounded Luxury",
-    body: "Tengology is a boutique jewellery brand that bridges the gap between the raw power of the earth and the refined elegance of modern life. We create ritual jewellery for the intentional wearer: pieces that don\u2019t just look beautiful, but provide a physical point of connection to nature.",
-  },
-};
-
-const subcategoryLabels: Record<string, Record<string, string>> = {
-  JEWELLERY: {
-    NECKLACES: "Necklaces",
-    BRACELETS: "Bracelets",
-    EARRINGS: "Earrings",
-    RINGS: "Rings",
-  },
-};
-
-const intentionOptions: { value: string; label: string }[] = [
-  { value: "Connection", label: "Connection" },
-  { value: "Focus", label: "Focus" },
-  { value: "Protection", label: "Protection" },
-  { value: "Clarity", label: "Clarity" },
-  { value: "Stillness", label: "Stillness" },
-  { value: "Energy", label: "Energy" },
-  { value: "Shielding", label: "Shielding" },
-  { value: "Uniqueness", label: "Uniqueness" },
-  { value: "Softness", label: "Softness" },
-  { value: "Optimism", label: "Optimism" },
-  { value: "Alignment", label: "Alignment" },
-];
-
-const collectionShowcases: Record<
-  string,
-  { name: string; slug: string; tagline: string; detail: string; tags: string[] }[]
-> = {
-  JEWELLERY: [
-    {
-      name: "Moon and Sun",
-      slug: "Moon and Sun",
-      tagline: "Layer your intention",
-      detail:
-        "Delicate 4mm crystal beads paired with Argentium Silver and Gold-filled accents. Designed for stacking — wear one for a whisper, or three for a statement. Also available as a Micro Crystal Necklace.",
-      tags: ["4mm crystals", "Argentium Silver", "Gold-filled", "Stackable", "Bracelets", "Necklaces"],
-    },
-    {
-      name: "The Horizon",
-      slug: "The Horizon",
-      tagline: "The foundation of every look",
-      detail:
-        "A refined Gold-filled chain with a 10mm polished disc pendant — understated enough to wear daily, elegant enough to anchor any stack.",
-      tags: ["Gold-filled chain", "10mm disc pendant", "Necklaces"],
-    },
-    {
-      name: "Orbit",
-      slug: "Orbit",
-      tagline: "Your foundation, your way",
-      detail:
-        "7–8mm crystal bases in Black Obsidian, Clear Quartz, Lychee Jelly Agate, or Hematoid Clear Quartz, accented with Gold-filled and Argentium beads. Add a charm to make it yours.",
-      tags: ["7–8mm crystals", "Customisable charms", "Argentium Silver", "Gold-filled", "Bracelets"],
-    },
-    {
-      name: "Meridian",
-      slug: "Meridian",
-      tagline: "Find your centre",
-      detail:
-        "10mm crystal bracelets anchored by a striking 12–13mm focal crystal, flanked by Sterling Silver and Gold-filled spacer discs. A piece that draws the eye inward.",
-      tags: ["10mm crystals", "Focal crystal", "Sterling Silver", "Gold-filled", "Bracelets"],
-    },
-    {
-      name: "Satellite",
-      slug: "Satellite",
-      tagline: "The finishing touch",
-      detail:
-        "4mm bead studs with a 7–8mm crystal drop attached by hand-wrapped wire. Available in Argentium Silver and Gold-filled to match your stack.",
-      tags: ["4mm stud", "7–8mm drop", "Wire wrap", "Argentium Silver", "Gold-filled", "Earrings"],
-    },
-    {
-      name: "Titan",
-      slug: "Titan",
-      tagline: "Pure crystal, nothing else",
-      detail:
-        "Statement pieces featuring rare 13–16mm crystals with no metal parts. Each bead is chosen for its natural beauty — the crystal is the entire design.",
-      tags: ["13–16mm crystals", "No metal", "Rare stones", "Bracelets"],
-    },
-    {
-      name: "Planets",
-      slug: "Planets",
-      tagline: "Worlds on your wrist",
-      detail:
-        "Spherical crystal charms in two sizes — 12mm Planet and 7–8mm Mini Planet. Clip onto your Orbit base to build your own constellation.",
-      tags: ["12mm charms", "7–8mm mini charms", "For Orbit base"],
-    },
-    {
-      name: "Asteroid",
-      slug: "Asteroid",
-      tagline: "Beautifully irregular",
-      detail:
-        "One-of-a-kind charms crafted from raw, irregular-shaped crystals. No two are alike — nature\u2019s own design, ready to clip onto your Orbit.",
-      tags: ["Irregular crystals", "Raw shapes", "For Orbit base"],
-    },
-  ],
+    "Browse handmade crystal jewellery, wool felt accessories, and Indonesian batik pieces.",
 };
 
 const ALL_PREVIEW_COUNT = 8;
+
+/** Wide still behind the hero when no family is selected. */
+const DEFAULT_BANNER = {
+  src: "/products/sunflower/sunflower-maker-table-wide-v2.jpeg",
+  alt: "Handmade felt sunflower headbands, brooches and clips laid out on the studio cutting mat",
+  // Portrait source in a short wide band: bias the crop low so the sunflower
+  // spread fills the strip instead of the blurred desk behind it.
+  position: "50% 72%",
+};
 
 type ShopProduct = {
   id: string;
@@ -153,14 +62,49 @@ function ProductGrid({ products }: { products: ShopProduct[] }) {
   );
 }
 
+/** Shared look for every filter pill, so the rows stay visually level. */
+function FilterPill({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={`eyebrow border px-4 py-2 transition-colors ${
+        active
+          ? "bg-foreground !text-background"
+          : "hover:border-foreground hover:!text-foreground"
+      }`}
+    >
+      {children}
+    </Link>
+  );
+}
+
 export default async function ShopPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; sub?: string; collection?: string; sort?: string; q?: string; intention?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    sub?: string;
+    collection?: string;
+    sort?: string;
+    q?: string;
+    intention?: string;
+  }>;
 }) {
   const params = await searchParams;
-  const category = params.category;
-  const subcategory = params.sub;
+
+  // Validate both levels against the taxonomy so a stale bookmark falls back to
+  // a wider view instead of querying for a key that can never match.
+  const family = getCategory(params.category);
+  const subcategory = isSubcategoryKey(params.sub) ? params.sub : undefined;
   const collection = params.collection;
   const intention = params.intention;
   const sortBy = params.sort || "newest";
@@ -174,288 +118,319 @@ export default async function ShopPage({
         : { createdAt: "desc" as const };
 
   let products: ShopProduct[] = [];
+  // Which types this family actually stocks right now — pills for empty ones
+  // would be dead ends, so they are never rendered.
+  let stockedTypes: SubcategoryKey[] = [];
 
   try {
-    products = await prisma.product.findMany({
-      where: {
-        isPublished: true,
-        ...(category ? { category } : {}),
-        ...(subcategory ? { subcategory } : {}),
-        ...(collection ? { collection } : {}),
-        ...(intention ? { intention } : {}),
-        ...(query
-          ? {
-              // Postgres `LIKE` is case-sensitive, so shopper searches need
-              // an explicit insensitive mode to behave the way people expect.
-              OR: [
-                { title: { contains: query, mode: "insensitive" as const } },
-                { shortDescription: { contains: query, mode: "insensitive" as const } },
-              ],
-            }
-          : {}),
-      },
-      include: { images: { where: { isPrimary: true }, take: 1 } },
-      orderBy,
-    });
+    const where = {
+      isPublished: true,
+      ...(family ? { category: family.key } : {}),
+      ...(subcategory ? { subcategory } : {}),
+      ...(collection ? { collection } : {}),
+      ...(intention ? { intention } : {}),
+      ...(query
+        ? {
+            // Postgres `LIKE` is case-sensitive, so shopper searches need
+            // an explicit insensitive mode to behave the way people expect.
+            OR: [
+              { title: { contains: query, mode: "insensitive" as const } },
+              { shortDescription: { contains: query, mode: "insensitive" as const } },
+            ],
+          }
+        : {}),
+    };
+
+    if (family) {
+      // Counted across the whole family, not the current filter, so narrowing to
+      // one type never hides the others.
+      const [rows, grouped] = await Promise.all([
+        prisma.product.findMany({
+          where,
+          include: { images: { where: { isPrimary: true }, take: 1 } },
+          orderBy,
+        }),
+        prisma.product.groupBy({
+          by: ["subcategory"],
+          where: { isPublished: true, category: family.key },
+        }),
+      ]);
+      products = rows;
+      const present = new Set(grouped.map((g) => g.subcategory));
+      stockedTypes = family.subcategories.filter((type) => present.has(type));
+    } else {
+      products = await prisma.product.findMany({
+        where,
+        include: { images: { where: { isPrimary: true }, take: 1 } },
+        orderBy,
+      });
+    }
   } catch {
     // DB not connected yet
   }
 
-  const isAllView = !category && !subcategory && !collection && !intention && !query;
+  const isAllView = !family && !collection && !intention && !query;
   const sections = isAllView
-    ? Object.entries(categoryLabels)
-        .map(([key, label]) => ({
-          key,
-          label,
-          items: products.filter((product) => product.category === key),
-        }))
+    ? CATEGORY_LIST.map((entry) => ({
+        key: entry.key,
+        label: entry.label,
+        blurb: entry.blurb,
+        items: products.filter((product) => product.category === entry.key),
+      }))
         .filter((section) => section.items.length > 0)
-        .map((section, i) => ({
-          ...section,
-          index: String(i + 1).padStart(2, "0"),
-        }))
+        .map((section, i) => ({ ...section, index: String(i + 1).padStart(2, "0") }))
     : [];
 
-  const subcatLabel = category && subcategory && subcategoryLabels[category]?.[subcategory];
   const title = intention
     ? `Intention: ${intention}`
     : collection
       ? collection
-      : subcatLabel
-        ? subcatLabel
-        : category
-          ? categoryLabels[category] || "Shop"
-          : "All Products";
+      : (bucketLabel(family?.key, subcategory) ?? "All Products");
+
+  /** The collection being viewed, when the URL names one this family defines. */
+  const openCollection = collection
+    ? family?.collections?.find((col) => col.name === collection)
+    : undefined;
+
+  const banner = family?.banner ?? DEFAULT_BANNER;
+  /** Only the default banner carries a crop hint; family banners are already wide. */
+  const bannerPosition =
+    "position" in banner ? (banner.position as string) : undefined;
+
+  /** The family, when it has nothing published at all — as opposed to a filter
+   *  that happens to exclude everything. */
+  const emptyFamily =
+    family && stockedTypes.length === 0 && !collection && !intention && !query
+      ? family
+      : null;
+
+  /** Keeps the intention row from dropping the family, type, or collection. */
+  const intentionHref = (value?: string) => {
+    const q = new URLSearchParams();
+    if (family) q.set("category", family.key);
+    if (subcategory) q.set("sub", subcategory);
+    if (collection) q.set("collection", collection);
+    if (value) q.set("intention", value);
+    return `/shop?${q.toString()}`;
+  };
 
   return (
     <div>
       {/* Shop Hero */}
       <div className="relative h-44 overflow-hidden bg-muted lg:h-60">
         <Image
-          src="/lookbook/felt-sprout-ornaments-wreath-wide.jpg"
-          alt="A willow wreath laid with handmade wool felt sprout ornaments and brass bells"
+          src={banner.src}
+          alt={banner.alt}
           fill
           priority
           sizes="100vw"
+          style={bannerPosition ? { objectPosition: bannerPosition } : undefined}
           className="object-cover opacity-40"
         />
         <div className="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-8 sm:px-6 lg:px-8">
           <div>
-            <p className="eyebrow mb-3">The catalogue</p>
+            <p className="eyebrow mb-3">{family ? family.blurb : "The catalogue"}</p>
             <h1 className="font-heading text-5xl leading-[0.95] lg:text-6xl">
-              Shop
+              {family ? family.label : "Shop"}
             </h1>
           </div>
         </div>
       </div>
 
-      {/* Category Introduction */}
-      {category && categoryIntros[category] && !collection && (
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 lg:py-16 text-center">
-          <h2 className="font-heading text-2xl lg:text-3xl font-light mb-4">
-            {categoryIntros[category].heading}
-          </h2>
-          <p className="text-muted-foreground leading-relaxed">
-            {categoryIntros[category].body}
-          </p>
-        </div>
+      {/* Family story — the craft, and for Batik the clip of it being made */}
+      {family && !collection && !subcategory && !intention && (
+        <CategoryStory category={family} />
       )}
 
       {/* Collection Showcase */}
-      {category && collectionShowcases[category] && !collection && (
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-8">
-          <h3 className="text-xs tracking-[0.2em] uppercase text-muted-foreground text-center mb-8">
+      {family?.collections && !collection && !subcategory && (
+        <div className="mx-auto max-w-6xl px-4 pt-16 pb-8 sm:px-6 lg:px-8">
+          <h3 className="mb-8 text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Our Collections
           </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {collectionShowcases[category].map((col) => (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {family.collections.map((col) => (
               <Link
-                key={col.slug}
-                href={`/shop?category=${category}&collection=${encodeURIComponent(col.slug)}`}
-                className="group border rounded-sm p-6 lg:p-8 transition-colors hover:bg-muted/50"
+                key={col.name}
+                href={`/shop?category=${family.key}&collection=${encodeURIComponent(col.name)}`}
+                className="group rounded-sm border px-5 py-4 transition-colors hover:bg-muted/50"
               >
-                <h4 className="font-heading text-xl lg:text-2xl font-light mb-1">
+                <h4 className="font-heading text-lg font-light transition-colors lg:text-xl">
                   {col.name}
                 </h4>
-                <p className="text-sm italic text-muted-foreground mb-4">
+                <p className="mt-0.5 text-sm italic leading-snug text-muted-foreground">
                   {col.tagline}
                 </p>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-                  {col.detail}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {col.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] tracking-wider uppercase px-2 py-0.5 border rounded-sm text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <span className="inline-block mt-5 text-xs tracking-wider uppercase text-muted-foreground group-hover:text-foreground transition-colors">
-                  View Collection &rarr;
-                </span>
               </Link>
             ))}
           </div>
         </div>
       )}
 
-      {/* Collection back link */}
-      {category && collection && (
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10">
+      {/* Collection back link, and the copy the showcase tile is too small for */}
+      {family && collection && (
+        <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
           <Link
-            href={`/shop?category=${category}`}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            href={`/shop?category=${family.key}`}
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            &larr; All {categoryLabels[category]}
+            &larr; All {family.label}
           </Link>
-        </div>
-      )}
-
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-        <div>
-          <h2 className="font-heading text-3xl lg:text-4xl font-light">
-            {title}
-          </h2>
-          {!isAllView && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {products.length} {products.length === 1 ? "product" : "products"}
-            </p>
+          {openCollection?.image && (
+            <div className="relative mt-6 aspect-[2/1] w-full overflow-hidden bg-muted">
+              <Image
+                src={openCollection.image.src}
+                alt={openCollection.image.alt}
+                fill
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="object-cover"
+              />
+            </div>
+          )}
+          {openCollection && (
+            <div className="mt-6 max-w-2xl">
+              <p className="text-sm italic text-muted-foreground">
+                {openCollection.tagline}
+              </p>
+              <p className="mt-2 leading-relaxed text-muted-foreground">
+                {openCollection.detail}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {openCollection.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-sm border px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
           )}
         </div>
-
-        {/* Category filter pills */}
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href="/shop"
-            className={`eyebrow border px-4 py-2 transition-colors ${
-              !category
-                ? "bg-foreground !text-background"
-                : "hover:border-foreground hover:!text-foreground"
-            }`}
-          >
-            All
-          </Link>
-          {Object.entries(categoryLabels).map(([key, label]) => (
-            <Link
-              key={key}
-              href={`/shop?category=${key}`}
-              className={`eyebrow border px-4 py-2 transition-colors ${
-                category === key
-                  ? "bg-foreground !text-background"
-                  : "hover:border-foreground hover:!text-foreground"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Subcategory filter pills */}
-      {category && subcategoryLabels[category] && (
-        <div className="flex flex-wrap gap-2 mb-8">
-          <Link
-            href={`/shop?category=${category}`}
-            className={`eyebrow border px-4 py-2 transition-colors ${
-              !subcategory
-                ? "bg-foreground !text-background"
-                : "hover:border-foreground hover:!text-foreground"
-            }`}
-          >
-            All {categoryLabels[category]}
-          </Link>
-          {Object.entries(subcategoryLabels[category]).map(([key, label]) => (
-            <Link
-              key={key}
-              href={`/shop?category=${category}&sub=${key}`}
-              className={`eyebrow border px-4 py-2 transition-colors ${
-                subcategory === key
-                  ? "bg-foreground !text-background"
-                  : "hover:border-foreground hover:!text-foreground"
-              }`}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
       )}
 
-      {/* Intention filter */}
-      {category === "JEWELLERY" && (
-        <div className="flex flex-wrap items-center gap-2 mb-8">
-          <span className="text-xs tracking-[0.15em] uppercase text-muted-foreground mr-1">
-            Intention
-          </span>
-          <Link
-            href={`/shop?category=JEWELLERY${subcategory ? `&sub=${subcategory}` : ""}${collection ? `&collection=${encodeURIComponent(collection)}` : ""}`}
-            className={`eyebrow border px-4 py-2 transition-colors ${
-              !intention ? "bg-foreground !text-background" : "hover:border-foreground hover:!text-foreground"
-            }`}
-          >
-            All
-          </Link>
-          {intentionOptions.map((opt) => (
-            <Link
-              key={opt.value}
-              href={`/shop?category=JEWELLERY${subcategory ? `&sub=${subcategory}` : ""}${collection ? `&collection=${encodeURIComponent(collection)}` : ""}&intention=${encodeURIComponent(opt.value)}`}
-              className={`eyebrow border px-4 py-2 transition-colors ${
-                intention === opt.value ? "bg-foreground !text-background" : "hover:border-foreground hover:!text-foreground"
-              }`}
-            >
-              {opt.label}
-            </Link>
-          ))}
-        </div>
-      )}
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+        {/* Header */}
+        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="font-heading text-3xl font-light lg:text-4xl">{title}</h2>
+            {!isAllView && (
+              <p className="mt-1 text-sm text-muted-foreground">
+                {products.length} {products.length === 1 ? "product" : "products"}
+              </p>
+            )}
+          </div>
 
-      {/* Products */}
-      {products.length === 0 ? (
-        <div className="border-t py-24 text-center">
-          <p className="eyebrow mb-4">Nothing here yet</p>
-          <p className="font-heading mb-8 text-3xl leading-[0.95]">
-            No pieces match this <em>filter</em>
-          </p>
-          <Link
-            href="/shop"
-            className="eyebrow inline-flex border border-foreground px-8 py-4 !text-foreground transition-colors hover:bg-foreground hover:!text-background"
-          >
-            Browse all
-          </Link>
+          {/* Material family — the top level */}
+          <div className="flex flex-wrap gap-2">
+            <FilterPill href="/shop" active={!family}>
+              All
+            </FilterPill>
+            {CATEGORY_LIST.map((entry) => (
+              <FilterPill
+                key={entry.key}
+                href={`/shop?category=${entry.key}`}
+                active={family?.key === entry.key}
+              >
+                {entry.label}
+              </FilterPill>
+            ))}
+          </div>
         </div>
-      ) : isAllView ? (
-        <div className="space-y-20 lg:space-y-32">
-          {sections.map((section) => {
-            const preview = section.items.slice(0, ALL_PREVIEW_COUNT);
-            return (
-              <section key={section.key}>
-                <SectionHeading
-                  index={section.index}
-                  eyebrow={`${section.items.length} ${section.items.length === 1 ? "piece" : "pieces"}`}
-                  title={section.label}
-                />
-                <div className="mt-12">
-                  <ProductGrid products={preview} />
-                </div>
-                <div className="mt-10">
-                  <Link
-                    href={`/shop?category=${section.key}`}
-                    className="eyebrow inline-flex border border-foreground px-8 py-4 !text-foreground transition-colors hover:bg-foreground hover:!text-background"
-                  >
-                    See more
-                  </Link>
-                </div>
-              </section>
-            );
-          })}
-        </div>
-      ) : (
-        <ProductGrid products={products} />
-      )}
+
+        {/* Product type — the second level, within the chosen family */}
+        {family && stockedTypes.length > 1 && (
+          <div className="mb-8 flex flex-wrap gap-2">
+            <FilterPill href={`/shop?category=${family.key}`} active={!subcategory}>
+              All {family.label}
+            </FilterPill>
+            {stockedTypes.map((type) => (
+              <FilterPill
+                key={type}
+                href={`/shop?category=${family.key}&sub=${type}`}
+                active={subcategory === type}
+              >
+                {SUBCATEGORY_LABELS[type]}
+              </FilterPill>
+            ))}
+          </div>
+        )}
+
+        {/* Intention filter */}
+        {family?.hasIntentions && (
+          <div className="mb-8 flex flex-wrap items-center gap-2">
+            <span className="mr-1 text-xs uppercase tracking-[0.15em] text-muted-foreground">
+              Intention
+            </span>
+            <FilterPill href={intentionHref()} active={!intention}>
+              All
+            </FilterPill>
+            {INTENTIONS.map((value) => (
+              <FilterPill
+                key={value}
+                href={intentionHref(value)}
+                active={intention === value}
+              >
+                {value}
+              </FilterPill>
+            ))}
+          </div>
+        )}
+
+        {/* Products */}
+        {products.length === 0 || (isAllView && sections.length === 0) ? (
+          <div className="border-t py-24 text-center">
+            <p className="eyebrow mb-4">Nothing here yet</p>
+            <p className="mb-8 font-heading text-3xl leading-[0.95]">
+              {/* A whole family with nothing in it is not a failed filter —
+                  it is a shelf still being stocked. */}
+              {emptyFamily ? (
+                <>
+                  New {emptyFamily.label} pieces are <em>on the way</em>
+                </>
+              ) : (
+                <>
+                  No pieces match this <em>filter</em>
+                </>
+              )}
+            </p>
+            <Link
+              href="/shop"
+              className="eyebrow inline-flex border border-foreground px-8 py-4 !text-foreground transition-colors hover:bg-foreground hover:!text-background"
+            >
+              Browse all
+            </Link>
+          </div>
+        ) : isAllView ? (
+          <div className="space-y-20 lg:space-y-32">
+            {sections.map((section) => {
+              const preview = section.items.slice(0, ALL_PREVIEW_COUNT);
+              return (
+                <section key={section.key}>
+                  <SectionHeading
+                    index={section.index}
+                    eyebrow={`${section.items.length} ${section.items.length === 1 ? "piece" : "pieces"}`}
+                    title={section.label}
+                  />
+                  <div className="mt-12">
+                    <ProductGrid products={preview} />
+                  </div>
+                  <div className="mt-10">
+                    <Link
+                      href={`/shop?category=${section.key}`}
+                      className="eyebrow inline-flex border border-foreground px-8 py-4 !text-foreground transition-colors hover:bg-foreground hover:!text-background"
+                    >
+                      See more
+                    </Link>
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        ) : (
+          <ProductGrid products={products} />
+        )}
       </div>
     </div>
   );
