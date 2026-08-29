@@ -42,6 +42,7 @@ export interface VerificationDetails {
 interface SquareCard {
   attach: (selector: string | HTMLElement) => Promise<void>;
   tokenize: () => Promise<{ status: string; token?: string; errors?: Array<{ message: string }> }>;
+  configure: (options: { postalCode?: string }) => Promise<void>;
   destroy: () => Promise<void>;
 }
 
@@ -102,6 +103,7 @@ export function SquareCardForm({
   locationId,
   environment,
   currency = "GBP",
+  postalCode = "",
   ref,
   onReadyChange,
 }: {
@@ -109,6 +111,12 @@ export function SquareCardForm({
   locationId: string;
   environment: string;
   currency?: string;
+  /**
+   * Billing postcode from our own address form. Square renders its own
+   * postal-code field inside the iframe, so without this the buyer types the
+   * same value twice — and the two can disagree, which AVS then declines.
+   */
+  postalCode?: string;
   ref?: React.Ref<SquareCardFormHandle>;
   onReadyChange?: (ready: boolean) => void;
 }) {
@@ -117,6 +125,11 @@ export function SquareCardForm({
   const paymentsRef = useRef<SquarePayments | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [error, setError] = useState<string>("");
+
+  // Read at attach time without making the card element re-initialise (and so
+  // discard whatever the buyer has typed) every time the postcode changes.
+  const postalCodeRef = useRef(postalCode);
+  postalCodeRef.current = postalCode;
 
   useEffect(() => {
     let cancelled = false;
@@ -131,6 +144,7 @@ export function SquareCardForm({
         paymentsRef.current = payments;
 
         const card = await payments.card({
+          postalCode: postalCodeRef.current || undefined,
           style: {
             input: { fontSize: "15px" },
             ".input-container": { borderRadius: "4px" },
@@ -165,6 +179,16 @@ export function SquareCardForm({
     // Re-initialising on every render would tear down the iframe mid-typing.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationId, locationId, environment]);
+
+  // Keep Square's postal-code field in step with the address form when the
+  // buyer edits it after the card element has already attached. `configure`
+  // updates the live iframe in place, so nothing they've typed is lost.
+  useEffect(() => {
+    if (status !== "ready" || !cardRef.current || !postalCode) return;
+    // A rejected update must never block checkout — the buyer can still type
+    // the value themselves, and tokenize() surfaces any real problem.
+    cardRef.current.configure({ postalCode }).catch(() => {});
+  }, [postalCode, status]);
 
   useImperativeHandle(
     ref,

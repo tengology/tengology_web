@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import { formatPrice } from "@/lib/format";
+import { bucketLabel } from "@/lib/taxonomy";
 
 export default async function AdminProductsPage() {
   let products: Array<{
     id: string;
     title: string;
     category: string;
+    subcategory: string | null;
     price: number;
     stockCount: number;
     isPublished: boolean;
@@ -76,7 +78,8 @@ export default async function AdminProductsPage() {
                       </Link>
                     </td>
                     <td className="p-3 text-sm text-muted-foreground">
-                      {product.category.replace(/_/g, " ")}
+                      {bucketLabel(product.category, product.subcategory) ??
+                        product.category.replace(/_/g, " ")}
                     </td>
                     <td className="p-3 text-sm">{formatPrice(product.price)}</td>
                     <td className="p-3">

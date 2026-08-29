@@ -24,12 +24,15 @@
 .DS_Store
 *.pem
 
-# media files
+# media files — raw camera originals stay out of the repo
 *.heic
 *.HEIC
 *.mov
 *.MOV
 *.mp4
+
+# …but optimised web video under public/ is a site asset and must ship
+!/public/**/*.mp4
 
 # raw photo exports dumped in the repo root — site assets belong in public/
 /*.jpg

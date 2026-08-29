@@ -103,6 +103,8 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
 
   const cardRef = useRef<SquareCardFormHandle>(null);
   const errorRef = useRef<HTMLDivElement>(null);
+  /** One-way latch, set the moment an order is created. See the render guard. */
+  const orderPlaced = useRef(false);
 
   const cartKey = useMemo(
     () => items.map((i) => `${cartLineKey(i)}:${i.quantity}`).join("|"),
@@ -304,6 +306,10 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
         return;
       }
 
+      // Latch before emptying the basket: `clearCart` notifies subscribers
+      // synchronously, so this component re-renders with no items well before
+      // the confirmation route has finished loading.
+      orderPlaced.current = true;
       clearCart();
       const query = new URLSearchParams({ order: result.orderNumber });
       if (result.guestToken) query.set("token", result.guestToken);
@@ -311,10 +317,19 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
     });
   }
 
-  if (!mounted) {
+  // Once the order exists the basket is deliberately empty, so the guard below
+  // would otherwise flash "Nothing to check out" at a shopper who has just
+  // paid. A ref, not state: the update has to be visible on the very next
+  // render, and a transition could defer a setState past it.
+  if (!mounted || orderPlaced.current) {
     return (
-      <div className="mx-auto flex max-w-5xl justify-center px-4 py-24">
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-4 py-24">
         <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        {orderPlaced.current && (
+          <p className="text-sm text-muted-foreground">
+            Payment received — taking you to your confirmation…
+          </p>
+        )}
       </div>
     );
   }
@@ -537,6 +552,7 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
                   applicationId={squareConfig.applicationId}
                   locationId={squareConfig.locationId}
                   environment={squareConfig.environment}
+                  postalCode={(billingSame ? address : billing).postcode}
                   onReadyChange={setCardReady}
                 />
 

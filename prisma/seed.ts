@@ -81,7 +81,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Strawberries",
+      collection: "Strawberry",
       images: [
         {
           url: "/products/strawberries/headband-red-hero.jpg",
@@ -118,7 +118,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Strawberries",
+      collection: "Strawberry",
       images: [
         {
           url: "/products/strawberries/closeup-2.jpg",
@@ -143,7 +143,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Strawberries",
+      collection: "Strawberry",
       images: [
         {
           url: "/products/strawberries/flat-lay-top.jpg",
@@ -164,7 +164,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Strawberries",
+      collection: "Strawberry",
       images: [
         {
           url: "/products/strawberries/flat-lay-angle-1.jpg",
@@ -185,32 +185,11 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Strawberries",
+      collection: "Strawberry",
       images: [
         {
           url: "/products/strawberries/flat-lay-angle-2.jpg",
           altText: "Single strawberry hair clip in the Strawberries collection",
-        },
-      ],
-    },
-    {
-      slug: "strawberry-felt-scrunchie",
-      title: "Strawberry Felt Scrunchie",
-      shortDescription:
-        "A soft fluffy scrunchie nestled with a cluster of hand-felted strawberries and a wool blossom.",
-      fullDescription:
-        "A cosy fluffy scrunchie wrapped in soft cream fabric, accented with a cluster of hand-felted strawberries, leaves, and a tiny wool blossom.\n\nGentle on hair, comfortable to wear all day, and the felt cluster keeps its shape wash after wash. A treat to wear and an easy gift.\n\nHandmade in Oxford.",
-      category: "HAIR_ACCESSORIES",
-      materials: "wool felt, soft fluffy fabric, hair elastic",
-      price: 12.0,
-      stockCount: 1,
-      isPublished: true,
-      isFeatured: false,
-      collection: "Strawberries",
-      images: [
-        {
-          url: "/products/strawberries/flat-lay-top.jpg",
-          altText: "Strawberry felt scrunchie shown in the Strawberries collection",
         },
       ],
     },
@@ -227,7 +206,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Strawberries",
+      collection: "Strawberry",
       images: [
         {
           url: "/products/strawberries/flat-lay-angle-1.jpg",
@@ -250,7 +229,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Cottage Garden",
+      collection: "Flower Hairclip",
       images: [
         { url: "/products/cottage-garden/hydrangea-clip-hero.jpg", altText: "Pink hydrangea felt hair clip on a Tengology kraft tag" },
         { url: "/products/cottage-garden/hydrangea-clip-2.jpg", altText: "Pink hydrangea hair clip from a second angle" },
@@ -270,7 +249,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Cottage Garden",
+      collection: "Flower Brooch",
       images: [
         { url: "/products/cottage-garden/hydrangea-brooch-hero.jpg", altText: "Pink hydrangea felt brooch" },
         { url: "/products/cottage-garden/hydrangea-brooch-group.jpg", altText: "Pink hydrangea brooch shown with matching pieces" },
@@ -289,7 +268,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Cottage Garden",
+      collection: "Flower Headband",
       images: [
         { url: "/products/cottage-garden/hydrangea-headband-hero.jpg", altText: "Pink hydrangea felt headband — close-up" },
         { url: "/products/cottage-garden/hydrangea-headband-2.jpg", altText: "Pink hydrangea headband from a second angle" },
@@ -309,7 +288,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Cottage Garden",
+      collection: "Flower Hairclip",
       images: [
         { url: "/products/cottage-garden/hydrangea-clawclip-hero.jpg", altText: "Pink hydrangea pearl claw clip" },
         { url: "/products/cottage-garden/hydrangea-clawclip-2.jpg", altText: "Pearl claw clip from a second angle" },
@@ -328,7 +307,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Cottage Garden",
+      collection: "Forget-me-not",
       images: [
         { url: "/products/cottage-garden/forget-me-not-clip-hero.jpg", altText: "Forget-me-not blue felt hair clip" },
         { url: "/products/cottage-garden/forget-me-not-clip-2.jpg", altText: "Forget-me-not hair clip second angle" },
@@ -348,7 +327,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Cottage Garden",
+      collection: "Forget-me-not",
       images: [
         { url: "/products/cottage-garden/forget-me-not-brooch-hero.jpg", altText: "Forget-me-not felt brooch" },
         { url: "/products/cottage-garden/forget-me-not-brooch-2.jpg", altText: "Forget-me-not brooch second angle" },
@@ -367,7 +346,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Cottage Garden",
+      collection: "Forget-me-not",
       images: [
         { url: "/products/cottage-garden/forget-me-not-barrette-hero.jpg", altText: "Forget-me-not long barrette with multiple blooms" },
         { url: "/products/cottage-garden/forget-me-not-barrette-2.jpg", altText: "Forget-me-not barrette second angle" },
@@ -387,7 +366,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Cottage Garden",
+      collection: "Flower Hairclip",
       images: [
         { url: "/products/cottage-garden/peach-hibiscus-clip-hero.jpg", altText: "Peach hibiscus felt hair clip" },
         { url: "/products/cottage-garden/peach-hibiscus-clip-2.jpg", altText: "Peach hibiscus clip second angle" },
@@ -407,7 +386,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Cottage Garden",
+      collection: "Flower Brooch",
       images: [
         { url: "/products/cottage-garden/peach-hibiscus-brooch-hero.jpg", altText: "Peach hibiscus felt brooch" },
         { url: "/products/cottage-garden/peach-hibiscus-brooch-2.jpg", altText: "Peach hibiscus brooch second angle" },
@@ -426,7 +405,7 @@ async function main() {
       stockCount: 2,
       isPublished: true,
       isFeatured: false,
-      collection: "Cottage Garden",
+      collection: "Daffodil",
       images: [
         { url: "/products/cottage-garden/daffodil-clip-group.jpg", altText: "Both daffodil clip colourways shown together" },
         { url: "/products/cottage-garden/daffodil-clip-golden-hero.jpg", altText: "Golden yellow daffodil felt hair clip" },
@@ -451,7 +430,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Cottage Garden",
+      collection: "Daffodil",
       images: [
         { url: "/products/cottage-garden/daffodil-lapel-pin-hero.jpg", altText: "Daffodil felt lapel pin on a kraft tag" },
         { url: "/products/cottage-garden/daffodil-lapel-pin-2.jpg", altText: "Daffodil lapel pin second angle" },
@@ -472,7 +451,7 @@ async function main() {
       stockCount: 2,
       isPublished: true,
       isFeatured: true,
-      collection: "Spring Bouquet",
+      collection: "Daffodil",
       images: [
         { url: "/products/spring-bouquet/daffodil-brooch-group.jpg", altText: "Spring bouquet brooches shown together" },
         { url: "/products/spring-bouquet/daffodil-brooch-golden-hero.jpg", altText: "Spring bouquet brooch with golden daffodil" },
@@ -497,7 +476,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Spring Bouquet",
+      collection: "Flower Headband",
       images: [
         { url: "/products/spring-bouquet/spring-headband-hero.jpg", altText: "Spring bouquet statement headband with daffodils and lavender" },
         { url: "/products/spring-bouquet/spring-headband-2.jpg", altText: "Spring headband second angle" },
@@ -516,7 +495,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Spring Bouquet",
+      collection: "Flower Hairclip",
       images: [
         { url: "/products/spring-bouquet/spring-scrunchie-hero.jpg", altText: "Spring bouquet faux-fur scrunchie" },
         { url: "/products/spring-bouquet/spring-scrunchie-2.jpg", altText: "Spring scrunchie second angle" },
@@ -536,7 +515,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Spring Bouquet",
+      collection: "Easter Rabbit Ears",
       images: [
         { url: "/products/spring-bouquet/bunny-ear-headband-hero.jpg", altText: "Easter bunny ear floral headband — close-up" },
         { url: "/products/spring-bouquet/bunny-ear-headband-2.jpg", altText: "Bunny ear headband second angle" },
@@ -556,7 +535,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Spring Bouquet",
+      collection: "Easter Rabbit Ears",
       images: [
         { url: "/products/spring-bouquet/bunny-ear-clip-hero.jpg", altText: "Easter bunny ear floral hair clip" },
         { url: "/products/spring-bouquet/bunny-ear-clip-2.jpg", altText: "Bunny ear clip second angle" },
@@ -577,7 +556,7 @@ async function main() {
       stockCount: 5,
       isPublished: true,
       isFeatured: true,
-      collection: "Dahlia",
+      collection: "Flower Headband",
       images: [
         { url: "/products/dahlia/dahlia-collection.jpg", altText: "All five dahlia headband colourways shown together" },
         { url: "/products/dahlia/dahlia-peach-hero.jpg", altText: "Peach felt dahlia headband — close-up" },
@@ -609,7 +588,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Statement Blooms",
+      collection: "Daisy",
       images: [
         { url: "/products/statement-blooms/daisy-mint-hero.jpg", altText: "Mint pastel daisy headband" },
       ],
@@ -627,7 +606,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Statement Blooms",
+      collection: "Flower Headband",
       images: [
         { url: "/products/statement-blooms/anemone-blue-hero.jpg", altText: "Blue anemone with gold-glitter centre headband" },
       ],
@@ -645,7 +624,7 @@ async function main() {
       stockCount: 2,
       isPublished: true,
       isFeatured: false,
-      collection: "Statement Blooms",
+      collection: "Flower Headband",
       images: [
         { url: "/products/statement-blooms/blooms-pair-hero.jpg", altText: "Lilac and coral oversized bloom headbands on grass" },
         { url: "/products/statement-blooms/blooms-pair-2.jpg", altText: "Oversized bloom headbands styled outdoors" },
@@ -668,7 +647,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Statement Blooms",
+      collection: "Sunflower",
       images: [
         { url: "/products/sunflower/sunflower-headband-and-clips-flatlay-v2.jpeg", altText: "Sunflower felt headband photographed with matching clips on ivory fabric" },
         { url: "/products/sunflower/sunflower-headband-clips-closeup-v2.jpeg", altText: "Close-up of the sunflower felt headband and matching clips" },
@@ -689,7 +668,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Statement Blooms",
+      collection: "Sunflower",
       images: [
         { url: "/products/sunflower/sunflower-brooch-front-v2.jpeg", altText: "Front view of the sunflower felt brooch on ivory fabric" },
         { url: "/products/sunflower/sunflower-brooch-back-v2.jpeg", altText: "Back view of the sunflower felt brooch showing the metal pin" },
@@ -710,7 +689,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Statement Blooms",
+      collection: "Sunflower",
       images: [
         { url: "/products/sunflower/sunflower-barrette-front-v2.jpeg", altText: "Front view of the sunflower felt barrette clip" },
         { url: "/products/sunflower/sunflower-barrette-back-v2.jpeg", altText: "Back view of the sunflower felt barrette clip showing the metal clasp" },
@@ -731,7 +710,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Statement Blooms",
+      collection: "Sunflower",
       images: [
         { url: "/products/sunflower/sunflower-headband-clips-linen-v2.jpeg", altText: "Smaller sunflower felt hair clip shown with matching headband and accessories" },
         { url: "/products/sunflower/sunflower-headband-clips-closeup-v2.jpeg", altText: "Close-up of the smaller sunflower felt hair clip and matching headband" },
@@ -754,7 +733,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Woodland",
+      collection: "Flower Hairclip",
       images: [
         { url: "/products/woodland/toadstool-daisy-hero.jpg", altText: "Toadstool and daisy felt hair clip on a wood slice" },
         { url: "/products/woodland/toadstool-daisy-2.jpg", altText: "Toadstool daisy clip with Tengology mark" },
@@ -774,7 +753,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Woodland",
+      collection: "Flower Hairclip",
       images: [
         { url: "/products/woodland/toadstool-buttercup-hero.jpg", altText: "Toadstool and buttercup felt hair clip" },
         { url: "/products/woodland/toadstool-pair-group.jpg", altText: "Both woodland toadstool clips shown together" },
@@ -793,7 +772,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Woodland",
+      collection: "Deer Ears",
       images: [
         { url: "/products/woodland/woodland-antler-headband-hero.jpg", altText: "Woodland antler headband with toadstools, daisies, and autumn leaves" },
       ],
@@ -813,7 +792,7 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: true,
-      collection: "Festive",
+      collection: "Reindeer Ears",
       images: [
         { url: "/products/festive/reindeer-antler-headband-hero.jpg", altText: "Reindeer antler felt headband with red roses and snowballs" },
       ],
@@ -831,9 +810,10 @@ async function main() {
       stockCount: 1,
       isPublished: true,
       isFeatured: false,
-      collection: "Festive",
+      collection: "Poppy",
       images: [
         { url: "/products/festive/poppy-clip-hero.jpg", altText: "Remembrance poppy felt hair clip" },
+        { url: "/products/festive/poppy-set-group.jpg", altText: "The remembrance poppy hair clip alongside the matching headband and brooch on a wooden tray" },
       ],
     },
 
@@ -1062,7 +1042,7 @@ async function main() {
       stockCount: 8,
       isPublished: false,
       isFeatured: false,
-      collection: "Pumpkin Spice",
+      collection: "Berry",
     },
     {
       slug: "blush-pink-baby-headband",

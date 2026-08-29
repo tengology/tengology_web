@@ -32,7 +32,8 @@ export const ensureBespokeProduct = cache(async () => {
       title: "Bespoke Crystal Design",
       shortDescription:
         "A one-off piece designed in the Tengology studio and made to order in Oxford.",
-      category: "JEWELLERY",
+      category: "CRYSTAL",
+      subcategory: "JEWELLERY",
       // Priced per design by the designer engine, never from this row.
       price: 0,
       stockCount: 0,

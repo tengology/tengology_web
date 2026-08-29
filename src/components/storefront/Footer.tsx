@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { CATEGORY_LIST } from "@/lib/taxonomy";
 
 const footerLinks = {
   Shop: [
     { name: "All Products", href: "/shop" },
-    { name: "Hair Accessories", href: "/shop?category=HAIR_ACCESSORIES" },
-    { name: "Jewellery", href: "/shop?category=JEWELLERY" },
-    { name: "Christmas", href: "/shop?category=CHRISTMAS_ORNAMENTS" },
-    { name: "Brooches", href: "/shop?category=BROOCHES" },
+    ...CATEGORY_LIST.map((c) => ({
+      name: c.label,
+      href: `/shop?category=${c.key}`,
+    })),
     { name: "Design Your Own", href: "/designer/bracelet" },
   ],
   Help: [

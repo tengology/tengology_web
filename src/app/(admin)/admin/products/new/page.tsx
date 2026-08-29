@@ -9,37 +9,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { AiListingAssistant } from "@/components/admin/AiListingAssistant";
 import { Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import {
+  CATEGORIES,
+  CATEGORY_LIST,
+  INTENTIONS,
+  SUBCATEGORY_LABELS,
+  UNCATEGORISED,
+  isCategoryKey,
+  isSubcategoryKey,
+} from "@/lib/taxonomy";
 
+// Material family, then product type — the same two levels the shop navigates.
 const categories = [
-  { value: "HAIR_ACCESSORIES", label: "Hair Accessories" },
-  { value: "JEWELLERY", label: "Jewellery" },
-  { value: "CHRISTMAS_ORNAMENTS", label: "Christmas Ornaments" },
-  { value: "BROOCHES", label: "Brooches" },
-  { value: "OTHER", label: "Other" },
+  ...CATEGORY_LIST.map((c) => ({ value: c.key, label: c.label })),
+  { value: UNCATEGORISED, label: "Other (hidden from shop)" },
 ];
 
-const subcategories: Record<string, { value: string; label: string }[]> = {
-  JEWELLERY: [
-    { value: "NECKLACES", label: "Necklaces" },
-    { value: "BRACELETS", label: "Bracelets" },
-    { value: "EARRINGS", label: "Earrings" },
-    { value: "RINGS", label: "Rings" },
-  ],
-};
-
-const intentions = [
-  "Connection",
-  "Focus",
-  "Protection",
-  "Clarity",
-  "Stillness",
-  "Energy",
-  "Shielding",
-  "Uniqueness",
-  "Softness",
-  "Optimism",
-  "Alignment",
-];
+const intentions = INTENTIONS;
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -50,7 +36,7 @@ export default function NewProductPage() {
     title: "",
     shortDescription: "",
     fullDescription: "",
-    category: "OTHER",
+    category: UNCATEGORISED,
     subcategory: "",
     materials: "",
     tags: "",
@@ -69,6 +55,12 @@ export default function NewProductPage() {
   const update = (field: string, value: string | boolean) =>
     setForm((f) => ({ ...f, [field]: value }));
 
+  /** Types and intentions are family-specific, so both reset when it changes. */
+  const updateCategory = (value: string) =>
+    setForm((f) => ({ ...f, category: value, subcategory: "", intention: "" }));
+
+  const family = isCategoryKey(form.category) ? CATEGORIES[form.category] : null;
+
   const handleAiGenerated = (data: {
     title: string;
     shortDescription: string;
@@ -76,16 +68,30 @@ export default function NewProductPage() {
     tags: string[];
     materials: string[];
     suggestedCategory: string;
+    suggestedSubcategory?: string;
     metaTitle: string;
     metaDescription: string;
     focusKeyword: string;
   }) => {
+    // The model is asked for taxonomy keys but is not bound to them, so an
+    // unrecognised suggestion is dropped rather than written into the product.
+    const suggestedCategory = isCategoryKey(data.suggestedCategory)
+      ? data.suggestedCategory
+      : null;
+    const suggestedSubcategory =
+      suggestedCategory &&
+      isSubcategoryKey(data.suggestedSubcategory) &&
+      CATEGORIES[suggestedCategory].subcategories.includes(data.suggestedSubcategory)
+        ? data.suggestedSubcategory
+        : null;
+
     setForm((f) => ({
       ...f,
       title: data.title || f.title,
       shortDescription: data.shortDescription || f.shortDescription,
       fullDescription: data.fullDescription || f.fullDescription,
-      category: data.suggestedCategory || f.category,
+      category: suggestedCategory ?? f.category,
+      subcategory: suggestedSubcategory ?? (suggestedCategory ? "" : f.subcategory),
       materials: data.materials?.join(", ") || f.materials,
       tags: data.tags?.join(", ") || f.tags,
       metaTitle: data.metaTitle || f.metaTitle,
@@ -202,11 +208,11 @@ export default function NewProductPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category">Material</Label>
               <select
                 id="category"
                 value={form.category}
-                onChange={(e) => update("category", e.target.value)}
+                onChange={(e) => updateCategory(e.target.value)}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors"
               >
                 {categories.map((cat) => (
@@ -227,26 +233,26 @@ export default function NewProductPage() {
             </div>
           </div>
 
-          {subcategories[form.category] && (
+          {family && (
             <div>
-              <Label htmlFor="subcategory">Subcategory</Label>
+              <Label htmlFor="subcategory">Type</Label>
               <select
                 id="subcategory"
                 value={form.subcategory}
                 onChange={(e) => update("subcategory", e.target.value)}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors"
               >
-                <option value="">Select subcategory...</option>
-                {subcategories[form.category].map((sub) => (
-                  <option key={sub.value} value={sub.value}>
-                    {sub.label}
+                <option value="">Select type...</option>
+                {family.subcategories.map((sub) => (
+                  <option key={sub} value={sub}>
+                    {SUBCATEGORY_LABELS[sub]}
                   </option>
                 ))}
               </select>
             </div>
           )}
 
-          {form.category === "JEWELLERY" && (
+          {family?.hasIntentions && (
             <div>
               <Label htmlFor="intention">Intention (optional)</Label>
               <select

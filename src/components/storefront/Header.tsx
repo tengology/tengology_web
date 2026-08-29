@@ -9,13 +9,13 @@ import { useCartStore } from "@/store/cart";
 import { useHydrated } from "@/lib/use-hydrated";
 import { CartDrawer } from "./CartDrawer";
 import { cn } from "@/lib/utils";
+import { CATEGORY_LIST } from "@/lib/taxonomy";
 
 const navigation = [
   { name: "Shop", href: "/shop" },
+  // The three material families, in taxonomy order.
+  ...CATEGORY_LIST.map((c) => ({ name: c.label, href: `/shop?category=${c.key}` })),
   { name: "Design Your Own", href: "/designer/bracelet" },
-  { name: "Jewellery", href: "/shop?category=JEWELLERY" },
-  { name: "Hair Accessories", href: "/shop?category=HAIR_ACCESSORIES" },
-  { name: "Christmas", href: "/shop?category=CHRISTMAS_ORNAMENTS" },
   { name: "Crystal Guide", href: "/encyclopedia" },
 ];
 
