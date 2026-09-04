@@ -10,6 +10,8 @@ import { AiListingAssistant } from "@/components/admin/AiListingAssistant";
 import { Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import {
+  AUDIENCE_KEYS,
+  AUDIENCE_LABELS,
   CATEGORIES,
   CATEGORY_LIST,
   INTENTIONS,
@@ -45,6 +47,7 @@ export default function NewProductPage() {
     stockCount: "0",
     collection: "",
     intention: "",
+    audience: "",
     isPublished: false,
     isFeatured: false,
     metaTitle: "",
@@ -113,6 +116,7 @@ export default function NewProductPage() {
           ...form,
           subcategory: form.subcategory || null,
           intention: form.intention || null,
+          audience: form.audience || null,
           price: parseFloat(form.price),
           compareAtPrice: form.compareAtPrice
             ? parseFloat(form.compareAtPrice)
@@ -249,6 +253,29 @@ export default function NewProductPage() {
                   </option>
                 ))}
               </select>
+            </div>
+          )}
+
+          {form.subcategory === "JEWELLERY" && (
+            <div>
+              <Label htmlFor="audience">Shopping for (optional)</Label>
+              <select
+                id="audience"
+                value={form.audience}
+                onChange={(e) => update("audience", e.target.value)}
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors"
+              >
+                <option value="">Not classified</option>
+                {AUDIENCE_KEYS.map((key) => (
+                  <option key={key} value={key}>
+                    {AUDIENCE_LABELS[key]}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Drives the For Her / For Him filter. Left blank, the piece shows
+                under &ldquo;Everyone&rdquo; but under neither side of the split.
+              </p>
             </div>
           )}
 

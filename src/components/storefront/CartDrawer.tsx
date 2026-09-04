@@ -38,7 +38,7 @@ export function CartDrawer() {
   const progress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col px-5 pb-5 pt-2 sm:px-6">
       <div className="mb-6 border-t pt-5">
         <p className="eyebrow mb-2">Your bag</p>
         <h2 className="font-heading text-2xl leading-none">
@@ -99,6 +99,11 @@ export function CartDrawer() {
                     Your design &middot; {item.design.beadCount} beads
                   </p>
                 )}
+                {item.personalisation?.map((choice) => (
+                  <p key={choice.label} className="eyebrow mt-1">
+                    {choice.label} &middot; {choice.value}
+                  </p>
+                ))}
                 <p className="mt-1 text-sm text-muted-foreground">
                   {formatMoney(item.price)}
                 </p>

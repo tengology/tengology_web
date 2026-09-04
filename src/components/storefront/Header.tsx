@@ -13,11 +13,27 @@ import { CATEGORY_LIST } from "@/lib/taxonomy";
 
 const navigation = [
   { name: "Shop", href: "/shop" },
-  // The three material families, in taxonomy order.
+  // Every material family, in taxonomy order.
   ...CATEGORY_LIST.map((c) => ({ name: c.label, href: `/shop?category=${c.key}` })),
   { name: "Design Your Own", href: "/designer/bracelet" },
   { name: "Crystal Guide", href: "/encyclopedia" },
 ];
+
+/**
+ * Destinations that are not a place to buy from. They ride in the mobile sheet
+ * and the footer; the desktop row is already carrying every material family and
+ * has no width left to spare.
+ */
+const secondaryNavigation = [{ name: "The Studio", href: "/studio" }];
+
+/**
+ * Scroll thresholds for the compact header. The gap between them must exceed
+ * the height the nav row gives up (lg:h-20 -> h-16, i.e. 16px), otherwise
+ * collapsing scrolls the page back under the threshold and the header
+ * oscillates.
+ */
+const COLLAPSE_BELOW = 72;
+const EXPAND_ABOVE = 24;
 
 const tickerItems = [
   "Handmade in Oxford",
@@ -65,10 +81,27 @@ export function Header() {
   const mounted = useHydrated();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    let frame = 0;
+    const apply = () => {
+      frame = 0;
+      const y = window.scrollY;
+      // Hysteresis. The header is in flow, so collapsing it makes the document
+      // shorter and nudges the scroll position back up; with a single
+      // threshold that lands under it again and the header flips every frame.
+      // Separate thresholds, both clear of the 16px the row loses, give the
+      // state somewhere stable to sit.
+      setScrolled((was) => (was ? y > EXPAND_ABOVE : y > COLLAPSE_BELOW));
+    };
+    const onScroll = () => {
+      // Coalesce to one update per frame — scroll fires far more often.
+      if (!frame) frame = window.requestAnimationFrame(apply);
+    };
+    apply();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   // Checkout drops the nav and ticker to keep the payment path distraction-free.
@@ -124,7 +157,7 @@ export function Header() {
           >
             {/* Mobile menu */}
             {!isCheckout ? (
-              <div className="lg:hidden">
+              <div className="xl:hidden">
                 <button
                   type="button"
                   onClick={() => setMobileOpen(true)}
@@ -135,7 +168,7 @@ export function Header() {
                 </button>
               </div>
             ) : (
-              <div className="lg:hidden" />
+              <div className="xl:hidden" />
             )}
 
             <Link href="/" className="flex-shrink-0">
@@ -145,7 +178,7 @@ export function Header() {
             </Link>
 
             {!isCheckout ? (
-              <nav className="hidden items-center gap-7 lg:flex">
+              <nav className="hidden items-center gap-5 xl:flex">
                 {navigation.map((item) => {
                   const active =
                     item.href === "/shop"
@@ -168,7 +201,7 @@ export function Header() {
                 })}
               </nav>
             ) : (
-              <span className="eyebrow hidden lg:block">Secure checkout</span>
+              <span className="eyebrow hidden xl:block">Secure checkout</span>
             )}
 
             <div className="flex items-center gap-3">
@@ -199,7 +232,7 @@ export function Header() {
       {/* Cart drawer — opened from anywhere via the store */}
       {mounted && (
         <Sheet open={isOpen} onOpenChange={(o) => (o ? openCart() : closeCart())}>
-          <SheetContent className="w-full sm:max-w-md">
+          <SheetContent className="w-full data-[side=right]:sm:max-w-lg">
             <SheetTitle className="sr-only">Your bag</SheetTitle>
             <CartDrawer />
           </SheetContent>
@@ -208,10 +241,10 @@ export function Header() {
 
       {/* Mobile navigation */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="w-full sm:max-w-sm">
+        <SheetContent side="left" className="w-full px-5 pb-6 sm:max-w-sm sm:px-6">
           <SheetTitle className="sr-only">Menu</SheetTitle>
           <nav className="flex flex-col gap-1 pt-4">
-            {navigation.map((item, i) => (
+            {[...navigation, ...secondaryNavigation].map((item, i) => (
               <Link
                 key={item.name}
                 href={item.href}

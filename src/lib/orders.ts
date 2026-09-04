@@ -19,6 +19,8 @@ import { HOME_COUNTRY, countryName, isDomestic } from "./countries";
 export interface CartLineInput {
   productId: string;
   quantity: number;
+  /** Made-to-order choice, e.g. the initial on a letter pendant. */
+  personalisation?: string;
 }
 
 export interface PricedLine {
@@ -30,6 +32,8 @@ export interface PricedLine {
   quantity: number;
   totalPrice: number;
   stockCount: number;
+  /** Made-to-order choice, echoed back so the summary shows what was chosen. */
+  personalisation?: string;
 }
 
 export interface CartIssue {
@@ -93,6 +97,11 @@ export async function priceCart({
 
   const byId = new Map(products.map((p) => [p.id, p]));
 
+  // One product can appear on several lines — two initials of the same pendant
+  // are two made-to-order lines — so stock is spent across the basket rather
+  // than checked line by line, which would let each line claim the last piece.
+  const remaining = new Map<string, number>();
+
   for (const item of wanted) {
     const product = byId.get(item.productId);
 
@@ -106,18 +115,24 @@ export async function priceCart({
       continue;
     }
 
-    if (product.stockCount <= 0) {
+    const left = remaining.get(product.id) ?? product.stockCount;
+
+    if (left <= 0) {
       issues.push({
         productId: product.id,
         title: product.title,
         type: "INSUFFICIENT_STOCK",
-        message: `${product.title} has sold out and has been removed.`,
+        message:
+          product.stockCount <= 0
+            ? `${product.title} has sold out and has been removed.`
+            : `There is not enough of ${product.title} left for every option in your bag.`,
         availableQuantity: 0,
       });
       continue;
     }
 
-    const quantity = Math.min(item.quantity, product.stockCount);
+    const quantity = Math.min(item.quantity, left);
+    remaining.set(product.id, left - quantity);
 
     if (quantity < item.quantity) {
       issues.push({
@@ -140,6 +155,7 @@ export async function priceCart({
       quantity,
       totalPrice: round2(unitPrice * quantity),
       stockCount: product.stockCount,
+      personalisation: item.personalisation || undefined,
     });
   }
 
@@ -341,7 +357,12 @@ export async function createPendingOrder(input: CreateOrderInput) {
         items: {
           create: priced.lines.map((line) => ({
             productId: line.productId,
-            productTitleSnapshot: line.title,
+            // The chosen option rides in the title snapshot, so it reaches the
+            // packing slip, the confirmation email and the admin order view
+            // without a parallel field every one of them would have to read.
+            productTitleSnapshot: line.personalisation
+              ? `${line.title} — ${line.personalisation}`
+              : line.title,
             productSlugSnapshot: line.slug,
             productImageSnapshot: line.image,
             quantity: line.quantity,

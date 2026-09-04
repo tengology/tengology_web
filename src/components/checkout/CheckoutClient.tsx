@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useCartStore, cartLineKey, type CartItem } from "@/store/cart";
+import { useCartStore, cartLineKey, buildOrderLines, type CartItem } from "@/store/cart";
 import { formatMoney } from "@/lib/money";
 import { useHydrated } from "@/lib/use-hydrated";
 import { countriesByRegion, countryName, isPostcodeRequired, HOME_COUNTRY } from "@/lib/countries";
@@ -112,17 +112,12 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
   );
 
   /**
-   * The server prices by product, but the cart can hold several lines for the
-   * same product (a bespoke design and a stock piece). Quantities are summed
-   * per product so stock checks and totals stay correct.
+   * The cart can hold several lines for the same product — a bespoke design, a
+   * stock piece, one pendant per initial. They are sent as separate lines so
+   * each keeps its own identity through to the order; `priceCart` spends the
+   * product's stock across all of them, so they still can't oversell it.
    */
-  const orderLines = useMemo(() => {
-    const byProduct = new Map<string, number>();
-    for (const item of items) {
-      byProduct.set(item.productId, (byProduct.get(item.productId) ?? 0) + item.quantity);
-    }
-    return [...byProduct].map(([productId, quantity]) => ({ productId, quantity }));
-  }, [items]);
+  const orderLines = useMemo(() => buildOrderLines(items), [items]);
 
   /** Drop or trim every cart line that draws on a given product. */
   const reconcileProduct = useCallback(
@@ -605,7 +600,10 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
 
             <div className="mb-5 space-y-4">
               {lines.map((line) => (
-                <div key={line.productId} className="flex gap-3">
+                <div
+                  key={`${line.productId}:${line.personalisation ?? ""}`}
+                  className="flex gap-3"
+                >
                   <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-sm bg-background">
                     {line.image ? (
                       <Image src={line.image} alt={line.title} fill sizes="64px" className="object-cover" />
@@ -620,6 +618,9 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm">{line.title}</p>
+                    {line.personalisation && (
+                      <p className="truncate text-xs text-muted-foreground">{line.personalisation}</p>
+                    )}
                     <p className="text-xs text-muted-foreground">{formatMoney(line.unitPrice)} each</p>
                   </div>
                   <p className="text-sm">{formatMoney(line.totalPrice)}</p>

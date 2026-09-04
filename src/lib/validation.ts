@@ -10,6 +10,16 @@ import { HOME_COUNTRY, isPostcodeRequired, isSupportedCountry } from "./countrie
 export const cartLineSchema = z.object({
   productId: z.string().min(1),
   quantity: z.number().int().min(1).max(99),
+  /**
+   * The made-to-order choices on a catalogue product, already flattened to one
+   * line — "Birthstone September · Lapis Lazuli, Initial S". Carried as free
+   * text so the studio sees exactly what was asked for; it never affects price,
+   * which is always re-derived from the product.
+   *
+   * The cap is generous on purpose: a line that overruns it fails the whole
+   * quote and the shopper sees a £0.00 basket with no explanation.
+   */
+  personalisation: z.string().trim().max(200).optional(),
 });
 
 /**

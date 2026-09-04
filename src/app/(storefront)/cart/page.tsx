@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { AlertCircle, Loader2, Minus, Plus, ShoppingBag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCartStore, cartLineKey, type CartItem } from "@/store/cart";
+import { useCartStore, cartLineKey, buildOrderLines, type CartItem } from "@/store/cart";
 import { formatMoney } from "@/lib/money";
 import { useHydrated } from "@/lib/use-hydrated";
 import { quoteCheckout, type QuoteResult } from "@/actions/checkout";
@@ -24,13 +24,7 @@ export default function CartPage() {
   const [quote, setQuote] = useState<QuoteResult | null>(null);
   const [checking, setChecking] = useState(false);
 
-  const orderLines = useMemo(() => {
-    const byProduct = new Map<string, number>();
-    for (const item of items) {
-      byProduct.set(item.productId, (byProduct.get(item.productId) ?? 0) + item.quantity);
-    }
-    return [...byProduct].map(([productId, quantity]) => ({ productId, quantity }));
-  }, [items]);
+  const orderLines = useMemo(() => buildOrderLines(items), [items]);
 
   const cartKey = useMemo(
     () => items.map((i) => `${cartLineKey(i)}:${i.quantity}`).join("|"),
@@ -159,6 +153,11 @@ export default function CartPage() {
                     Your design · {item.design.beadCount} beads
                   </p>
                 )}
+                {item.personalisation?.map((choice) => (
+                  <p key={choice.label} className="mt-0.5 text-xs text-muted-foreground">
+                    {choice.label}: {choice.value}
+                  </p>
+                ))}
                 <p className="mt-1 text-sm text-muted-foreground">{formatMoney(item.price)}</p>
 
                 <div className="mt-3 flex items-center gap-3">

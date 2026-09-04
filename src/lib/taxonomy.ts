@@ -11,7 +11,7 @@
  * file should hard-code a category key.
  */
 
-export const CATEGORY_KEYS = ["CRYSTAL", "FELT", "BATIK"] as const;
+export const CATEGORY_KEYS = ["CRYSTAL", "FELT", "BATIK", "LIBERTY", "GLASS"] as const;
 export type CategoryKey = (typeof CATEGORY_KEYS)[number];
 
 export const SUBCATEGORY_KEYS = [
@@ -19,6 +19,7 @@ export const SUBCATEGORY_KEYS = [
   "HAIR_ACCESSORIES",
   "BROOCHES",
   "ORNAMENTS",
+  "BAGS",
 ] as const;
 export type SubcategoryKey = (typeof SUBCATEGORY_KEYS)[number];
 
@@ -27,6 +28,7 @@ export const SUBCATEGORY_LABELS: Record<SubcategoryKey, string> = {
   HAIR_ACCESSORIES: "Hair Accessories",
   BROOCHES: "Brooches",
   ORNAMENTS: "Ornaments",
+  BAGS: "Bags & Pouches",
 };
 
 /**
@@ -83,6 +85,19 @@ export type Category = {
   /** Crystals are chosen by intention; felt and batik are not. */
   hasIntentions?: boolean;
   collections?: CategoryCollection[];
+  /**
+   * Work shown rather than sold. A family can be on the site as a body of work
+   * before any of it is listed — glass is made in ones, and photographs of it
+   * say more than an empty grid does. Rendered under the story block.
+   */
+  gallery?: {
+    heading: string;
+    body: string;
+    items: (
+      | { kind: "image"; src: string; alt: string }
+      | { kind: "video"; src: string; poster: string; label: string }
+    )[];
+  };
 };
 
 export const CATEGORIES: Record<CategoryKey, Category> = {
@@ -95,79 +110,21 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       body: "Tengology bridges the gap between the raw power of the earth and the refined elegance of modern life. We create ritual jewellery for the intentional wearer: pieces that don’t just look beautiful, but provide a physical point of connection to nature.",
     },
     banner: {
-      src: "/Gemini_Generated_Image_ukw8ilukw8ilukw8.png",
-      alt: "An amethyst and rose quartz bracelet and matching drop earrings laid on linen beside a raw amethyst cluster",
+      src: "/products/initial/initial-letter-necklace-pink-lace-gift-box.jpg",
+      alt: "A pink crystal bead necklace with a gold initial charm, boxed on lace among cream roses",
     },
     card: {
-      src: "/Gemini_Generated_Image_ukw8ilukw8ilukw8.png",
-      alt: "An amethyst and rose quartz bracelet laid on linen beside a raw amethyst cluster",
+      src: "/products/comet/pearl-carnelian-cluster-earrings-hero.jpg",
+      alt: "Freshwater pearl and carnelian cluster earrings on a pale background",
     },
     media: {
       kind: "image",
-      src: "/Gemini_Generated_Image_6rl2h86rl2h86rl2.png",
-      alt: "Amethyst geode with deep purple crystal formations and scattered crystal beads on linen",
+      src: "/products/initial/initial-letter-necklace-teal-gift-box.jpg",
+      alt: "A teal crystal bead necklace with a gold initial charm, presented in a Tengology gift box",
       aspect: "4/5",
     },
     subcategories: ["JEWELLERY"],
     hasIntentions: true,
-    collections: [
-      {
-        name: "Moon and Sun",
-        tagline: "Layer your intention",
-        detail:
-          "Delicate 4mm crystal beads paired with Argentium Silver and Gold-filled accents. Designed for stacking — wear one for a whisper, or three for a statement. Also available as a Micro Crystal Necklace.",
-        tags: ["4mm crystals", "Argentium Silver", "Gold-filled", "Stackable", "Bracelets", "Necklaces"],
-      },
-      {
-        name: "The Horizon",
-        tagline: "The foundation of every look",
-        detail:
-          "A refined Gold-filled chain with a 10mm polished disc pendant — understated enough to wear daily, elegant enough to anchor any stack.",
-        tags: ["Gold-filled chain", "10mm disc pendant", "Necklaces"],
-      },
-      {
-        name: "Orbit",
-        tagline: "Your foundation, your way",
-        detail:
-          "7–8mm crystal bases in Black Obsidian, Clear Quartz, Lychee Jelly Agate, or Hematoid Clear Quartz, accented with Gold-filled and Argentium beads. Add a charm to make it yours.",
-        tags: ["7–8mm crystals", "Customisable charms", "Argentium Silver", "Gold-filled", "Bracelets"],
-      },
-      {
-        name: "Meridian",
-        tagline: "Find your centre",
-        detail:
-          "10mm crystal bracelets anchored by a striking 12–13mm focal crystal, flanked by Sterling Silver and Gold-filled spacer discs. A piece that draws the eye inward.",
-        tags: ["10mm crystals", "Focal crystal", "Sterling Silver", "Gold-filled", "Bracelets"],
-      },
-      {
-        name: "Satellite",
-        tagline: "The finishing touch",
-        detail:
-          "4mm bead studs with a 7–8mm crystal drop attached by hand-wrapped wire. Available in Argentium Silver and Gold-filled to match your stack.",
-        tags: ["4mm stud", "7–8mm drop", "Wire wrap", "Argentium Silver", "Gold-filled", "Earrings"],
-      },
-      {
-        name: "Titan",
-        tagline: "Pure crystal, nothing else",
-        detail:
-          "Statement pieces featuring rare 13–16mm crystals with no metal parts. Each bead is chosen for its natural beauty — the crystal is the entire design.",
-        tags: ["13–16mm crystals", "No metal", "Rare stones", "Bracelets"],
-      },
-      {
-        name: "Planets",
-        tagline: "Worlds on your wrist",
-        detail:
-          "Spherical crystal charms in two sizes — 12mm Planet and 7–8mm Mini Planet. Clip onto your Orbit base to build your own constellation.",
-        tags: ["12mm charms", "7–8mm mini charms", "For Orbit base"],
-      },
-      {
-        name: "Asteroid",
-        tagline: "Beautifully irregular",
-        detail:
-          "One-of-a-kind charms crafted from raw, irregular-shaped crystals. No two are alike — nature’s own design, ready to clip onto your Orbit.",
-        tags: ["Irregular crystals", "Raw shapes", "For Orbit base"],
-      },
-    ],
   },
 
   FELT: {
@@ -179,12 +136,12 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       body: "Every petal is cut by hand from wool felt, shaped over steam, and stitched one at a time. Nothing is die-cut, nothing is rushed — which is why no two blooms in a bouquet ever sit quite the same way.",
     },
     banner: {
-      src: "/lookbook/felt-flower-headbands-garden.jpg",
-      alt: "Two girls lying in the grass wearing handmade wool felt flower headbands",
+      src: "/studio/felt-roses-rolled.jpg",
+      alt: "Dozens of hand-rolled wool felt roses in every colour, packed together on the work table",
     },
     card: {
-      src: "/lookbook/felt-flower-headband-portrait.jpg",
-      alt: "A wool felt flower headband worn in soft daylight",
+      src: "/products/dahlia/dahlia-lavender-hero.jpg",
+      alt: "A wool felt flower headband massed with pink, mauve and coral dahlias",
     },
     media: {
       kind: "image",
@@ -362,6 +319,105 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
     },
     subcategories: ["BROOCHES", "JEWELLERY"],
   },
+
+  LIBERTY: {
+    key: "LIBERTY",
+    label: "Liberty",
+    blurb: "Small-run floral cotton, cut and sewn",
+    intro: {
+      heading: "One Print, Three Ways",
+      body: "The same cottons run through all three pieces — a padded knot headband, a pair of bow clips, and a cat-ear pouch — so a whole set can be matched in one print. The fabric itself is reordered when it runs low, so a print you like is not a one-off. What changes is where it falls: a metre carries a small-scale floral over and over, and every piece is cut from a different part of that repeat, so yours will not land on exactly the same flowers as the one photographed. Cut, sewn and finished by hand in Oxford.",
+    },
+    banner: {
+      src: "/lookbook/liberty-fabric-scraps.jpg",
+      alt: "A pile of Liberty-style floral and gingham cotton offcuts on the studio table",
+    },
+    card: {
+      src: "/products/headband/knot-headband-blue-meadow-hero.jpg",
+      alt: "A floral knot headband in pale blue meadow print held against a white wall",
+    },
+    media: {
+      kind: "image",
+      src: "/products/bows/liberty-bow-clips-spread.jpg",
+      alt: "Cards of paired floral bow hair clips spread across a white surface, showing the range of prints",
+      aspect: "4/3",
+    },
+    subcategories: ["HAIR_ACCESSORIES", "BAGS"],
+    collections: [
+      {
+        name: "Meadow",
+        tagline: "The print range, worn in the hair",
+        detail:
+          "Padded knot headbands and paired bow clips cut from the same small-scale florals — meadow blues, strawberries, lilac ditsy, mustard and deep berry. Take the band and the clips in one print and they match exactly.",
+        tags: ["Knot headbands", "Bow clips", "Small-scale florals", "Hair Accessories"],
+        image: {
+          src: "/products/headband/knot-headband-strawberry.jpg",
+          alt: "A floral knot headband in a red strawberry print on white cotton",
+        },
+      },
+      {
+        name: "Everyday Carry",
+        tagline: "Lined, corded, clipped to your bag",
+        detail:
+          "Drawstring pouches with pointed cat ears and a contrast lining you only see when you open them. A swivel clip keeps them on a tote handle instead of at the bottom of the bag.",
+        tags: ["Pouches", "Contrast lining", "Swivel clip", "Bags & Pouches"],
+        image: {
+          src: "/products/pouch/cat-ear-pouch-on-tote-meadow.jpg",
+          alt: "A meadow floral cat-ear pouch clipped to the strap of a tan canvas tote bag",
+        },
+      },
+    ],
+  },
+
+  GLASS: {
+    key: "GLASS",
+    label: "Stained Glass",
+    blurb: "Cut, foiled, soldered — a panel at a time",
+    intro: {
+      heading: "Scored and Broken",
+      body: "A sheet of art glass is scored once, broken along the score, and ground back by hand until two halves match. The edges are wrapped in copper foil and soldered, which is where the bright, slightly uneven silver line comes from. It is the slowest thing made here, and the only one where the material decides the outcome as much as the maker does.",
+    },
+    banner: {
+      src: "/products/stained-glass/glass-triangle-earrings-stand.jpg",
+      alt: "Stained glass triangle earrings hanging from a clear acrylic display arch",
+    },
+    card: {
+      src: "/products/stained-glass/glass-chevron-pendant-hero.jpg",
+      alt: "A stained glass chevron pendant in clear and smoky glass on an adjustable brown cord",
+    },
+    media: {
+      kind: "video",
+      src: "/lookbook/stained-glass-pendant.mp4",
+      poster: "/lookbook/stained-glass-pendant-poster.jpg",
+      label:
+        "A soldered stained glass chevron pendant turning on its cord, catching the light through clear and smoky glass",
+      aspect: "9/16",
+    },
+    subcategories: ["JEWELLERY"],
+    gallery: {
+      heading: "The Glass So Far",
+      body: "Nothing here is listed yet. Each piece is cut and soldered on its own, so these are photographs of what has come off the bench rather than a catalogue. If something catches your eye, ask — it can be made again, though the glass will vary a little from the one photographed.",
+      items: [
+        {
+          kind: "video",
+          src: "/lookbook/stained-glass-earrings.mp4",
+          poster: "/lookbook/stained-glass-earrings-poster.jpg",
+          label: "Soldered triangle drop earrings turning slowly on a display stand",
+        },
+        { kind: "image", src: "/products/stained-glass/glass-triangle-earrings-hero.jpg", alt: "Triangular stained glass drop earrings in smoky iridised glass" },
+        { kind: "image", src: "/products/stained-glass/glass-kite-earrings-rose.jpg", alt: "Kite-shaped stained glass earrings in rose and clear textured glass" },
+        { kind: "image", src: "/products/stained-glass/glass-chevron-pendant-hero.jpg", alt: "A stained glass chevron pendant on an adjustable brown cord" },
+        { kind: "image", src: "/products/stained-glass/glass-rectangle-earrings.jpg", alt: "Long rectangular stained glass drop earrings in clear textured glass" },
+        { kind: "image", src: "/products/stained-glass/glass-triangle-earrings-flat.jpg", alt: "A pair of stained glass triangle earrings laid flat on a pale surface" },
+        { kind: "image", src: "/products/stained-glass/glass-trapezoid-earrings.jpg", alt: "Trapezoid stained glass drop earrings hanging from a clear acrylic arch" },
+        { kind: "image", src: "/products/stained-glass/glass-chevron-pendant-detail.jpg", alt: "Close view of the soldered join between the clear and smoky glass panels" },
+        { kind: "image", src: "/products/stained-glass/glass-angular-earrings.jpg", alt: "Angular stained glass earrings with a bright hand-run solder line" },
+        { kind: "image", src: "/products/stained-glass/glass-kite-earrings-rose-pair.jpg", alt: "A pair of rose-toned stained glass kite earrings on a clear stand" },
+        { kind: "image", src: "/products/stained-glass/glass-rectangle-earrings-detail.jpg", alt: "Detail of the soldered frame on rectangular stained glass earrings" },
+        { kind: "image", src: "/products/stained-glass/glass-chevron-pendant-cord.jpg", alt: "The waxed cord of the chevron pendant coiled to show its sliding knots" },
+      ],
+    },
+  },
 };
 
 /** Families in nav order. */
@@ -380,6 +436,42 @@ export const INTENTIONS = [
   "Optimism",
   "Alignment",
 ] as const;
+
+/**
+ * Who a piece is for.
+ *
+ * A third axis, deliberately kept off the two-level taxonomy above: it is not
+ * a material and not a type, it is who you are buying for. It composes with
+ * both, so "Crystal Jewellery For Him" is a view rather than a bucket someone
+ * has to maintain by hand.
+ *
+ * Only jewellery carries it today — that is where the gift split earns its
+ * keep. A piece with no audience is not "unisex", it is unclassified, and
+ * simply does not appear under either filter.
+ */
+export const AUDIENCE_KEYS = ["HER", "HIM"] as const;
+export type AudienceKey = (typeof AUDIENCE_KEYS)[number];
+
+export const AUDIENCE_LABELS: Record<AudienceKey, string> = {
+  HER: "For Her",
+  HIM: "For Him",
+};
+
+/** Shown above an audience-filtered grid, so the view explains itself. */
+export const AUDIENCE_BLURBS: Record<AudienceKey, string> = {
+  HER: "Softer stones and finer settings — pearl, rose quartz, fluorite and the pieces made for a wedding party.",
+  HIM: "Darker stones and heavier beads — obsidian, tiger's eye and hematoid, cut plain and strung without fuss.",
+};
+
+export function isAudienceKey(
+  value: string | undefined | null
+): value is AudienceKey {
+  return !!value && (AUDIENCE_KEYS as readonly string[]).includes(value);
+}
+
+export function audienceLabel(value: string | undefined | null): string | null {
+  return isAudienceKey(value) ? AUDIENCE_LABELS[value] : null;
+}
 
 export function isCategoryKey(value: string | undefined | null): value is CategoryKey {
   return !!value && (CATEGORY_KEYS as readonly string[]).includes(value);

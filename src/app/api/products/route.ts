@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { slugify } from "@/lib/format";
+import { isAudienceKey } from "@/lib/taxonomy";
 
 export async function GET() {
   const products = await prisma.product.findMany({
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
     stockCount,
     collection,
     intention,
+    audience,
     isPublished,
     isFeatured,
     metaTitle,
@@ -69,6 +71,9 @@ export async function POST(request: Request) {
       stockCount: stockCount || 0,
       collection: collection || null,
       intention: intention || null,
+      // Validated against the taxonomy so a bad client value cannot create a
+      // third side of a two-sided split.
+      audience: isAudienceKey(audience) ? audience : null,
       isPublished: isPublished || false,
       isFeatured: isFeatured || false,
       ...(metaTitle || metaDescription || focusKeyword

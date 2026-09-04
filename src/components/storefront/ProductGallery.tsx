@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useProductFocus } from "./ProductFocusContext";
+import { birthstoneMonthForImage } from "@/lib/birthstones";
 import { cn } from "@/lib/utils";
 
 export interface GalleryImage {
@@ -26,7 +28,31 @@ export function ProductGallery({
   const [active, setActive] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const count = images.length;
+  // On a made-to-order product the options drive the gallery: choosing a
+  // birthstone puts that strand in the frame and narrows the strip below to
+  // that stone alone, and choosing an initial we have photographed on it swaps
+  // the frame again for the finished piece.
+  const focus = useProductFocus();
+  const focusUrl = focus?.focusUrl ?? null;
+  const focusMonth = focus?.focusMonth ?? null;
+
+  const shown = useMemo(() => {
+    if (focusMonth == null) return images;
+    const matching = images.filter(
+      (img) => birthstoneMonthForImage(img.url) === focusMonth
+    );
+    // A stone we have barely shot yet should not empty the gallery.
+    return matching.length > 0 ? matching : images;
+  }, [images, focusMonth]);
+
+  // Re-point at the chosen shot whenever the choice or the filtered set moves.
+  useEffect(() => {
+    if (!focusUrl) return;
+    const i = shown.findIndex((img) => img.url === focusUrl);
+    setActive(i >= 0 ? i : 0);
+  }, [focusUrl, shown]);
+
+  const count = shown.length;
   const safe = Math.min(active, Math.max(count - 1, 0));
   const step = (delta: number) => setActive((i) => (i + delta + count) % count);
 
@@ -50,7 +76,7 @@ export function ProductGallery({
     );
   }
 
-  const current = images[safe];
+  const current = shown[safe];
 
   return (
     <div className="space-y-3">
@@ -98,10 +124,10 @@ export function ProductGallery({
         )}
       </div>
 
-      {/* Thumbnails — every shot, including the first */}
+      {/* Thumbnails — every shot in view, narrowed to the chosen stone */}
       {count > 1 && (
         <div className="grid grid-cols-4 gap-3">
-          {images.map((img, i) => (
+          {shown.map((img, i) => (
             <button
               key={img.id}
               type="button"

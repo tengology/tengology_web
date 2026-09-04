@@ -3,14 +3,20 @@ import Link from "next/link";
 import { Reveal } from "@/components/storefront/Reveal";
 import { SectionHeading } from "@/components/storefront/SectionHeading";
 import { CategoryStory } from "@/components/storefront/CategoryStory";
+import { CategoryGallery } from "@/components/storefront/CategoryGallery";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import {
+  AUDIENCE_BLURBS,
+  AUDIENCE_KEYS,
+  AUDIENCE_LABELS,
   CATEGORY_LIST,
   INTENTIONS,
   SUBCATEGORY_LABELS,
+  audienceLabel,
   bucketLabel,
   getCategory,
+  isAudienceKey,
   isSubcategoryKey,
   type SubcategoryKey,
 } from "@/lib/taxonomy";
@@ -97,6 +103,7 @@ export default async function ShopPage({
     sort?: string;
     q?: string;
     intention?: string;
+    audience?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -107,6 +114,7 @@ export default async function ShopPage({
   const subcategory = isSubcategoryKey(params.sub) ? params.sub : undefined;
   const collection = params.collection;
   const intention = params.intention;
+  const audience = isAudienceKey(params.audience) ? params.audience : undefined;
   const sortBy = params.sort || "newest";
   const query = params.q;
 
@@ -121,6 +129,9 @@ export default async function ShopPage({
   // Which types this family actually stocks right now — pills for empty ones
   // would be dead ends, so they are never rendered.
   let stockedTypes: SubcategoryKey[] = [];
+  // Same rule one level down: a collection tile that leads to an empty grid is
+  // worse than no tile, so the showcase is drawn from what is actually stocked.
+  let stockedCollections = new Set<string>();
 
   try {
     const where = {
@@ -129,6 +140,7 @@ export default async function ShopPage({
       ...(subcategory ? { subcategory } : {}),
       ...(collection ? { collection } : {}),
       ...(intention ? { intention } : {}),
+      ...(audience ? { audience } : {}),
       ...(query
         ? {
             // Postgres `LIKE` is case-sensitive, so shopper searches need
@@ -144,7 +156,7 @@ export default async function ShopPage({
     if (family) {
       // Counted across the whole family, not the current filter, so narrowing to
       // one type never hides the others.
-      const [rows, grouped] = await Promise.all([
+      const [rows, grouped, groupedCollections] = await Promise.all([
         prisma.product.findMany({
           where,
           include: { images: { where: { isPrimary: true }, take: 1 } },
@@ -154,10 +166,19 @@ export default async function ShopPage({
           by: ["subcategory"],
           where: { isPublished: true, category: family.key },
         }),
+        prisma.product.groupBy({
+          by: ["collection"],
+          where: { isPublished: true, category: family.key },
+        }),
       ]);
       products = rows;
       const present = new Set(grouped.map((g) => g.subcategory));
       stockedTypes = family.subcategories.filter((type) => present.has(type));
+      stockedCollections = new Set(
+        groupedCollections
+          .map((g) => g.collection)
+          .filter((name): name is string => Boolean(name))
+      );
     } else {
       products = await prisma.product.findMany({
         where,
@@ -169,7 +190,7 @@ export default async function ShopPage({
     // DB not connected yet
   }
 
-  const isAllView = !family && !collection && !intention && !query;
+  const isAllView = !family && !collection && !intention && !audience && !query;
   const sections = isAllView
     ? CATEGORY_LIST.map((entry) => ({
         key: entry.key,
@@ -185,7 +206,19 @@ export default async function ShopPage({
     ? `Intention: ${intention}`
     : collection
       ? collection
-      : (bucketLabel(family?.key, subcategory) ?? "All Products");
+      : audience
+        ? [bucketLabel(family?.key, subcategory), audienceLabel(audience)]
+            .filter(Boolean)
+            .join(" — ")
+        : (bucketLabel(family?.key, subcategory) ?? "All Products");
+
+  /**
+   * Collection tiles worth showing: a line this family defines that currently
+   * has something published in it. A tile leading to an empty grid reads as a
+   * broken shop, and a line kept only in the taxonomy is not a real collection.
+   */
+  const shownCollections =
+    family?.collections?.filter((col) => stockedCollections.has(col.name)) ?? [];
 
   /** The collection being viewed, when the URL names one this family defines. */
   const openCollection = collection
@@ -200,17 +233,39 @@ export default async function ShopPage({
   /** The family, when it has nothing published at all — as opposed to a filter
    *  that happens to exclude everything. */
   const emptyFamily =
-    family && stockedTypes.length === 0 && !collection && !intention && !query
+    family && stockedTypes.length === 0 && !collection && !intention && !audience && !query
       ? family
       : null;
 
-  /** Keeps the intention row from dropping the family, type, or collection. */
-  const intentionHref = (value?: string) => {
+  /** A family on the site as a body of work, with nothing listed to sell. */
+  const galleryOnly = Boolean(emptyFamily?.gallery) && products.length === 0;
+
+  /**
+   * Whether the grid in view is jewellery, and so whether the gift split is
+   * worth offering. Crystal is entirely jewellery and therefore never shows a
+   * type pill, so keying only off `?sub=` would hide the filter exactly where
+   * it is most useful.
+   */
+  const jewelleryInView =
+    subcategory === "JEWELLERY" ||
+    (!subcategory && stockedTypes.includes("JEWELLERY"));
+
+  /** Every filter row rebuilds the whole query, so no row drops another's state. */
+  const filterHref = (patch: {
+    intention?: string | null;
+    audience?: string | null;
+  }) => {
     const q = new URLSearchParams();
     if (family) q.set("category", family.key);
     if (subcategory) q.set("sub", subcategory);
     if (collection) q.set("collection", collection);
-    if (value) q.set("intention", value);
+
+    const nextIntention =
+      "intention" in patch ? patch.intention : intention;
+    const nextAudience = "audience" in patch ? patch.audience : audience;
+    if (nextIntention) q.set("intention", nextIntention);
+    if (nextAudience) q.set("audience", nextAudience);
+
     return `/shop?${q.toString()}`;
   };
 
@@ -242,17 +297,22 @@ export default async function ShopPage({
         <CategoryStory category={family} />
       )}
 
-      {/* Collection Showcase */}
-      {family?.collections && !collection && !subcategory && (
+      {/* Work shown rather than sold — glass is photographed, not listed. */}
+      {family?.gallery && !collection && !subcategory && !intention && !query && (
+        <CategoryGallery gallery={family.gallery} />
+      )}
+
+      {/* Collection Showcase — only the lines with something in them */}
+      {shownCollections.length > 0 && !collection && !subcategory && (
         <div className="mx-auto max-w-6xl px-4 pt-16 pb-8 sm:px-6 lg:px-8">
           <h3 className="mb-8 text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Our Collections
           </h3>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {family.collections.map((col) => (
+            {shownCollections.map((col) => (
               <Link
                 key={col.name}
-                href={`/shop?category=${family.key}&collection=${encodeURIComponent(col.name)}`}
+                href={`/shop?category=${family!.key}&collection=${encodeURIComponent(col.name)}`}
                 className="group rounded-sm border px-5 py-4 transition-colors hover:bg-muted/50"
               >
                 <h4 className="font-heading text-lg font-light transition-colors lg:text-xl">
@@ -313,14 +373,21 @@ export default async function ShopPage({
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
         {/* Header */}
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="font-heading text-3xl font-light lg:text-4xl">{title}</h2>
-            {!isAllView && (
-              <p className="mt-1 text-sm text-muted-foreground">
-                {products.length} {products.length === 1 ? "product" : "products"}
-              </p>
-            )}
-          </div>
+          {/* A family that only shows work has nothing to count, and the
+              gallery above has already named it. The family pills stay, so
+              there is still somewhere to go from here. */}
+          {galleryOnly ? (
+            <div />
+          ) : (
+            <div>
+              <h2 className="font-heading text-3xl font-light lg:text-4xl">{title}</h2>
+              {!isAllView && (
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {products.length} {products.length === 1 ? "product" : "products"}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Material family — the top level */}
           <div className="flex flex-wrap gap-2">
@@ -363,13 +430,13 @@ export default async function ShopPage({
             <span className="mr-1 text-xs uppercase tracking-[0.15em] text-muted-foreground">
               Intention
             </span>
-            <FilterPill href={intentionHref()} active={!intention}>
+            <FilterPill href={filterHref({ intention: null })} active={!intention}>
               All
             </FilterPill>
             {INTENTIONS.map((value) => (
               <FilterPill
                 key={value}
-                href={intentionHref(value)}
+                href={filterHref({ intention: value })}
                 active={intention === value}
               >
                 {value}
@@ -378,8 +445,40 @@ export default async function ShopPage({
           </div>
         )}
 
+        {/* Who it is for — offered only where the grid is jewellery */}
+        {jewelleryInView && (
+          <div className="mb-8 flex flex-wrap items-center gap-2">
+            <span className="mr-1 text-xs uppercase tracking-[0.15em] text-muted-foreground">
+              Shopping for
+            </span>
+            <FilterPill href={filterHref({ audience: null })} active={!audience}>
+              Everyone
+            </FilterPill>
+            {AUDIENCE_KEYS.map((value) => (
+              <FilterPill
+                key={value}
+                href={filterHref({ audience: value })}
+                active={audience === value}
+              >
+                {AUDIENCE_LABELS[value]}
+              </FilterPill>
+            ))}
+          </div>
+        )}
+
+        {/* What the chosen side of the split actually means */}
+        {audience && (
+          <p className="-mt-4 mb-8 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            {AUDIENCE_BLURBS[audience]}
+          </p>
+        )}
+
         {/* Products */}
-        {products.length === 0 || (isAllView && sections.length === 0) ? (
+        {galleryOnly ? (
+          // The gallery above has already shown the work and said it is not
+          // listed; "nothing here yet" under it would only contradict that.
+          null
+        ) : products.length === 0 || (isAllView && sections.length === 0) ? (
           <div className="border-t py-24 text-center">
             <p className="eyebrow mb-4">Nothing here yet</p>
             <p className="mb-8 font-heading text-3xl leading-[0.95]">
@@ -389,18 +488,42 @@ export default async function ShopPage({
                 <>
                   New {emptyFamily.label} pieces are <em>on the way</em>
                 </>
+              ) : audience ? (
+                // Someone shopping a gift for a person should not be shown a
+                // dead end. The designer takes the darker stones and is the
+                // honest answer while this side of the split is being stocked.
+                <>
+                  Nothing ready-made <em>yet</em>
+                </>
               ) : (
                 <>
                   No pieces match this <em>filter</em>
                 </>
               )}
             </p>
-            <Link
-              href="/shop"
-              className="eyebrow inline-flex border border-foreground px-8 py-4 !text-foreground transition-colors hover:bg-foreground hover:!text-background"
-            >
-              Browse all
-            </Link>
+            {audience && (
+              <p className="mx-auto mb-8 -mt-4 max-w-md leading-relaxed text-muted-foreground">
+                This side of the range is still being made. In the meantime a
+                piece can be designed from scratch — pick the stones, the size
+                and the finish, and it is strung to order.
+              </p>
+            )}
+            <div className="flex flex-wrap justify-center gap-3">
+              {audience && (
+                <Link
+                  href="/designer/bracelet"
+                  className="eyebrow inline-flex border border-foreground bg-foreground px-8 py-4 !text-background transition-colors hover:bg-transparent hover:!text-foreground"
+                >
+                  Design one
+                </Link>
+              )}
+              <Link
+                href="/shop"
+                className="eyebrow inline-flex border border-foreground px-8 py-4 !text-foreground transition-colors hover:bg-foreground hover:!text-background"
+              >
+                Browse all
+              </Link>
+            </div>
           </div>
         ) : isAllView ? (
           <div className="space-y-20 lg:space-y-32">

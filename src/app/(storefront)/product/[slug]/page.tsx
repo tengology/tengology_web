@@ -1,11 +1,14 @@
 import { ProductGallery } from "@/components/storefront/ProductGallery";
+import { ProductFocusProvider } from "@/components/storefront/ProductFocusContext";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { formatPrice } from "@/lib/format";
 import { auth } from "@/lib/auth";
 import { AddToCartButton } from "@/components/storefront/AddToCartButton";
+import { InitialLetterPicker } from "@/components/storefront/InitialLetterPicker";
 import { WishlistButton } from "@/components/storefront/WishlistButton";
 import { bucketLabel } from "@/lib/taxonomy";
+import { hasInitialLetterOption, isFunctionalTag } from "@/lib/personalisation";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -55,6 +58,7 @@ export default async function ProductPage({
   if (!product) notFound();
 
   const price = product.price;
+  const visibleTags = product.tags.filter((pt) => !isFunctionalTag(pt.tag.slug));
 
   const session = await auth();
   const isSaved = session?.user?.id
@@ -68,6 +72,8 @@ export default async function ProductPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+      {/* The provider spans both columns so the options can drive the gallery. */}
+      <ProductFocusProvider>
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
         {/* Images */}
         <ProductGallery images={product.images} title={product.title} />
@@ -117,13 +123,22 @@ export default async function ProductPage({
             </div>
 
             <div className="space-y-2">
-              <AddToCartButton
-                productId={product.id}
-                title={product.title}
-                price={price}
-                image={product.images[0]?.url}
-                inStock={product.stockCount > 0}
-              />
+              {hasInitialLetterOption(product.tags) ? (
+                <InitialLetterPicker
+                  productId={product.id}
+                  title={product.title}
+                  price={price}
+                  inStock={product.stockCount > 0}
+                />
+              ) : (
+                <AddToCartButton
+                  productId={product.id}
+                  title={product.title}
+                  price={price}
+                  image={product.images[0]?.url}
+                  inStock={product.stockCount > 0}
+                />
+              )}
               <WishlistButton
                 productId={product.id}
                 productSlug={product.slug}
@@ -164,10 +179,10 @@ export default async function ProductPage({
             )}
 
             {/* Tags */}
-            {product.tags.length > 0 && (
+            {visibleTags.length > 0 && (
               <div className="border-t pt-6">
                 <div className="flex flex-wrap gap-2">
-                  {product.tags.map((pt) => (
+                  {visibleTags.map((pt) => (
                     <span
                       key={pt.tagId}
                       className="text-xs text-muted-foreground"
@@ -181,6 +196,7 @@ export default async function ProductPage({
           </div>
         </div>
       </div>
+      </ProductFocusProvider>
     </div>
   );
 }

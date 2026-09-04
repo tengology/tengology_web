@@ -117,6 +117,10 @@ model Product {
   isFeatured        Boolean  @default(false)
   collection        String?
   intention         String?
+  /// Who a piece is for — "HER" or "HIM". A third axis alongside the material
+  /// family and the type, so it composes with both. Null means unclassified,
+  /// which keeps a piece out of the gift filters rather than guessing for it.
+  audience          String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -134,6 +138,7 @@ model Product {
 
   @@index([isPublished, category])
   @@index([isPublished, isFeatured])
+  @@index([isPublished, subcategory, audience])
 }
 
 model ProductImage {

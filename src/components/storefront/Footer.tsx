@@ -20,6 +20,7 @@ const footerLinks = {
   ],
   About: [
     { name: "Our Story", href: "/pages/about" },
+    { name: "The Studio", href: "/studio" },
     { name: "Crystal Guide", href: "/encyclopedia" },
     { name: "Stockists", href: "/pages/stockists" },
   ],

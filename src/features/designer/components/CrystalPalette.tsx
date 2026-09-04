@@ -12,7 +12,13 @@ import { cn, formatCents } from '@/lib/utils';
 
 type LifestylePhoto = { src: string; alt: string };
 
+// Shared by every letter, since the charms differ only in the letter itself.
+// Worn shots lead: seeing one on a neck answers "how big is it, really?" in a
+// way the product grid never does.
 const ALPHABET_PHOTOS: LifestylePhoto[] = [
+  { src: '/products/initial/initial-letter-necklace-bridesmaids-trio.jpg', alt: 'Three bridesmaids each wearing a gold initial charm on a crystal bead necklace — E, A and O' },
+  { src: '/products/initial/initial-letter-necklace-navy-mother-daughter.jpg', alt: 'Matching lapis crystal necklaces with gold initial charms S and K, worn by a mother and flower girl' },
+  { src: '/products/initial/initial-letter-necklace-hero.jpg', alt: 'Gold initial A charm on a white crystal bead necklace, worn with ivory silk' },
   { src: '/lookbook/gold-alphabet-reference.jpg', alt: '18K gold alphabet connector spacer charms arranged in a product grid' },
   { src: '/beads/gold-alphabet-grid.png', alt: 'Transparent 18K gold alphabet charms with open jump rings' },
 ];
