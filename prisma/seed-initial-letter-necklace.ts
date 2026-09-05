@@ -224,7 +224,7 @@ async function main() {
       shortDescription:
         "Pick a birthstone and an initial: a strand of your month's stone, finished with an 18K gold-plated letter. Made to order.",
       fullDescription: FULL_DESCRIPTION,
-      category: "CRYSTAL",
+      category: "GEMSTONE",
       subcategory: "JEWELLERY",
       collection: "Bridal Party",
       intention: "Love",
@@ -242,7 +242,7 @@ async function main() {
       shortDescription:
         "Pick a birthstone and an initial: a strand of your month's stone, finished with an 18K gold-plated letter. Made to order.",
       fullDescription: FULL_DESCRIPTION,
-      category: "CRYSTAL",
+      category: "GEMSTONE",
       subcategory: "JEWELLERY",
       collection: "Bridal Party",
       intention: "Love",

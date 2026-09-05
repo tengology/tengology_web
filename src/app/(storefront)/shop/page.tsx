@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/storefront/Reveal";
 import { SectionHeading } from "@/components/storefront/SectionHeading";
-import { CategoryStory } from "@/components/storefront/CategoryStory";
+import { CategoryHero } from "@/components/storefront/CategoryHero";
 import { CategoryGallery } from "@/components/storefront/CategoryGallery";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/storefront/ProductCard";
@@ -29,15 +29,6 @@ export const metadata: Metadata = {
 };
 
 const ALL_PREVIEW_COUNT = 8;
-
-/** Wide still behind the hero when no family is selected. */
-const DEFAULT_BANNER = {
-  src: "/products/sunflower/sunflower-maker-table-wide-v2.jpeg",
-  alt: "Handmade felt sunflower headbands, brooches and clips laid out on the studio cutting mat",
-  // Portrait source in a short wide band: bias the crop low so the sunflower
-  // spread fills the strip instead of the blurred desk behind it.
-  position: "50% 72%",
-};
 
 type ShopProduct = {
   id: string;
@@ -225,11 +216,6 @@ export default async function ShopPage({
     ? family?.collections?.find((col) => col.name === collection)
     : undefined;
 
-  const banner = family?.banner ?? DEFAULT_BANNER;
-  /** Only the default banner carries a crop hint; family banners are already wide. */
-  const bannerPosition =
-    "position" in banner ? (banner.position as string) : undefined;
-
   /** The family, when it has nothing published at all — as opposed to a filter
    *  that happens to exclude everything. */
   const emptyFamily =
@@ -271,34 +257,27 @@ export default async function ShopPage({
 
   return (
     <div>
-      {/* Shop Hero */}
-      <div className="relative h-44 overflow-hidden bg-muted lg:h-60">
-        <Image
-          src={banner.src}
-          alt={banner.alt}
-          fill
-          priority
-          sizes="100vw"
-          style={bannerPosition ? { objectPosition: bannerPosition } : undefined}
-          className="object-cover opacity-40"
-        />
-        <div className="relative mx-auto flex h-full max-w-7xl items-end px-4 pb-8 sm:px-6 lg:px-8">
-          <div>
-            <p className="eyebrow mb-3">{family ? family.blurb : "The catalogue"}</p>
+      {/* Head of the page. Whenever a family is in view it keeps its hero —
+          copy on the left, a portrait of the craft on the right. Filtering
+          within a family narrows the grid below; it does not put you somewhere
+          else, so the head of the page has to stay put. Only a view with no
+          family at all (the whole catalogue, or a search) opens on a plain
+          heading, because there is no one craft to introduce. */}
+      {family ? (
+        <CategoryHero category={family} />
+      ) : (
+        <div className="border-b">
+          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+            <p className="eyebrow mb-3">The catalogue</p>
             <h1 className="font-heading text-5xl leading-[0.95] lg:text-6xl">
-              {family ? family.label : "Shop"}
+              Shop
             </h1>
           </div>
         </div>
-      </div>
-
-      {/* Family story — the craft, and for Batik the clip of it being made */}
-      {family && !collection && !subcategory && !intention && (
-        <CategoryStory category={family} />
       )}
 
       {/* Work shown rather than sold — glass is photographed, not listed. */}
-      {family?.gallery && !collection && !subcategory && !intention && !query && (
+      {family?.gallery && !collection && (
         <CategoryGallery gallery={family.gallery} />
       )}
 

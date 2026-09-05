@@ -6,9 +6,11 @@ import { formatPrice } from "@/lib/format";
 import { auth } from "@/lib/auth";
 import { AddToCartButton } from "@/components/storefront/AddToCartButton";
 import { InitialLetterPicker } from "@/components/storefront/InitialLetterPicker";
+import { ProductChoicePicker } from "@/components/storefront/ProductChoicePicker";
 import { WishlistButton } from "@/components/storefront/WishlistButton";
 import { bucketLabel } from "@/lib/taxonomy";
 import { hasInitialLetterOption, isFunctionalTag } from "@/lib/personalisation";
+import { productChoiceFor } from "@/lib/productOptions";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -59,6 +61,8 @@ export default async function ProductPage({
 
   const price = product.price;
   const visibleTags = product.tags.filter((pt) => !isFunctionalTag(pt.tag.slug));
+  /** A single made-to-order choice, for listings that merged several pieces. */
+  const choice = productChoiceFor(product.slug);
 
   const session = await auth();
   const isSaved = session?.user?.id
@@ -129,6 +133,14 @@ export default async function ProductPage({
                   title={product.title}
                   price={price}
                   inStock={product.stockCount > 0}
+                />
+              ) : choice ? (
+                <ProductChoicePicker
+                  productId={product.id}
+                  title={product.title}
+                  price={price}
+                  inStock={product.stockCount > 0}
+                  choice={choice}
                 />
               ) : (
                 <AddToCartButton

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: "%s | Tengology",
   },
   description:
-    "Handcrafted hair accessories, jewellery, and Christmas ornaments. Designed and made in Oxford from wool felt, wood, and natural materials.",
+    "Handcrafted hair accessories, jewellery, and Christmas ornaments. Designed and made in Oxford from wool and wool-blend felt, natural crystal, floral cotton, and hand-cut glass.",
   keywords: [
     "handmade jewellery",
     "hair accessories",

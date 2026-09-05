@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, Menu, Package, User } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -171,10 +172,23 @@ export function Header() {
               <div className="xl:hidden" />
             )}
 
-            <Link href="/" className="flex-shrink-0">
-              <span className="font-heading text-2xl uppercase tracking-[0.25em] lg:text-3xl">
-                Tengology
-              </span>
+            <Link href="/" className="flex-shrink-0" aria-label="Tengology — home">
+              {/* The mark is black-on-transparent, so it reads on the warm white
+                  header and on any light ground it might sit over later. Height
+                  is fixed and width follows, which keeps the script from being
+                  squashed when the row shrinks on scroll. */}
+              <Image
+                src="/tengology-logo.png"
+                alt="Tengology"
+                width={744}
+                height={300}
+                priority
+                className={cn(
+                  "w-auto transition-[height] duration-300",
+                  scrolled ? "h-9" : "h-9 lg:h-14"
+                )}
+                style={{ transitionTimingFunction: "var(--ease-soft)" }}
+              />
             </Link>
 
             {!isCheckout ? (

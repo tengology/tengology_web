@@ -80,8 +80,9 @@ export default async function HomePage() {
               className="mt-8 max-w-md leading-relaxed text-muted-foreground motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:fill-mode-both motion-safe:duration-700"
               style={{ animationDelay: "180ms" }}
             >
-              Every piece is designed and handmade in Oxford using wool felt,
-              wood, and natural materials. Made to be treasured.
+              Every piece is designed and handmade in Oxford — wool and
+              wool-blend felt, natural crystal, floral cotton, and hand-cut
+              glass. Made to be treasured.
             </p>
             <div
               className="mt-10 flex flex-wrap gap-3 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:fill-mode-both motion-safe:duration-700"
@@ -123,7 +124,8 @@ export default async function HomePage() {
       </section>
 
       {/* Collections */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+      <section className="border-b bg-muted/40">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
         <SectionHeading index="01" eyebrow="Shop by craft" title="Collections" />
         <div className="mt-12 grid gap-4 sm:grid-cols-3 lg:gap-6">
           {collections.map((col, i) => (
@@ -163,6 +165,7 @@ export default async function HomePage() {
               </Link>
             </Reveal>
           ))}
+        </div>
         </div>
       </section>
 
@@ -204,7 +207,8 @@ export default async function HomePage() {
       )}
 
       {/* Story teaser */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+      <section className="section-inverted">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
         <SectionHeading
           index="03"
           eyebrow="The maker"
@@ -247,6 +251,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </Reveal>
+        </div>
         </div>
       </section>
     </div>

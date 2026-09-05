@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     messages: [
       {
         role: "user",
-        content: `You are a social media manager for Tengology, a small handmade goods business based in the UK. They sell handcrafted wood, wool felt, and felt hair accessories, jewellery, brooches, and Christmas ornaments. Every piece is unique and handmade.
+        content: `You are a social media manager for Tengology, a small handmade goods business based in the UK. They sell handcrafted hair accessories, jewellery, brooches and Christmas ornaments, made from wool and wool-blend felt, natural crystal, batik and floral cotton, and hand-cut stained glass. Every piece is unique and handmade.
 
 The brand tone is warm, elegant, and approachable — like a conversation with a talented artisan friend.
 

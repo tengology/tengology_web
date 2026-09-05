@@ -35,7 +35,7 @@ const TYPE_FROM_LEGACY_CATEGORY: Record<string, SubcategoryKey> = {
 };
 
 /** Categories whose pieces are crystal work when no fabric is in the materials. */
-const CRYSTAL_SOURCES = new Set(["JEWELLERY", "CRYSTAL"]);
+const CRYSTAL_SOURCES = new Set(["JEWELLERY", "CRYSTAL", "GEMSTONE"]);
 
 type Row = {
   id: string;
@@ -55,7 +55,7 @@ function resolveFamily(row: Row): CategoryKey | null {
   const materials = row.materials.toLowerCase();
   if (materials.includes("batik")) return "BATIK";
   if (materials.includes("felt")) return "FELT";
-  if (CRYSTAL_SOURCES.has(row.category)) return "CRYSTAL";
+  if (CRYSTAL_SOURCES.has(row.category)) return "GEMSTONE";
   return null;
 }
 

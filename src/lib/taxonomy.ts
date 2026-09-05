@@ -11,7 +11,7 @@
  * file should hard-code a category key.
  */
 
-export const CATEGORY_KEYS = ["CRYSTAL", "FELT", "BATIK", "LIBERTY", "GLASS"] as const;
+export const CATEGORY_KEYS = ["GEMSTONE", "FELT", "BATIK", "LIBERTY", "GLASS"] as const;
 export type CategoryKey = (typeof CATEGORY_KEYS)[number];
 
 export const SUBCATEGORY_KEYS = [
@@ -82,7 +82,7 @@ export type Category = {
   media: CategoryMedia;
   /** Which shared types this family offers, in display order. */
   subcategories: SubcategoryKey[];
-  /** Crystals are chosen by intention; felt and batik are not. */
+  /** Gemstones are chosen by intention; felt and batik are not. */
   hasIntentions?: boolean;
   collections?: CategoryCollection[];
   /**
@@ -101,9 +101,9 @@ export type Category = {
 };
 
 export const CATEGORIES: Record<CategoryKey, Category> = {
-  CRYSTAL: {
-    key: "CRYSTAL",
-    label: "Crystal",
+  GEMSTONE: {
+    key: "GEMSTONE",
+    label: "Gemstone",
     blurb: "Ritual jewellery, one stone at a time",
     intro: {
       heading: "Grounded Luxury",
@@ -136,19 +136,18 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       body: "Every petal is cut by hand from wool felt, shaped over steam, and stitched one at a time. Nothing is die-cut, nothing is rushed — which is why no two blooms in a bouquet ever sit quite the same way.",
     },
     banner: {
-      src: "/studio/felt-roses-rolled.jpg",
-      alt: "Dozens of hand-rolled wool felt roses in every colour, packed together on the work table",
+      src: "/lookbook/felt-flower-headbands-group.jpg",
+      alt: "Several wool felt flower headbands laid out together on grey sheepskin",
     },
     card: {
-      src: "/products/dahlia/dahlia-lavender-hero.jpg",
-      alt: "A wool felt flower headband massed with pink, mauve and coral dahlias",
+      // Portrait tile: the crown sits centre frame, so the side crop is safe.
+      src: "/lookbook/felt-flower-crown-held.jpg",
+      alt: "A wool felt flower crown headband held up, massed with pink and cream blooms",
     },
     media: {
       kind: "image",
-      // Cut circles, stuffing, thread and finished pumpkins in one frame —
-      // the story block says "Cut, Shaped, Stitched", and this shows all three.
-      src: "/lookbook/felt-pumpkins-in-progress.jpg",
-      alt: "A basket of handmade wool felt pumpkins beside cut felt circles, stuffing, thread and scissors on a cutting mat",
+      src: "/lookbook/felt-flower-crown-detail.jpg",
+      alt: "Close view of a wool felt flower headband, showing the shaped petals and hand-rolled centres",
       aspect: "4/3",
     },
     subcategories: ["HAIR_ACCESSORIES", "BROOCHES", "JEWELLERY", "ORNAMENTS"],
@@ -473,6 +472,17 @@ export function audienceLabel(value: string | undefined | null): string | null {
   return isAudienceKey(value) ? AUDIENCE_LABELS[value] : null;
 }
 
+/**
+ * Keys this family used to answer to. The crystal range was renamed when jade
+ * and other stones joined it — jade is not a crystal, and the label had started
+ * to describe the shelf inaccurately. Old bookmarks, shared links and anything
+ * already indexed still resolve here rather than falling back to the whole
+ * catalogue.
+ */
+const LEGACY_CATEGORY_KEYS: Record<string, CategoryKey> = {
+  CRYSTAL: "GEMSTONE",
+};
+
 export function isCategoryKey(value: string | undefined | null): value is CategoryKey {
   return !!value && (CATEGORY_KEYS as readonly string[]).includes(value);
 }
@@ -486,7 +496,9 @@ export function isSubcategoryKey(
 /** The family a key names, or null — use this rather than indexing CATEGORIES
  *  with an unvalidated search param. */
 export function getCategory(value: string | undefined | null): Category | null {
-  return isCategoryKey(value) ? CATEGORIES[value] : null;
+  if (isCategoryKey(value)) return CATEGORIES[value];
+  const renamed = value ? LEGACY_CATEGORY_KEYS[value] : undefined;
+  return renamed ? CATEGORIES[renamed] : null;
 }
 
 export function categoryLabel(value: string | undefined | null): string | null {

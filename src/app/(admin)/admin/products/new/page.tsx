@@ -306,7 +306,7 @@ export default function NewProductPage() {
               id="materials"
               value={form.materials}
               onChange={(e) => update("materials", e.target.value)}
-              placeholder="e.g. wool felt, wood, metal clip"
+              placeholder="e.g. 100% wool felt, satin ribbon, metal clip"
             />
           </div>
 

@@ -327,12 +327,14 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 gap-8 lg:gap-12">
             <div>
               <h3 className="eyebrow mb-4 !text-foreground">
-                Natural Materials
+                Materials
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Wool felt, wood, crystals, natural stone. I choose materials
-                that come from the earth and feel alive in your hands. No
-                plastic, no shortcuts.
+                Wool felt in two weights — 100% wool, and a 40% wool blend
+                where a colour or a shape calls for it. Natural crystal and
+                stone, batik and floral cotton, and glass I cut and solder
+                myself. I would rather name exactly what a piece is made from
+                than round it up.
               </p>
             </div>
             <div>
