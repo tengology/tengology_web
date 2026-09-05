@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Emit a self-contained server bundle so the Docker image only needs
+  // .next/standalone + .next/static + public, not the 1.2GB node_modules.
+  output: "standalone",
   turbopack: {
     root: __dirname,
     rules: {

@@ -217,8 +217,8 @@ async function main() {
 
     // ─── Cottage Garden collection ───────────────────────
     {
-      slug: "pink-hydrangea-felt-hair-clip",
-      title: "Pink Hydrangea Felt Hair Clip",
+      slug: "pink-sakura-felt-hair-clip",
+      title: "Pink Sakura Felt Hair Clip",
       shortDescription:
         "A petal-cluster hair clip in soft pink with a pearl centre — every piece slightly different, no two alike.",
       fullDescription:
@@ -237,12 +237,12 @@ async function main() {
       ],
     },
     {
-      slug: "pink-hydrangea-felt-brooch",
-      title: "Pink Hydrangea Felt Brooch",
+      slug: "pink-sakura-felt-brooch",
+      title: "Pink Sakura Felt Brooch",
       shortDescription:
         "A fuller petal-cluster brooch in soft pink with a pearl centre — every piece slightly different.",
       fullDescription:
-        "A fuller, slightly larger version of our pink hydrangea cluster, finished on a quality pin back. Hand-cut petals in soft blush gather around a single pearl, with green felt leaves tucked beneath.\n\n✦ Made entirely by hand · One of a kind\n\nPin to coats, scarves, lapels, or bags. Because every petal is shaped by hand, no two brooches are identical.\n\nHandmade in Oxford. Comes on a Tengology kraft tag.",
+        "A fuller, slightly larger version of our pink sakura blossom, finished on a quality pin back. Hand-cut petals in soft blush gather around a single pearl, with green felt leaves tucked beneath.\n\n✦ Made entirely by hand · One of a kind\n\nPin to coats, scarves, lapels, or bags. Because every petal is shaped by hand, no two brooches are identical.\n\nHandmade in Oxford. Comes on a Tengology kraft tag.",
       category: "BROOCHES",
       materials: "wool felt, faux pearl, metal brooch back",
       price: 14.0,
@@ -256,12 +256,12 @@ async function main() {
       ],
     },
     {
-      slug: "pink-hydrangea-felt-headband",
-      title: "Pink Hydrangea Felt Headband",
+      slug: "pink-sakura-felt-headband",
+      title: "Pink Sakura Felt Headband",
       shortDescription:
-        "A cream headband with a row of soft pink hydrangea blooms and green felt leaves.",
+        "A cream headband with a row of soft pink sakura blossoms and green felt leaves.",
       fullDescription:
-        "A row of hand-cut pink felt hydrangea blooms — each with a tiny pearl at its heart — sits across the top of an ivory satin-wrapped metal headband, threaded with delicate green leaves.\n\n✦ Made entirely by hand · One of a kind\n\nEvery petal is cut, layered, and stitched by hand. Expect small variations in the way each bloom sits — that's the mark of handmade.\n\nHandmade in Oxford.",
+        "A row of hand-cut pink felt sakura blooms — each with a tiny pearl at its heart — sits across the top of an ivory satin-wrapped metal headband, threaded with delicate green leaves.\n\n✦ Made entirely by hand · One of a kind\n\nEvery petal is cut, layered, and stitched by hand. Expect small variations in the way each bloom sits — that's the mark of handmade.\n\nHandmade in Oxford.",
       category: "HAIR_ACCESSORIES",
       materials: "wool felt, faux pearls, satin ribbon, metal headband",
       price: 22.0,
@@ -276,12 +276,12 @@ async function main() {
       ],
     },
     {
-      slug: "pink-hydrangea-pearl-claw-clip",
-      title: "Pink Hydrangea Pearl Claw Clip",
+      slug: "pink-sakura-pearl-claw-clip",
+      title: "Pink Sakura Pearl Claw Clip",
       shortDescription:
-        "A blush faux-fur claw clip with a hand-felted pink hydrangea and a dangling pearl chain.",
+        "A blush faux-fur claw clip with a hand-felted pink sakura and a dangling pearl chain.",
       fullDescription:
-        "A statement piece: a soft blush faux-fur claw clip topped with a pink hydrangea cluster and finished with a dangling pearl chain ending in a tiny bud.\n\n✦ Made entirely by hand · One of a kind\n\nHolds thick hair securely while staying lightweight. Beautiful as the only accessory in a soft up-do.\n\nHandmade in Oxford.",
+        "A statement piece: a soft blush faux-fur claw clip topped with a pink sakura blossom and finished with a dangling pearl chain ending in a tiny bud.\n\n✦ Made entirely by hand · One of a kind\n\nHolds thick hair securely while staying lightweight. Beautiful as the only accessory in a soft up-do.\n\nHandmade in Oxford.",
       category: "HAIR_ACCESSORIES",
       materials: "wool felt, faux fur, faux pearls, metal claw clip",
       price: 18.0,

@@ -3,6 +3,8 @@
 import { Trash2, RotateCw, ChevronUp, ChevronDown } from 'lucide-react';
 import { useDesignerStore } from '../store/designerStore';
 import { getCrystalOrThrow } from '@/lib/crystals/catalog';
+import { retailPriceCentsForCrystal } from '@/lib/crystals/retailPricing';
+import { formatCents } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 export function BeadInspector() {
@@ -17,6 +19,9 @@ export function BeadInspector() {
   const bead = design.beads[selected];
   if (!bead) return null;
   const crystal = getCrystalOrThrow(bead.crystalSlug);
+  // Priced off the same table as the palette, so the figure a shopper saw
+  // when they picked the bead is the figure they see once it is placed.
+  const priceCents = retailPriceCentsForCrystal(crystal, bead.sizeMm);
 
   function moveSelected(delta: number) {
     if (selected == null) return;
@@ -43,7 +48,12 @@ export function BeadInspector() {
           />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="truncate font-heading text-xl leading-none text-foreground">{crystal.name}</div>
+          <div className="flex items-baseline justify-between gap-2">
+            <div className="truncate font-heading text-xl leading-none text-foreground">{crystal.name}</div>
+            <div className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+              {formatCents(priceCents)}
+            </div>
+          </div>
           <div className="text-[11px] text-muted-foreground">
             Bead {selected + 1} of {design.beads.length} · {bead.sizeMm}mm
           </div>
