@@ -761,10 +761,21 @@ function SubmitButton({
           </>
         )}
       </Button>
-      <p className="mt-3 text-center text-xs text-muted-foreground">
+      {/*
+        The Consumer Contracts Regulations require the cancellation right — and
+        any exclusion from it — to be given before the order is placed, not
+        afterwards in a confirmation email. Saying it here is what makes the
+        personalised-goods exclusion relied on at all.
+      */}
+      <p className="mt-3 text-center text-xs leading-relaxed text-muted-foreground">
         By placing this order you agree to our{" "}
         <Link href="/pages/terms" className="underline hover:text-foreground">
           terms
+        </Link>
+        . You have 14 days from delivery to change your mind, except on
+        personalised and bespoke pieces &mdash; see{" "}
+        <Link href="/pages/returns" className="underline hover:text-foreground">
+          returns
         </Link>
         .
       </p>
