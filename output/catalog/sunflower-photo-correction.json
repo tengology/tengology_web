@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "sunflower-felt-hair-clip",
+    "images": [
+      {
+        "url": "/products/sunflower/sunflower-accessories-flatlay-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": true
+      },
+      {
+        "url": "/products/sunflower/sunflower-headband-and-clips-flatlay-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": false
+      },
+      {
+        "url": "/products/sunflower/sunflower-headband-clips-closeup-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": false
+      }
+    ]
+  },
+  {
+    "slug": "sunflower-felt-barrette-clip",
+    "images": [
+      {
+        "url": "/products/sunflower/sunflower-barrette-front-v2.jpeg",
+        "alt": "Front view of the sunflower felt barrette clip",
+        "primary": true
+      },
+      {
+        "url": "/products/sunflower/sunflower-barrette-back-v2.jpeg",
+        "alt": "Back view of the sunflower felt barrette clip showing the metal clasp",
+        "primary": false
+      },
+      {
+        "url": "/products/sunflower/sunflower-maker-table-close-v2.jpeg",
+        "alt": "Sunflower felt accessories on the studio worktable",
+        "primary": false
+      }
+    ]
+  },
+  {
+    "slug": "sunflower-felt-headband",
+    "images": [
+      {
+        "url": "/products/sunflower/sunflower-accessories-flatlay-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": true
+      },
+      {
+        "url": "/products/sunflower/sunflower-headband-and-clips-flatlay-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": false
+      },
+      {
+        "url": "/products/sunflower/sunflower-headband-clips-closeup-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": false
+      }
+    ]
+  },
+  {
+    "slug": "sunflower-felt-brooch",
+    "images": [
+      {
+        "url": "/products/sunflower/sunflower-brooch-front-v2.jpeg",
+        "alt": "Sunflower brooch on ivory fabric",
+        "primary": true
+      },
+      {
+        "url": "/products/sunflower/sunflower-brooch-back-v2.jpeg",
+        "alt": "Back of sunflower brooch showing its pin",
+        "primary": false
+      },
+      {
+        "url": "/products/sunflower/sunflower-accessories-flatlay-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": false
+      },
+      {
+        "url": "/products/sunflower/sunflower-headband-and-clips-flatlay-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": false
+      },
+      {
+        "url": "/products/sunflower/sunflower-headband-clips-closeup-v2.jpeg",
+        "alt": "Headband at the top, small hair clip at the lower left, and brooch at the lower right.",
+        "primary": false
+      }
+    ]
+  }
+]

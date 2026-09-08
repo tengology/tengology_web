@@ -70,6 +70,7 @@ They started as Christmas ornaments and have been bought just as often as bag ch
 • Made in Oxford
 • Decorative — not a toy, and not food, however convincing`,
       stockCount: 4,
+      price: 8,
       isPublished: true,
     },
   });
@@ -107,6 +108,7 @@ Built on a padded, fabric-covered alice band, so it sits comfortably through a p
 • Approx. 14cm across the crown
 • Made in Oxford`,
       stockCount: 2,
+      price: 18,
       isPublished: true,
     },
   });

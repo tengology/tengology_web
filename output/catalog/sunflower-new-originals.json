@@ -1,0 +1,30 @@
+[
+  {
+    "source": "/Users/sooktengvun/Downloads/listing/IMG_6913.HEIC",
+    "sourceSha256": "a6798aa8085f08b69783fc5f892b91dfa51cbfcd3cfc84ff17842629f67b43f8",
+    "url": "/products/september-2026/img_6913.webp",
+    "uploadedSha256": "dd6c65f0705889c742c216a3db1dca1e8ab90616ae5c95e29e3b7a4a30294aa4",
+    "processing": "Original photo, orientation and resize plus WebP compression only; no AI"
+  },
+  {
+    "source": "/Users/sooktengvun/Downloads/listing/IMG_6920.HEIC",
+    "sourceSha256": "2e4601b8c1fd1bc74bd39860ed33fd10a7175371ee8373baf5a7d2ea0d1caf14",
+    "url": "/products/september-2026/img_6920.webp",
+    "uploadedSha256": "3b0ef874714959f920aed34d267f4dc43df72cf72c29c43b2b76fe4448c4a541",
+    "processing": "Original photo, orientation and resize plus WebP compression only; no AI"
+  },
+  {
+    "source": "/Users/sooktengvun/Downloads/listing/IMG_6921.HEIC",
+    "sourceSha256": "6f6b4d7a3bd74cd8fceba2e6dc89868a3436df814a751229997825b13c52ab02",
+    "url": "/products/september-2026/img_6921.webp",
+    "uploadedSha256": "fee2ab7bb2cfcae9903f719b2395aef43abbfb01e58e52ba1329fefa0fefe4fa",
+    "processing": "Original photo, orientation and resize plus WebP compression only; no AI"
+  },
+  {
+    "source": "/Users/sooktengvun/Downloads/listing/IMG_6929.HEIC",
+    "sourceSha256": "8bab913c6db145cf32a68e60283e22a1efd1912c86b3400254f146b46c44e7c4",
+    "url": "/products/september-2026/img_6929.webp",
+    "uploadedSha256": "4544661fabf2bcaae675a9c0cd0dcea3cd2a9af0717407a72c80494014eb2ce9",
+    "processing": "Original photo, orientation and resize plus WebP compression only; no AI"
+  }
+]

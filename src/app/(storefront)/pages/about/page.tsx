@@ -3,9 +3,9 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "My Story",
   description:
-    "The story behind Tengology — from wool felt to crystals, every piece is curated by hand in England with intention and care.",
+    "The story behind Tengology — from wool felt to gemstones, every piece is curated by hand in England with intention and care.",
 };
 
 export default function AboutPage() {
@@ -14,8 +14,8 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative bg-muted overflow-hidden">
         <Image
-          src="/Gemini_Generated_Image_padxvnpadxvnpadx.png"
-          alt="Layered natural textures — wool felt, crystal, batik fabric, and stained glass"
+          src="/lookbook/story-felt-rolls-landscape.webp"
+          alt="Colourful felt rolls tied with cream cotton ribbons, photographed in the studio"
           fill
           sizes="100vw"
           priority
@@ -23,7 +23,7 @@ export default function AboutPage() {
         />
         <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-20 lg:py-32 text-center">
           <p className="eyebrow mb-5">
-            The Story
+            My Story
           </p>
           <h1 className="font-heading text-6xl leading-[0.92] sm:text-7xl lg:text-8xl">
             Where texture
@@ -67,8 +67,8 @@ export default function AboutPage() {
               </h2>
               <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
-                  src="/lookbook/felt-flower-headband-portrait.jpg"
-                  alt="A girl in a garden wearing a handmade wool felt flower headband"
+                  src="/lookbook/story-felt-rolls-portrait.webp"
+                  alt="Purple, turquoise, green, pink and peach felt rolls tied with cotton ribbons"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
@@ -105,7 +105,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Chapter 2: Crystals */}
+      {/* Chapter 2: Gemstones */}
       <section className="border-t bg-muted/30">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
@@ -114,16 +114,36 @@ export default function AboutPage() {
                 Chapter Two
               </p>
               <h2 className="font-heading text-4xl leading-[0.95] mb-6 lg:text-5xl">
-                Discovering crystals
+                Discovering gemstones
               </h2>
               <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
-                  src="/Gemini_Generated_Image_6rl2h86rl2h86rl2.png"
-                  alt="Amethyst geode with deep purple crystal formations and scattered crystal beads on linen"
+                  src="/lookbook/story-crystal-planter-purple.webp"
+                  alt="Purple crystals in a tiny decorated planter, photographed among garden daisies"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  <Image
+                    src="/lookbook/story-crystal-planter-green.webp"
+                    alt="Green crystals in a miniature planter on a wooden display stand"
+                    fill
+                    sizes="(max-width: 1024px) 45vw, 160px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  <Image
+                    src="/lookbook/story-crystal-planter-orange.webp"
+                    alt="Orange crystals in a miniature planter surrounded by garden flowers"
+                    fill
+                    sizes="(max-width: 1024px) 45vw, 160px"
+                    className="object-cover"
+                  />
+                </div>
               </div>
             </div>
             <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">

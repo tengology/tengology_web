@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Reveal } from "@/components/storefront/Reveal";
 import { SectionHeading } from "@/components/storefront/SectionHeading";
 import { CategoryHero } from "@/components/storefront/CategoryHero";
+import { CHRISTMAS_COLLECTION_FILTER } from "@/lib/christmas-collection";
 import { CategoryGallery } from "@/components/storefront/CategoryGallery";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/storefront/ProductCard";
@@ -104,6 +105,8 @@ export default async function ShopPage({
   const family = getCategory(params.category);
   const subcategory = isSubcategoryKey(params.sub) ? params.sub : undefined;
   const collection = params.collection;
+  const isFeltCollection = family?.key === "FELT" && Boolean(collection);
+  const isChristmasCollection = family?.key === "FELT" && collection === "Christmas";
   const intention = params.intention;
   const audience = isAudienceKey(params.audience) ? params.audience : undefined;
   const sortBy = params.sort || "newest";
@@ -129,7 +132,9 @@ export default async function ShopPage({
       isPublished: true,
       ...(family ? { category: family.key } : {}),
       ...(subcategory ? { subcategory } : {}),
-      ...(collection ? { collection } : {}),
+      ...(isChristmasCollection
+        ? { AND: [CHRISTMAS_COLLECTION_FILTER] }
+        : collection ? { collection } : {}),
       ...(intention ? { intention } : {}),
       ...(audience ? { audience } : {}),
       ...(query
@@ -147,7 +152,7 @@ export default async function ShopPage({
     if (family) {
       // Counted across the whole family, not the current filter, so narrowing to
       // one type never hides the others.
-      const [rows, grouped, groupedCollections] = await Promise.all([
+      const [rows, grouped, groupedCollections, christmasCount] = await Promise.all([
         prisma.product.findMany({
           where,
           include: { images: { where: { isPrimary: true }, take: 1 } },
@@ -161,6 +166,9 @@ export default async function ShopPage({
           by: ["collection"],
           where: { isPublished: true, category: family.key },
         }),
+        family.key === "FELT"
+          ? prisma.product.count({ where: { isPublished: true, category: "FELT", ...CHRISTMAS_COLLECTION_FILTER } })
+          : Promise.resolve(0),
       ]);
       products = rows;
       const present = new Set(grouped.map((g) => g.subcategory));
@@ -170,6 +178,7 @@ export default async function ShopPage({
           .map((g) => g.collection)
           .filter((name): name is string => Boolean(name))
       );
+      if (christmasCount > 0) stockedCollections.add("Christmas");
     } else {
       products = await prisma.product.findMany({
         where,
@@ -257,13 +266,8 @@ export default async function ShopPage({
 
   return (
     <div>
-      {/* Head of the page. Whenever a family is in view it keeps its hero —
-          copy on the left, a portrait of the craft on the right. Filtering
-          within a family narrows the grid below; it does not put you somewhere
-          else, so the head of the page has to stay put. Only a view with no
-          family at all (the whole catalogue, or a search) opens on a plain
-          heading, because there is no one craft to introduce. */}
-      {family ? (
+      {/* Felt collections open directly on their own name and products. */}
+      {isFeltCollection ? null : family ? (
         <CategoryHero category={family} />
       ) : (
         <div className="border-b">
@@ -315,7 +319,12 @@ export default async function ShopPage({
           >
             &larr; All {family.label}
           </Link>
-          {openCollection?.image && (
+          {isFeltCollection && (
+            <h1 className="mt-6 font-heading text-5xl leading-[0.95] lg:text-6xl">
+              {collection}
+            </h1>
+          )}
+          {openCollection?.image && family.key !== "FELT" && (
             <div className="relative mt-6 aspect-[2/1] w-full overflow-hidden bg-muted">
               <Image
                 src={openCollection.image.src}
@@ -359,7 +368,9 @@ export default async function ShopPage({
             <div />
           ) : (
             <div>
-              <h2 className="font-heading text-3xl font-light lg:text-4xl">{title}</h2>
+              {!isFeltCollection && (
+                <h2 className="font-heading text-3xl font-light lg:text-4xl">{title}</h2>
+              )}
               {!isAllView && (
                 <p className="mt-1 text-sm text-muted-foreground">
                   {products.length} {products.length === 1 ? "product" : "products"}

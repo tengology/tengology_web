@@ -96,6 +96,7 @@ export function ProductGallery({
             priority
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
+            style={{ objectPosition: current.url === "/products/september-2026/img_6920.webp" ? "center bottom" : undefined }}
           />
         </button>
 
@@ -147,6 +148,7 @@ export function ProductGallery({
                 fill
                 sizes="(max-width: 1024px) 25vw, 12vw"
                 className="object-cover"
+                style={{ objectPosition: img.url === "/products/september-2026/img_6920.webp" ? "center bottom" : undefined }}
               />
             </button>
           ))}

@@ -774,6 +774,11 @@ async function main() {
       isFeatured: true,
       collection: "Deer Ears",
       images: [
+        { url: "/products/woodland/woodland-antler-front.webp", altText: "Woodland Antler Headband with felt deer ears, antlers and toadstools on a green background" },
+        { url: "/products/woodland/woodland-antler-detail.webp", altText: "Close-up of the felt toadstool, deer ear, flowers and antler" },
+        { url: "/products/woodland/woodland-antler-held.webp", altText: "Woodland Antler Headband held in one hand to show its size and shape" },
+        { url: "/products/woodland/woodland-antler-back.webp", altText: "Back of the headband showing white-spotted felt deer ears and antlers" },
+        { url: "/products/woodland/woodland-antler-workbench.webp", altText: "Woodland Antler Headbands and felt pieces on the maker's workbench" },
         { url: "/products/woodland/woodland-antler-headband-hero.jpg", altText: "Woodland antler headband with toadstools, daisies, and autumn leaves" },
       ],
     },

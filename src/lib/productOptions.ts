@@ -11,6 +11,8 @@
  * `InitialLetterPicker` and lib/birthstones.
  */
 
+import septemberChoices from "./september-2026-product-options.json";
+
 export interface ProductChoice {
   /** Shown on the bag line, e.g. "Type" or "Finish". */
   label: string;
@@ -27,6 +29,7 @@ export interface ProductChoice {
 
 /** Keyed by product slug. A slug absent here simply has no choice to make. */
 export const PRODUCT_CHOICES: Record<string, ProductChoice> = {
+  ...septemberChoices,
   "nigiri-felt-ornament": {
     label: "Topping",
     hint: "Four to choose from — or collect the set.",

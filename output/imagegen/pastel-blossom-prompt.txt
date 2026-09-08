@@ -1,0 +1,7 @@
+Tool: built-in image_gen. User explicitly requested an AI-generated product-only main image for this listing.
+Source: Downloads/listing/IMG_3796.HEIC, as attached by the user.
+Generated asset: public/products/ai-assisted/pastel-blossom-headband-product.webp
+
+Use case: precise-object-edit. Input image 1 is the edit target and exact product reference. Create a square realistic e-commerce product photograph of ONLY the very same handmade felt headband in this photo, removed from the child and displayed alone on a clean warm ivory surface. Preserve the actual design faithfully: large pale blush pink layered rounded felt petals, dense pale yellow textured looped centre, pale sage and brighter green pointed leaves, small pastel mint/lilac/peach buds partly behind the flower, and a plain rose-pink ribbon-covered curved headband. Preserve felt fibres, handmade edges, proportions and arrangement of the visible flowers and leaves. Show the complete curved band naturally resting on the surface, flower facing camera in a three-quarter product view, centered with generous margins and soft daylight shadows. No people, hands, skin, hair, mannequin, props, lettering, logos, or additional flowers. Do not beautify or redesign the product. Reconstruct only the obscured plain band needed to show it alone.
+
+Status: User rejected the generated image and requested the original little-girl photo remain the main image. Generated image is unused.

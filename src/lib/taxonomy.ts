@@ -65,7 +65,7 @@ export type CategoryCollection = {
    * where there is no shot worth showing yet — the page reads fine without
    * one, so a collection is never blocked on photography.
    */
-  image?: { src: string; alt: string };
+  image?: { src: string; alt: string; aspectRatio?: string };
 };
 
 export type Category = {
@@ -153,7 +153,14 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
     subcategories: ["HAIR_ACCESSORIES", "BROOCHES", "JEWELLERY", "ORNAMENTS"],
     collections: [
       {
+        name: "Christmas",
+        tagline: "Little handmade joys for the festive season",
+        detail: "Festive headbands, antler hair clips, holly and berry accessories, and playful felt ornaments — handmade pieces for Christmas celebrations, thoughtful gifts and the tree.",
+        tags: ["Christmas", "Headbands", "Hair clips", "Ornaments"],
+      },
+      {
         name: "Strawberry",
+        image: { src: "/products/strawberries/flat-lay-top.jpg", alt: "Strawberry felt headbands, hair clips and brooches arranged together", aspectRatio: "3024 / 4032" },
         tagline: "Summer, cut from wool",
         detail:
           "Ripe berries with hand-stitched seeds, paired with cream blossom and sage leaves. The range runs from a single clip to a full crimson headband.",
@@ -161,6 +168,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Sunflower",
+        image: { src: "/products/sunflower/sunflower-headband-clips-linen-v2.jpeg", alt: "Sunflower felt headband, small hair clip and brooch on ivory linen", aspectRatio: "1536 / 2048" },
         tagline: "Tall, bright, turned to the light",
         detail:
           "Golden petals layered in two rings around a textured brown centre, on a chocolate felt base. The most photographed piece in the studio.",
@@ -175,6 +183,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Bee",
+        image: { src: "/products/september-2026/img_3513.webp", alt: "Bumblebee flower accessories and headband arranged together", aspectRatio: "1400 / 1050" },
         tagline: "Stripes, wings, and a bit of mischief",
         detail:
           "Hand-stitched bees in black and gold with soft organza wings, made to sit among the blooms in the rest of the range.",
@@ -182,6 +191,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Poppy",
+        image: { src: "/products/festive/poppy-set-group.jpg", alt: "Red felt poppy headband, brooch and hair clip on wooden trays", aspectRatio: "4032 / 3024" },
         tagline: "For remembrance",
         detail:
           "Red wool felt petals layered over a black fringed centre, finished with a green seed head worked in gold thread. Quiet pieces for Remembrance Sunday.",
@@ -203,6 +213,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Reindeer Ears",
+        image: { src: "/products/original-product-photos/antler-headbands-approved.webp", alt: "Red and blush felt antler headbands", aspectRatio: "1350 / 1800" },
         tagline: "For the Christmas photograph",
         detail:
           "Brown felt antlers and ears on a red band, dressed with roses, holly berries, and pom-pom snowballs. Built for nativities and office parties.",
@@ -210,6 +221,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Deer Ears",
+        image: { src: "/products/original-product-photos/antler-headbands-approved.webp", alt: "Blush and red felt antler headbands", aspectRatio: "1350 / 1800" },
         tagline: "Antlers, softened in wool",
         detail:
           "The same antler silhouette without the tinsel — bare or wreathed in blush roses and sage leaves, for wearing well past December.",
@@ -217,6 +229,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Easter Rabbit Ears",
+        image: { src: "/products/spring-bouquet/bunny-ear-group.jpg", alt: "Floral felt rabbit ear accessories on a wooden tray", aspectRatio: "3024 / 4032" },
         tagline: "Ears up, blooms on",
         detail:
           "Long felt ears lined in blush, set into a cluster of spring flowers. Made as a headband and a clip so it suits any hair.",
@@ -224,6 +237,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Flower Headband",
+        image: { src: "/lookbook/felt-flower-headbands-group.jpg", alt: "Colourful felt flower headbands arranged together", aspectRatio: "2400 / 1800" },
         tagline: "A whole bouquet, worn",
         detail:
           "Mixed-bloom headbands that aren't any one flower — hydrangea, anemone, dahlia, and full spring bouquets, built on satin-wrapped bands.",
@@ -231,6 +245,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Flower Hairclip",
+        image: { src: "/products/cottage-garden/hydrangea-clip-group.jpg", alt: "Pink felt flower hair accessories on a wooden tray", aspectRatio: "3024 / 4032" },
         tagline: "One bloom, clipped in",
         detail:
           "Clips, claw clips, barrettes, and scrunchies carrying mixed florals — the pieces to reach for when a headband is too much.",
@@ -238,6 +253,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Flower Brooch",
+        image: { src: "/products/cottage-garden/hydrangea-brooch-group.jpg", alt: "Pink felt flower brooches arranged on a wooden tray", aspectRatio: "3024 / 4032" },
         tagline: "A garden on the lapel",
         detail:
           "Mixed-bloom brooches backed with a pin, sized to move between a coat, a blazer, and the strap of a bag.",
@@ -245,6 +261,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Forget-me-not",
+        image: { src: "/products/cottage-garden/forget-me-not-barrette-group.jpg", alt: "Blue forget-me-not felt accessories arranged together", aspectRatio: "3024 / 4032" },
         tagline: "The quietest blue there is",
         detail:
           "Tiny five-petal blooms in cornflower blue with yellow centres, massed in clusters because one is never enough.",
@@ -252,6 +269,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Daffodil",
+        image: { src: "/products/cottage-garden/daffodil-clip-group.jpg", alt: "Yellow and cream felt daffodil clips on display cards", aspectRatio: "3024 / 4032" },
         tagline: "The first yellow of the year",
         detail:
           "Trumpet centres set into six-petal stars, in golden yellow and pale cream. The piece that opens the spring range.",
@@ -259,6 +277,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Unicorn",
+        image: { src: "/products/unicorn/unicorn-crown-pair-hero.jpg", alt: "Two felt unicorn flower crown headbands", aspectRatio: "1200 / 1200" },
         tagline: "Horn, ears, and a crown of blooms",
         detail:
           "A coiled cream horn between glitter-lined ears, wreathed in a full flower crown. Made in silver and in gold.",
@@ -277,6 +296,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Berry",
+        image: { src: "/products/september-2026/img_2979.webp", alt: "Golden berry felt bow accessory with autumn leaves", aspectRatio: "1400 / 1050" },
         tagline: "Hand-rolled, clustered on the branch",
         detail:
           "Beads of felt rolled between the palms until they hold, then wired into clusters with leaves — festive reds through to autumn russets.",
@@ -284,6 +304,7 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       },
       {
         name: "Pumpkin",
+        image: { src: "/products/september-2026/img_9051.webp", alt: "Colourful pumpkin felt brooches arranged on cards", aspectRatio: "1400 / 1050" },
         tagline: "Autumn, in wool",
         detail:
           "Ribbed felt pumpkins with curled stems, nestled among cream blooms and turning leaves.",

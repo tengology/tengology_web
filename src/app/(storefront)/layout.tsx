@@ -7,10 +7,10 @@ export default function StorefrontLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="watercolour-paper flex min-h-screen flex-1 flex-col">
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 }

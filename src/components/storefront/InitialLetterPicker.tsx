@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart";
@@ -224,6 +225,17 @@ export function InitialLetterPicker({ productId, title, price, inStock }: Props)
           <p className="text-xs text-muted-foreground">
             Both halves are made to order — pick a month and a letter. Ordering
             several? Each one is strung and boxed separately.
+          </p>
+        )}
+        {ready && inStock && (
+          <p className="text-xs text-muted-foreground">
+            Strung with your initial, so it cannot be returned or exchanged once
+            made. If it arrives faulty or not as described, that is still mine to
+            put right &mdash; see{" "}
+            <Link href="/pages/returns" className="link-underline text-foreground">
+              returns
+            </Link>
+            .
           </p>
         )}
       </div>

@@ -19,8 +19,8 @@ export const revalidate = 60;
  * later needs nothing but a new `aspect`.
  */
 const makerPhoto = {
-  src: "/lookbook/felt-sunflower-workbench.jpg",
-  alt: "The Tengology workbench mid-make — hand-cut wool felt sunflowers and green leaves laid out on a cutting mat, beside pliers, scissors, a glue gun and the cutting machine",
+  src: "/lookbook/maker-blue-felt-flowers.webp",
+  alt: "The Tengology maker stitching blue felt flowers at the studio workbench, with thread, scissors and flower petals on a green cutting mat",
   aspect: "3/4",
 };
 
@@ -58,7 +58,7 @@ export default async function HomePage() {
     <div>
       {/* Hero — split so the portrait studio shot reads at full height
           instead of being cropped into a letterbox. */}
-      <section className="border-b">
+      <section className="xuan-paper border-b">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-10 py-14 lg:grid-cols-12 lg:gap-16 lg:py-20">
             <div className="lg:col-span-6">
@@ -103,28 +103,30 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Portrait studio shot */}
-            <div className="lg:col-span-6">
-              <figure className="relative aspect-[4/5] overflow-hidden bg-muted lg:aspect-[3/4]">
-                <Image
-                  src="/products/sunflower/sunflower-maker-table-wide-v2.jpeg"
-                  alt="Handmade felt sunflower headbands, brooches and clips laid out on the studio cutting mat"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover motion-safe:animate-[hero-zoom_14s_var(--ease-soft)_forwards]"
-                />
+            {/* A loose photographic print on the studio's paper surface. */}
+            <div className="px-2 pb-3 lg:col-span-6 lg:px-4">
+              <figure className="polaroid-photo">
+                <div className="relative aspect-[4/5] overflow-hidden bg-muted lg:aspect-[3/4]">
+                  <Image
+                    src="/products/sunflower/sunflower-maker-table-wide-v2.jpeg"
+                    alt="Handmade felt sunflower headbands, brooches and clips laid out on the studio cutting mat"
+                    fill
+                    preload
+                    sizes="(max-width: 1024px) 90vw, 45vw"
+                    className="object-cover"
+                  />
+                </div>
+                <figcaption className="px-2 pb-2 pt-5 text-center font-heading text-xl italic text-muted-foreground">
+                  A little sunshine, fresh from the workbench.
+                </figcaption>
               </figure>
-              <figcaption className="eyebrow mt-3">
-                The studio table &mdash; Oxford
-              </figcaption>
             </div>
           </div>
         </div>
       </section>
 
       {/* Collections */}
-      <section className="border-b bg-muted/40">
+      <section className="border-b bg-white">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
         <SectionHeading index="01" eyebrow="Shop by craft" title="Collections" />
         <div className="mt-12 grid gap-4 sm:grid-cols-3 lg:gap-6">
@@ -171,43 +173,46 @@ export default async function HomePage() {
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-          <SectionHeading
-            index="02"
-            eyebrow="From the studio"
-            title="Featured pieces"
-            action={{ href: "/shop", label: "View all" }}
-          />
-          <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
-            {featuredProducts.map(
-              (
-                product: {
-                  id: string;
-                  slug: string;
-                  title: string;
-                  price: number;
-                  compareAtPrice?: number | null;
-                  images: { url: string }[];
-                },
-                i: number
-              ) => (
-                <Reveal key={product.id} delay={(i % 4) * 70}>
-                  <ProductCard
-                    slug={product.slug}
-                    title={product.title}
-                    price={product.price}
-                    compareAtPrice={product.compareAtPrice}
-                    image={product.images[0]?.url}
-                  />
-                </Reveal>
-              )
-            )}
+        <section className="bg-white">
+          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+            <SectionHeading
+              index="02"
+              eyebrow="From the studio"
+              title="Featured pieces"
+              action={{ href: "/shop", label: "View all" }}
+            />
+            <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+              {featuredProducts.map(
+                (
+                  product: {
+                    id: string;
+                    slug: string;
+                    title: string;
+                    price: number;
+                    compareAtPrice?: number | null;
+                    images: { url: string }[];
+                  },
+                  i: number
+                ) => (
+                  <Reveal key={product.id} delay={(i % 4) * 70}>
+                    <ProductCard
+                      slug={product.slug}
+                      title={product.title}
+                      price={product.price}
+                      compareAtPrice={product.compareAtPrice}
+                      image={product.images[0]?.url}
+                    />
+                  </Reveal>
+                )
+              )}
+            </div>
           </div>
         </section>
       )}
 
+
       {/* Story teaser */}
-      <section className="section-inverted">
+      <section className="kraft-paper">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
         <SectionHeading
           index="03"
@@ -238,16 +243,16 @@ export default async function HomePage() {
           </Reveal>
           <Reveal delay={120}>
             <div>
-              <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">
+              <p className="max-w-lg text-xl font-medium leading-[1.8] text-foreground">
                 From carefully chosen materials to the finishing touches, each
                 Tengology creation is made by hand with attention to every
                 detail.
               </p>
               <Link
                 href="/pages/about"
-                className="eyebrow mt-8 inline-flex border border-foreground px-8 py-4 !text-foreground transition-colors hover:bg-foreground hover:!text-background"
+                className="mt-8 inline-flex border border-foreground px-8 py-4 text-base font-medium !text-foreground transition-colors hover:bg-foreground hover:!text-background"
               >
-                Our story
+                My story
               </Link>
             </div>
           </Reveal>

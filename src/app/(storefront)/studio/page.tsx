@@ -203,7 +203,7 @@ export default function StudioPage() {
               href="/pages/about"
               className="eyebrow inline-flex border px-8 py-4 transition-colors hover:border-foreground hover:!text-foreground"
             >
-              Our story
+              My story
             </Link>
           </div>
         </div>

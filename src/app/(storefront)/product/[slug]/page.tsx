@@ -1,4 +1,5 @@
 import { ProductGallery } from "@/components/storefront/ProductGallery";
+import { ProductBackLink } from "@/components/storefront/ProductBackLink";
 import { ProductFocusProvider } from "@/components/storefront/ProductFocusContext";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
@@ -59,6 +60,9 @@ export default async function ProductPage({
 
   if (!product) notFound();
 
+  const backParams = new URLSearchParams({ category: product.category });
+  if (product.collection) backParams.set("collection", product.collection);
+
   const price = product.price;
   const visibleTags = product.tags.filter((pt) => !isFunctionalTag(pt.tag.slug));
   /** A single made-to-order choice, for listings that merged several pieces. */
@@ -76,6 +80,7 @@ export default async function ProductPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+      <ProductBackLink href={`/shop?${backParams.toString()}`} />
       {/* The provider spans both columns so the options can drive the gallery. */}
       <ProductFocusProvider>
       <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">

@@ -1,0 +1,134 @@
+{
+  "holly-berry-bow-felt-headband": {
+    "label": "Colour",
+    "hint": "Price is for one piece in your chosen colour.",
+    "options": [
+      {
+        "value": "Cream and red",
+        "image": "/products/september-2026/img_2031.webp"
+      },
+      {
+        "value": "Red and white",
+        "image": "/products/september-2026/img_2035.webp"
+      }
+    ]
+  },
+  "pumpkin-patch-faux-fur-claw-clip": {
+    "label": "Colour",
+    "hint": "Price is for one piece in your chosen colour.",
+    "options": [
+      {
+        "value": "Cream",
+        "image": "/products/september-2026/img_8858.webp"
+      },
+      {
+        "value": "Taupe",
+        "image": "/products/september-2026/img_8858.webp"
+      }
+    ]
+  },
+  "pumpkin-felt-hair-clip": {
+    "label": "Colour",
+    "hint": "Price is for one piece in your chosen colour.",
+    "options": [
+      {
+        "value": "Orange",
+        "image": "/products/september-2026/img_8859.webp"
+      },
+      {
+        "value": "Peach",
+        "image": "/products/september-2026/img_8859.webp"
+      },
+      {
+        "value": "Cream",
+        "image": "/products/september-2026/img_8859.webp"
+      },
+      {
+        "value": "Mint",
+        "image": "/products/september-2026/img_8859.webp"
+      },
+      {
+        "value": "Blush",
+        "image": "/products/september-2026/img_8859.webp"
+      },
+      {
+        "value": "Lilac",
+        "image": "/products/september-2026/img_8859.webp"
+      }
+    ]
+  },
+  "strawberry-blossom-faux-fur-claw-clip": {
+    "label": "Colour",
+    "hint": "Price is for one piece in your chosen colour.",
+    "options": [
+      {
+        "value": "Cream",
+        "image": "/products/september-2026/img_3004.webp"
+      },
+      {
+        "value": "Black",
+        "image": "/products/september-2026/849e4664-1bc8-44cd-84b9-5a7cb79e433e.webp"
+      }
+    ]
+  },
+  "hetian-jade-bead-bracelet": {
+    "label": "Colour",
+    "hint": "Price is for one piece in your chosen colour.",
+    "options": [
+      {
+        "value": "Pale green",
+        "image": "/products/september-2026/img_8956.webp"
+      },
+      {
+        "value": "Moss green",
+        "image": "/products/september-2026/img_8956.webp"
+      },
+      {
+        "value": "Deep green",
+        "image": "/products/september-2026/img_8956.webp"
+      }
+    ]
+  },
+  "hetian-jade-beaded-ring": {
+    "label": "Colour",
+    "hint": "Price is for one piece in your chosen colour.",
+    "options": [
+      {
+        "value": "Green with black",
+        "image": "/products/september-2026/img_8962.webp"
+      },
+      {
+        "value": "Green with brown",
+        "image": "/products/september-2026/img_8962.webp"
+      },
+      {
+        "value": "Green with white",
+        "image": "/products/september-2026/img_8962.webp"
+      },
+      {
+        "value": "Green with red",
+        "image": "/products/september-2026/img_8962.webp"
+      },
+      {
+        "value": "Pale with blue-green",
+        "image": "/products/september-2026/img_8962.webp"
+      },
+      {
+        "value": "Pale with orange",
+        "image": "/products/september-2026/img_8962.webp"
+      },
+      {
+        "value": "Pale with dark blue",
+        "image": "/products/september-2026/img_8962.webp"
+      },
+      {
+        "value": "Pale with black",
+        "image": "/products/september-2026/img_8962.webp"
+      },
+      {
+        "value": "Pale with brown",
+        "image": "/products/september-2026/img_8962.webp"
+      }
+    ]
+  }
+}

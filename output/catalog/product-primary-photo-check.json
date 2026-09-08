@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "autumn-pumpkin-felt-headband",
+    "expected": "/products/september-2026/img_8814.webp",
+    "firstProductImage": "/_next/image?url=/products/september-2026/img_8814.webp&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "pumpkin-cluster-felt-brooch",
+    "expected": "/products/september-2026/img_9051.webp",
+    "firstProductImage": "/_next/image?url=/products/september-2026/img_9051.webp&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "bumblebee-blossom-felt-brooch",
+    "expected": "/products/september-2026/img_3361.webp",
+    "firstProductImage": "/_next/image?url=/products/september-2026/img_3361.webp&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "blueberry-faux-fur-claw-clip",
+    "expected": "/products/september-2026/img_8438.webp",
+    "firstProductImage": "/_next/image?url=/products/september-2026/img_8438.webp&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "olive-hetian-jade-bracelet",
+    "expected": "/products/september-2026/img_9546.webp",
+    "firstProductImage": "/_next/image?url=/products/september-2026/img_9546.webp&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "forest-hetian-jade-bracelet",
+    "expected": "/products/september-2026/img_9546.webp",
+    "firstProductImage": "/_next/image?url=/products/september-2026/img_9546.webp&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "hetian-jade-halo-ring",
+    "expected": "/products/september-2026/img_8958.webp",
+    "firstProductImage": "/_next/image?url=/products/september-2026/img_8958.webp&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "strawberry-blossom-felt-brooch",
+    "expected": "/products/september-2026/img_2924.webp",
+    "firstProductImage": "/_next/image?url=/products/september-2026/img_2924.webp&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "strawberry-cluster-hair-pin",
+    "expected": "/products/strawberries/flat-lay-angle-1.jpg",
+    "firstProductImage": "/_next/image?url=/products/strawberries/flat-lay-angle-1.jpg&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "strawberry-felt-headband-crimson",
+    "expected": "/products/strawberries/closeup-1.jpg",
+    "firstProductImage": "/_next/image?url=/products/strawberries/closeup-1.jpg&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "remembrance-poppy-felt-hair-clip",
+    "expected": "/products/festive/poppy-set-group.jpg",
+    "firstProductImage": "/_next/image?url=/products/festive/poppy-set-group.jpg&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "sunflower-felt-headband",
+    "expected": "/products/sunflower/sunflower-headband-original-v1.jpeg",
+    "firstProductImage": "/_next/image?url=/products/sunflower/sunflower-headband-original-v1.jpeg&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "sunflower-felt-brooch",
+    "expected": "/products/sunflower/sunflower-brooch-flat-original-v1.jpeg",
+    "firstProductImage": "/_next/image?url=/products/sunflower/sunflower-brooch-flat-original-v1.jpeg&amp;w=3840&amp;q=75",
+    "passed": true
+  },
+  {
+    "slug": "sunflower-felt-barrette-clip",
+    "expected": "/products/sunflower/sunflower-accessories-flatlay-v2.jpeg",
+    "firstProductImage": "/_next/image?url=/products/sunflower/sunflower-accessories-flatlay-v2.jpeg&amp;w=3840&amp;q=75",
+    "passed": true
+  }
+]

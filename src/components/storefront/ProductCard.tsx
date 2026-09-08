@@ -32,7 +32,10 @@ export function ProductCard({
             fill
             sizes="(max-width: 768px) 50vw, 25vw"
             className="object-cover transition-transform duration-700 motion-safe:group-hover:scale-105"
-            style={{ transitionTimingFunction: "var(--ease-soft)" }}
+            style={{
+              transitionTimingFunction: "var(--ease-soft)",
+              objectPosition: image === "/products/september-2026/img_6920.webp" ? "center bottom" : undefined,
+            }}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-muted-foreground/30">
@@ -41,7 +44,7 @@ export function ProductCard({
         )}
       </div>
       <div className="mt-4 flex items-baseline justify-between gap-3 border-t pt-3">
-        <h3 className="font-heading text-lg leading-tight">{title}</h3>
+        <h3 className="font-sans text-base font-medium leading-snug">{title}</h3>
         <div className="flex shrink-0 items-baseline gap-2">
           {compareAtPrice && (
             <span className="text-xs text-muted-foreground line-through">

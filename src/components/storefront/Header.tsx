@@ -205,7 +205,7 @@ export function Header() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "link-underline eyebrow transition-colors hover:text-foreground",
+                        "link-underline text-[13px] font-medium transition-colors hover:text-foreground",
                         active && "text-foreground"
                       )}
                     >

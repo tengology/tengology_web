@@ -147,7 +147,7 @@ const listings: Listing[] = [
     subcategory: "HAIR_ACCESSORIES",
     materials:
       "wool felt, glitter felt, wool pom-poms, glitter beads, satin-wrapped metal headband",
-    price: 28.0,
+    price: 18.0,
     stockCount: 1,
     isPublished: true,
     isFeatured: false,
@@ -195,7 +195,7 @@ const listings: Listing[] = [
     subcategory: "HAIR_ACCESSORIES",
     materials:
       "wool felt, glitter felt, wool pom-poms, glitter beads, satin-wrapped metal headband",
-    price: 28.0,
+    price: 18.0,
     stockCount: 1,
     isPublished: true,
     isFeatured: false,

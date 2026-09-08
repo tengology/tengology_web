@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ProcessVideo } from "./ProcessVideo";
-import type { Category } from "@/lib/taxonomy";
+import type { Category, CategoryCollection } from "@/lib/taxonomy";
 
 /**
  * The head of a category page: the craft on the left, a portrait of it on the
@@ -15,12 +15,13 @@ import type { Category } from "@/lib/taxonomy";
  * home page — except where the family has a process clip, which is worth more
  * than a still and is already shot vertical.
  */
-export function CategoryHero({ category }: { category: Category }) {
+export function CategoryHero({ category, collection }: { category: Category; collection?: CategoryCollection }) {
   const { label, blurb, intro, card, media } = category;
-  const useVideo = media.kind === "video";
+  const photo = collection?.image ?? card;
+  const useVideo = !collection?.image && media.kind === "video";
 
   return (
-    <section className="border-b">
+    <section className="xuan-paper border-b">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 py-14 lg:grid-cols-12 lg:gap-16 lg:py-20">
           <div className="lg:col-span-6">
@@ -37,7 +38,10 @@ export function CategoryHero({ category }: { category: Category }) {
           </div>
 
           <div className="lg:col-span-6">
-            <figure className="relative aspect-[4/5] overflow-hidden bg-muted lg:aspect-[3/4]">
+            <figure
+              className="relative aspect-[4/5] overflow-hidden bg-muted lg:aspect-[3/4]"
+              style={collection?.image ? { aspectRatio: collection.image.aspectRatio ?? "4 / 3" } : undefined}
+            >
               {useVideo && media.kind === "video" ? (
                 <ProcessVideo
                   src={media.src}
@@ -47,12 +51,12 @@ export function CategoryHero({ category }: { category: Category }) {
                 />
               ) : (
                 <Image
-                  src={card.src}
-                  alt={card.alt}
+                  src={photo.src}
+                  alt={photo.alt}
                   fill
-                  priority
+                  preload
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover motion-safe:animate-[hero-zoom_14s_var(--ease-soft)_forwards]"
+                  className={collection?.image ? "object-contain" : "object-cover motion-safe:animate-[hero-zoom_14s_var(--ease-soft)_forwards]"}
                 />
               )}
             </figure>

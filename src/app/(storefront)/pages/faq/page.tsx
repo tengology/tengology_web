@@ -28,10 +28,10 @@ export default function FaqPage() {
     >
       <PolicySection title="What is everything made of?">
         <p>
-          Felt pieces use a mixture of 40% wool blend felt and 100% wool felt.
-          Fabric pieces use Liberty cotton. Jewellery uses natural semi-precious
-          stone and freshwater pearl, on sterling silver or gold-plated sterling
-          silver ear hooks. Every listing names its own materials in full.
+          Every listing names its own materials in full, so the answer for the
+          piece you are actually looking at is on its own page. What I will say
+          here is that I buy the best materials I can get, and I do not swap in
+          something cheaper on the quiet because it would not be noticed.
         </p>
       </PolicySection>
 
@@ -45,6 +45,22 @@ export default function FaqPage() {
             hallmarking page
           </Link>{" "}
           explains this properly.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="What does gold-filled mean?">
+        <p>
+          It is not plating. A thick layer of real gold is bonded under heat and
+          pressure to a brass core &mdash; by the usual standard at least a
+          twentieth of the item&rsquo;s weight, which is many times what plating
+          lays down. It wears far better and lasts years longer.
+        </p>
+        <p>
+          Where a piece is gold-filled, the findings come from Cooksongold, the
+          Birmingham bullion dealer, so the stock is traceable and consistent
+          batch to batch. Every listing says plainly which it is: gold-filled,
+          gold-plated and solid gold are three different things at three
+          different prices, and I will not blur them.
         </p>
       </PolicySection>
 
@@ -99,6 +115,25 @@ export default function FaqPage() {
           lets you lay out a strand yourself, and for anything beyond it just
           write to me. Bridal parties and matching sets are very welcome, and
           worth asking about early.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Can I return a personalised piece?">
+        <p>
+          No, and this is the one exception worth knowing before you order. A
+          birthstone choker strung with your initial, or a strand you laid out
+          yourself in the designer, is made to you and cannot be sold to anyone
+          else. Once it is made, it is yours.
+        </p>
+        <p>
+          Everything else in the shop can be returned within 14 days. And if a
+          personalised piece arrives faulty, damaged or not what you asked for,
+          that is still mine to put right &mdash; personalisation does not
+          change that. The{" "}
+          <Link href="/pages/returns" className="link-underline text-foreground">
+            returns page
+          </Link>{" "}
+          sets it out in full.
         </p>
       </PolicySection>
 
