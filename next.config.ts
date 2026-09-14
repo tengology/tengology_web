@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
   // .next/standalone + .next/static + public, not the 1.2GB node_modules.
   output: "standalone",
   turbopack: {
-    root: __dirname,
+    root: process.cwd(),
     rules: {
       // 3D model assets used by the jewellery preview.
       "*.{glb,gltf}": {
