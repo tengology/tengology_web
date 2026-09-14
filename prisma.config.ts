@@ -13,9 +13,10 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    // DDL runs on Neon's direct (non-pooled) endpoint — the pooler does not
-    // support the session-level operations migrations need. The application
-    // itself uses the pooled DATABASE_URL via the adapter in src/lib/db.ts.
+    // Migrations need a session-level connection (advisory locks, multi-statement
+    // DDL). Supabase's session pooler on :5432 provides one, so DIRECT_URL may
+    // equal DATABASE_URL; never point it at the transaction pooler on :6543.
+    // The application itself connects via the adapter in src/lib/db.ts.
     url: process.env.DIRECT_URL ?? process.env.DATABASE_URL,
   },
 });

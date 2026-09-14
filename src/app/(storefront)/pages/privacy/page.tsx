@@ -112,7 +112,7 @@ export default function PrivacyPage() {
               — receives your name and delivery address, printed on the label.
             </>,
             <>
-              <strong className="font-normal text-foreground">Neon</strong> —
+              <strong className="font-normal text-foreground">Supabase</strong> —
               hosts the database the shop runs on.
             </>,
           ]}

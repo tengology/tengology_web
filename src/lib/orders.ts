@@ -394,8 +394,9 @@ export async function createPendingOrder(input: CreateOrderInput) {
 
       return order;
     },
-    // Neon is a network hop away, so a multi-item order needs more headroom
-    // than Prisma's 5s default before the transaction is rolled back.
+    // The database is a network hop away (Supabase in Ireland), so a
+    // multi-item order needs more headroom than Prisma's 5s default before the
+    // transaction is rolled back.
     { timeout: 20_000, maxWait: 10_000 }
   );
 }

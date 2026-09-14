@@ -10,8 +10,9 @@ function createPrismaClient() {
   if (!connectionString) {
     throw new Error("DATABASE_URL is not set — see .env.example");
   }
-  // Neon's pooled endpoint already multiplexes connections, so the local pool
-  // stays small; serverless instances would otherwise each hold a full pool.
+  // Supabase's session pooler gives each client connection its own server
+  // connection, and the project's pool is small, so keep the local pool small.
+  // TLS verification comes from sslmode/sslrootcert in the URL (.env.example).
   const adapter = new PrismaPg({ connectionString, max: 5 });
   return new PrismaClient({ adapter });
 }
