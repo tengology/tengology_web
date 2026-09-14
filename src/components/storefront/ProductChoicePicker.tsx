@@ -90,7 +90,7 @@ export function ProductChoicePicker({
             <button
               key={o.value}
               type="button"
-              onClick={() => setPicked(o.value)}
+              onClick={() => setPicked(selected ? null : o.value)}
               aria-pressed={selected}
               aria-label={o.note ? `${o.value} — ${o.note}` : o.value}
               className={`group text-left transition-opacity ${

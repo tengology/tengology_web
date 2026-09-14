@@ -26,7 +26,7 @@ async function main() {
     const product = await tx.product.update({ where: { slug }, data: { title, shortDescription, fullDescription, materials: "plush fabric, wool felt, claw hair clips" } });
     await tx.productImage.updateMany({ where: { productId: product.id }, data: { isPrimary: false, sortOrder: 100 } });
     for (const [sortOrder, [number, altText]] of shots.entries()) {
-      const url = `/products/cat-ear-rose/img_${number}.webp`;
+      const url = `/products/cat-ear-rose/img_${number}-full.webp`;
       const existing = await tx.productImage.findFirst({ where: { productId: product.id, url } });
       const data = { altText, sortOrder, isPrimary: sortOrder === 0 };
       if (existing) await tx.productImage.update({ where: { id: existing.id }, data });
