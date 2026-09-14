@@ -357,7 +357,7 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
 
       <form onSubmit={handleSubmit} className="grid gap-10 lg:grid-cols-5 lg:gap-16">
         <div className="space-y-10 lg:col-span-3">
-          {(formError || quote?.issues.length) && (
+          {(formError || (quote?.issues.length ?? 0) > 0) && (
             <div ref={errorRef} className="space-y-2">
               {formError && (
                 <div className="flex items-start gap-2 rounded-sm border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">

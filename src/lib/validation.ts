@@ -65,7 +65,12 @@ export const quoteSchema = z.object({
   shippingMethodId: z.string().nullish(),
   discountCode: z.string().trim().max(40).nullish(),
   country: z.string().length(2).default(HOME_COUNTRY),
-  email: z.string().email().nullish().or(z.literal("")),
+  /**
+   * Only consulted for per-customer discount limits, and sent while the shopper
+   * is still typing. A half-typed address must not fail the whole quote — that
+   * blanks the basket to £0.00 — so anything unparseable is treated as absent.
+   */
+  email: z.string().trim().email().nullish().or(z.literal("")).catch(null),
 });
 
 export const placeOrderSchema = z.object({
