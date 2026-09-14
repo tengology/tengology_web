@@ -1,21 +1,29 @@
 #!/usr/bin/env bash
-# Ship the working tree to the Singapore box, build it there, and swap the
+# Ship the working tree to the London box, build it there, and swap the
 # running container over only once the new one answers.
 #
-#   ./deploy/deploy.sh              deploy the current working tree
-#   SITE_URL=https://tengology.com ./deploy/deploy.sh
+#   ./deploy/deploy.sh              deploy the current working tree to tengology.com
+#
+# There is one container on the box, and it serves tengology.com and the
+# tengology.130.94.78.227.sslip.io staging host alike. Building for another
+# SITE_URL therefore replaces production with a build whose auth and Square
+# redirects point elsewhere — only override it deliberately.
 #
 # Rollback is by rename: the previous container is parked, never removed.
 set -euo pipefail
 
-HOST=${HOST:-root@154.90.59.39}
-KEY=${KEY:-$HOME/.ssh/tengology_sg}
-SITE_URL=${SITE_URL:-https://tengology.154.90.59.39.sslip.io}
+HOST=${HOST:-root@130.94.78.227}
+KEY=${KEY:-$HOME/.ssh/tengology_uk}
+SITE_URL=${SITE_URL:-https://tengology.com}
 APP=tengology-app
-NET=overdrag-net
+# Caddy runs on the host (systemd, shared with sweetmanstrading), so the app is
+# published on loopback. 3001 belongs to sweetmanstrading's API.
+NET=tengology-net
+PUBLISH="-p 127.0.0.1:3000:3000"
 ROOT=/opt/tengology
 REL=$(date +%Y%m%d-%H%M%S)
 IMAGE="tengology:$REL"
+RUN_ENV="--env-file $ROOT/shared/prod.env -e NODE_ENV=production -e PORT=3000 -e HOSTNAME=0.0.0.0"
 
 SSH=(ssh -i "$KEY" -o IdentitiesOnly=yes -o BatchMode=yes "$HOST")
 say() { printf '\n\033[1m▸ %s\033[0m\n' "$*"; }
@@ -23,7 +31,7 @@ say() { printf '\n\033[1m▸ %s\033[0m\n' "$*"; }
 cd "$(dirname "$0")/.."
 [[ -f .env.local ]] || { echo "no .env.local — cannot build"; exit 1; }
 
-say "1/6  ship source → $ROOT/releases/$REL"
+say "1/6  ship source → $HOST:$ROOT/releases/$REL"
 "${SSH[@]}" "mkdir -p $ROOT/releases/$REL/source $ROOT/shared"
 # NOTE: macOS ships rsync 2.6.9, which exits 0 while transferring nothing on
 # unknown flags. tar over ssh is the reliable path here.
@@ -61,12 +69,12 @@ PY"
 say "3/6  build $IMAGE"
 "${SSH[@]}" "cd $ROOT/releases/$REL/source && DOCKER_BUILDKIT=1 docker build \
   --secret id=env_local,src=$ROOT/shared/build.env.local -t $IMAGE . 2>&1 \
-  | grep -E '^#[0-9]+ (DONE|ERROR)|error|Error' | tail -20"
+  | grep -E '^#[0-9]+ (DONE|ERROR)|error|Error' | tail -20
+docker image inspect $IMAGE >/dev/null 2>&1 || { echo '  BUILD FAILED — no image produced'; exit 1; }"
 
 say "4/6  start replacement container and health-check it"
 "${SSH[@]}" "docker rm -f $APP-new >/dev/null 2>&1 || true
-docker run -d --name $APP-new --network $NET --env-file $ROOT/shared/prod.env \
-  -e NODE_ENV=production -e PORT=3000 -e HOSTNAME=0.0.0.0 $IMAGE >/dev/null
+docker run -d --name $APP-new --network $NET $RUN_ENV $IMAGE >/dev/null
 for i in \$(seq 1 30); do
   code=\$(docker run --rm --network $NET curlimages/curl:latest -s -o /dev/null \
           -w '%{http_code}' --max-time 20 http://$APP-new:3000/ 2>/dev/null || echo 000)
@@ -79,18 +87,24 @@ docker rm -f $APP-new >/dev/null
 exit 1"
 
 say "5/6  swap (old container parked, not deleted)"
+# A host port can't be handed from one container to another, so the checked
+# container is replaced by a fresh one from the same image that binds it once
+# the old one has let go. A few seconds of 502 on this path.
 "${SSH[@]}" "docker rename $APP $APP-prev-$REL 2>/dev/null || true
 docker stop $APP-prev-$REL >/dev/null 2>&1 || true
-docker rename $APP-new $APP
-docker update --restart unless-stopped $APP >/dev/null
-docker kill -s SIGUSR1 overdrag-caddy >/dev/null   # re-resolve the new container IP
-echo '  swapped, caddy reloaded'"
+docker rm -f $APP-new >/dev/null
+docker run -d --name $APP --restart unless-stopped --network $NET $PUBLISH $RUN_ENV $IMAGE >/dev/null
+for i in \$(seq 1 30); do
+  code=\$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 http://127.0.0.1:3000/ 2>/dev/null || true)
+  [ \"\$code\" = 200 ] && { echo \"  swapped, answering on loopback after \${i}s\"; exit 0; }
+  sleep 1
+done
+echo '  swapped container is not answering on loopback — verification will roll back'"
 
 say "6/6  verify through Caddy from the outside"
 sleep 3
 # Pin the check to the origin. Verifying whatever DNS happens to return would
-# test the CDN or a stale cache instead of the box we just deployed to — during
-# a domain cutover that is exactly the wrong answer.
+# test a stale cache or another box instead of the one we just deployed to.
 ORIGIN_IP=${HOST##*@}
 VHOST=${SITE_URL#*://}; VHOST=${VHOST%%/*}
 fail=0
@@ -104,18 +118,22 @@ done
 if [[ $fail -ne 0 ]]; then
   echo
   echo "VERIFICATION FAILED — rolling back to $APP-prev-$REL"
-  "${SSH[@]}" "docker rename $APP $APP-failed-$REL && docker rename $APP-prev-$REL $APP \
-    && docker start $APP && docker kill -s SIGUSR1 overdrag-caddy"
-  echo "rolled back. inspect with: docker logs $APP-failed-$REL"
+  "${SSH[@]}" "if docker inspect $APP-prev-$REL >/dev/null 2>&1; then
+  docker rename $APP $APP-failed-$REL && docker stop $APP-failed-$REL >/dev/null
+  docker rename $APP-prev-$REL $APP && docker start $APP >/dev/null
+  echo '  rolled back'
+else
+  echo '  no previous container to roll back to (first deploy on this box) — left running for inspection'
+fi"
+  echo "inspect with: ssh $HOST docker logs $APP-failed-$REL  (or $APP on a first deploy)"
   exit 1
 fi
 
 say "done — $IMAGE live at $SITE_URL"
 
-# Housekeeping. Each deploy leaves a ~1.4GB image, a parked container and a
-# couple of GB of npm build cache; three deploys ate 7GB of a 50GB disk before
-# this was added. Only tengology's own artefacts are touched — the build cache
-# is shared but regenerable, so it is capped rather than emptied.
+# Housekeeping. Each deploy leaves a ~1.5GB image, a parked container and a
+# couple of GB of npm build cache. Only tengology's own artefacts are touched —
+# the build cache is regenerable, so it is capped rather than emptied.
 "${SSH[@]}" "
 echo '  releases kept:'
 ls -1t $ROOT/releases | tail -n +4 | xargs -r -I{} rm -rf $ROOT/releases/{}
@@ -136,4 +154,4 @@ echo \"  disk: \$(df -h / | awk 'NR==2{print \$4}') free\"
 "
 
 echo
-echo "rollback:  ssh $HOST 'docker rename $APP ${APP}-bad-$REL && docker rename ${APP}-prev-$REL $APP && docker start $APP && docker kill -s SIGUSR1 overdrag-caddy'"
+echo "rollback:  ssh $HOST 'docker rename $APP ${APP}-bad-$REL && docker stop ${APP}-bad-$REL && docker rename ${APP}-prev-$REL $APP && docker start $APP'"
