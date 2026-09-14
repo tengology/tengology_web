@@ -30,31 +30,32 @@ async function main() {
 
   // ── Zone routing ─────────────────────────────────
   console.log("Shipping zone routing");
-  const zones: Array<[string, string]> = [
-    ["GB", "Standard Delivery"],
-    ["IE", "Ireland Delivery"],
-    ["FR", "Europe Delivery"],
-    ["DE", "Europe Delivery"],
-    ["US", "International Delivery"],
-    ["AU", "International Delivery"],
-    ["JP", "International Delivery"],
+  // Abroad, each country has one rate: Royal Mail's 1kg price, rounded up.
+  const zones: Array<[string, string, number]> = [
+    ["GB", "Tracked 48", 4],
+    ["IE", "International Tracked", 9],
+    ["FR", "International Tracked", 12],
+    ["DE", "International Tracked", 10],
+    ["US", "International Tracked", 18],
+    ["AU", "International Tracked", 20],
+    ["JP", "International Tracked", 22],
   ];
 
-  for (const [code, expected] of zones) {
+  for (const [code, expected, price] of zones) {
     const options = await getShippingOptions(20, code);
     check(
-      `${countryName(code)} → ${expected}`,
-      options.some((o) => o.name === expected),
-      options.map((o) => o.name)
+      `${countryName(code)} → ${expected} at £${price}`,
+      options.some((o) => o.name === expected && o.price === price),
+      options.map((o) => `${o.name}: ${o.price}`)
     );
   }
 
-  // Specificity: a European country must not also be offered the catch-all.
+  // Specificity: a priced country must not also be offered the catch-all.
   const french = await getShippingOptions(20, "FR");
   check(
     "France isn't offered the catch-all as well",
-    !french.some((o) => o.name === "International Delivery"),
-    french.map((o) => o.name)
+    french.length === 1 && french[0].id !== "international",
+    french.map((o) => o.id)
   );
 
   const unknown = await getShippingOptions(20, "ZZ");
@@ -170,7 +171,7 @@ async function main() {
   check("order was created", Boolean(order.orderNumber));
   check(
     "shipping method recorded",
-    order.shippingMethodName === "International Delivery",
+    order.shippingMethodName === "International Tracked",
     order.shippingMethodName
   );
   check("no UK VAT on the export order", order.taxAmount === 0, order.taxAmount);

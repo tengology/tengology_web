@@ -11,8 +11,8 @@ import { HOME_COUNTRY, isDomestic } from "./countries";
  * Two rules govern which options a destination sees:
  *
  * 1. **Specificity wins.** A method naming the country explicitly beats a
- *    catch-all `*` method, so a French shopper sees "Europe Delivery" rather
- *    than both that and "International Delivery".
+ *    catch-all `*` method, so a French shopper sees France's own rate rather
+ *    than both that and the catch-all.
  * 2. **Free delivery is domestic only.** The store-wide free-shipping
  *    threshold applies to UK orders; sending a parcel to Australia for free
  *    because the basket passed £50 would lose money on every order. An
@@ -39,10 +39,10 @@ export interface ShippingOption {
 const FALLBACK_METHODS = [
   {
     id: "standard",
-    name: "Standard Delivery",
-    description: "Royal Mail Tracked 48",
+    name: "Tracked 48",
+    description: "Royal Mail, tracked",
     carrier: "ROYAL_MAIL",
-    price: 3.95,
+    price: 4,
     freeThreshold: null as number | null,
     minDays: 2,
     maxDays: 4,
@@ -51,15 +51,27 @@ const FALLBACK_METHODS = [
   },
   {
     id: "express",
-    name: "Express Delivery",
-    description: "Royal Mail Tracked 24",
+    name: "Tracked 24",
+    description: "Royal Mail, tracked",
     carrier: "ROYAL_MAIL",
-    price: 6.95,
+    price: 5,
     freeThreshold: null as number | null,
     minDays: 1,
     maxDays: 2,
     countries: "GB",
     sortOrder: 1,
+  },
+  {
+    id: "special-delivery",
+    name: "Special Delivery",
+    description: "Royal Mail, guaranteed by 1pm, signed for",
+    carrier: "ROYAL_MAIL",
+    price: 11,
+    freeThreshold: null as number | null,
+    minDays: 1,
+    maxDays: 1,
+    countries: "GB",
+    sortOrder: 2,
   },
 ];
 
@@ -82,6 +94,15 @@ function servesExplicitly(countries: string, country: string): boolean {
 
 function servesViaWildcard(countries: string): boolean {
   return countryList(countries).includes("*");
+}
+
+/**
+ * The methods a destination is offered. Specificity wins: catch-all methods
+ * apply only when nothing names the country directly.
+ */
+export function methodsForCountry<T extends { countries: string }>(methods: T[], country: string): T[] {
+  const explicit = methods.filter((m) => servesExplicitly(m.countries, country));
+  return explicit.length > 0 ? explicit : methods.filter((m) => servesViaWildcard(m.countries));
 }
 
 /**
@@ -119,10 +140,7 @@ export async function getShippingOptions(
 
   if (methods.length === 0) methods = FALLBACK_METHODS;
 
-  // Specificity wins: only fall back to catch-all methods when nothing names
-  // this country directly.
-  const explicit = methods.filter((m) => servesExplicitly(m.countries, country));
-  const available = explicit.length > 0 ? explicit : methods.filter((m) => servesViaWildcard(m.countries));
+  const available = methodsForCountry(methods, country);
 
   if (available.length === 0) return [];
 

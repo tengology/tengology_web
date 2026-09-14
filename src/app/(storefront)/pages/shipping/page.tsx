@@ -4,9 +4,11 @@ import {
   PolicyPage,
   PolicySection,
 } from "@/components/storefront/PolicyPage";
+import { countriesByRegion } from "@/lib/countries";
 import { prisma } from "@/lib/db";
 import { formatMoney } from "@/lib/money";
 import { getNumericSetting } from "@/lib/settings";
+import { methodsForCountry } from "@/lib/shipping";
 import {
   CONTACT_EMAIL,
   DISPATCH_DAYS_IN_STOCK,
@@ -49,7 +51,25 @@ function estimate(minDays: number | null, maxDays: number | null): string {
 export default async function ShippingPage() {
   const { methods, freeThreshold } = await deliveryRates();
   const domestic = methods.filter((m) => m.countries.split(",").includes("GB"));
-  const abroad = methods.filter((m) => !m.countries.split(",").includes("GB"));
+
+  // Abroad is priced country by country, so list every destination with the
+  // rate checkout would actually offer it, catch-all included.
+  const abroad = countriesByRegion()
+    .filter((group) => group.region !== "United Kingdom")
+    .map((group) => ({
+      region: group.region,
+      rows: group.countries.flatMap((country) =>
+        methodsForCountry(methods, country.code).map((m) => ({
+          key: `${country.code}-${m.id}`,
+          name: country.name,
+          detail: null,
+          price: formatMoney(m.price),
+          estimate: estimate(m.minDays, m.maxDays),
+        }))
+      ),
+    }))
+    .filter((group) => group.rows.length > 0);
+  const catchAll = methods.find((m) => m.countries.split(",").includes("*"));
 
   return (
     <PolicyPage
@@ -83,6 +103,7 @@ export default async function ShippingPage() {
             <RateTable
               heading="United Kingdom"
               rows={domestic.map((m) => ({
+                key: m.id,
                 name: m.name,
                 detail: m.description,
                 price: formatMoney(m.price),
@@ -90,24 +111,28 @@ export default async function ShippingPage() {
               }))}
             />
             {abroad.length > 0 && (
-              <RateTable
-                heading="Rest of the world"
-                rows={abroad.map((m) => ({
-                  name: m.name,
-                  detail: m.description,
-                  price: formatMoney(m.price),
-                  estimate: estimate(m.minDays, m.maxDays),
-                }))}
-              />
+              <p>
+                Outside the UK, everything goes by Royal Mail International
+                Tracked, priced for the country it is going to.
+              </p>
+            )}
+            {abroad.map((group) => (
+              <RateTable key={group.region} heading={group.region} rows={group.rows} />
+            ))}
+            {catchAll && (
+              <p>
+                Somewhere not listed? Delivery there is{" "}
+                {formatMoney(catchAll.price)}, {estimate(catchAll.minDays, catchAll.maxDays).toLowerCase()}.
+              </p>
             )}
           </div>
         )}
         {freeThreshold > 0 && (
           <p>
-            UK standard delivery is free once your basket reaches{" "}
-            {formatMoney(freeThreshold)}. The free rate applies to standard
-            delivery only &mdash; express stays chargeable, so an upgrade is
-            never given away by accident.
+            UK Tracked 48 is free once your basket reaches{" "}
+            {formatMoney(freeThreshold)}. The free rate applies to Tracked 48
+            only &mdash; Tracked 24 and Special Delivery stay chargeable, so an
+            upgrade is never given away by accident.
           </p>
         )}
       </PolicySection>
@@ -170,7 +195,7 @@ function RateTable({
   rows,
 }: {
   heading: string;
-  rows: { name: string; detail: string | null; price: string; estimate: string }[];
+  rows: { key: string; name: string; detail: string | null; price: string; estimate: string }[];
 }) {
   if (rows.length === 0) return null;
   return (
@@ -180,7 +205,7 @@ function RateTable({
         <table className="w-full min-w-md border-collapse text-left">
           <tbody>
             {rows.map((row) => (
-              <tr key={row.name} className="border-t align-top">
+              <tr key={row.key} className="border-t align-top">
                 <td className="py-3 pr-4">
                   <span className="block text-foreground">{row.name}</span>
                   {row.detail && <span className="block">{row.detail}</span>}

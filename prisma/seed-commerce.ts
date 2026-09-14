@@ -1,6 +1,5 @@
 import "dotenv/config";
 import { prisma } from "../src/lib/db";
-import { codesInRegion } from "../src/lib/countries";
 
 /**
  * Seeds the commercial configuration a storefront needs before it can take an
@@ -8,13 +7,76 @@ import { codesInRegion } from "../src/lib/countries";
  * Safe to re-run — everything is upserted.
  */
 
+/**
+ * Every delivery price is Royal Mail's online price from 5 October 2026,
+ * rounded up to the next whole pound: a small parcel up to 2kg in the UK, up
+ * to 500g for Special Delivery, and up to 1kg abroad.
+ */
+
+const IRELAND = { zone: "europe", minDays: 3, maxDays: 7 };
+const EUROPE = { zone: "europe", minDays: 5, maxDays: 10 };
+const WORLD = { zone: "world", minDays: 7, maxDays: 21 };
+
+/**
+ * International Tracked, priced country by country. Zones follow
+ * royalmail.com/world-zones. Countries at the same price share one delivery
+ * option so the admin list stays short; the Delivery page still lists each
+ * country with its own price.
+ */
+const INTERNATIONAL_BANDS = [
+  { price: 9, ...IRELAND, countries: ["IE"] }, // £8.80
+  { price: 10, ...EUROPE, countries: ["DE"] }, // £9.95
+  { price: 11, ...EUROPE, countries: ["DK", "NL", "MC"] }, // £10.95, £10.85, Zone 1 £10.95
+  { price: 12, ...EUROPE, countries: ["FR", "BE", "IT", "SE", "PL", "ES"] }, // £11.15–£12.00
+  {
+    price: 13, // Europe Zone 2, £12.10
+    ...EUROPE,
+    countries: ["AT", "BG", "HR", "CY", "CZ", "EE", "FI", "GR", "HU", "LV", "LT", "LU", "MT", "PT", "SK", "SI"],
+  },
+  { price: 14, ...EUROPE, countries: ["CH"] }, // £13.20
+  { price: 15, ...EUROPE, countries: ["NO"] }, // £14.05
+  { price: 16, ...EUROPE, countries: ["TR"] }, // £15.65
+  { price: 17, ...EUROPE, countries: ["RO", "IS", "LI"] }, // £16.30, Zone 3 £16.15
+  { price: 14, ...WORLD, countries: ["CN"] }, // £13.15
+  { price: 18, ...WORLD, countries: ["US"] }, // £17.53
+  { price: 20, ...WORLD, countries: ["AU", "HK"] }, // £19.40, £19.90
+  { price: 21, ...WORLD, countries: ["CA", "TH", "NZ"] }, // £20.27, £20.10, £20.25
+  { price: 22, ...WORLD, countries: ["JP", "IN"] }, // £21.45
+  { price: 23, ...WORLD, countries: ["BR"] }, // £22.30
+  {
+    price: 25, // World Zone 1, £24.65
+    ...WORLD,
+    countries: [
+      "MX", "KR", "TW", "MY", "PH", "ID", "VN",
+      "AE", "SA", "QA", "KW", "BH", "IL", "ZA", "NG", "KE", "GH", "EG", "MU",
+      "AR", "CL", "CO", "PE", "UY", "CR", "PA", "JM",
+    ],
+  },
+  { price: 28, ...WORLD, countries: ["SG", "MO"] }, // World Zone 2, £27.90
+];
+
+const INTERNATIONAL_METHODS = INTERNATIONAL_BANDS.map((band, index) => ({
+  id: `intl-${band.zone}-${band.price}`,
+  name: "International Tracked",
+  description: "Royal Mail",
+  carrier: "ROYAL_MAIL",
+  price: band.price,
+  freeThreshold: null,
+  minDays: band.minDays,
+  maxDays: band.maxDays,
+  countries: band.countries.join(","),
+  sortOrder: 10 + index,
+}));
+
 const SHIPPING_METHODS = [
+  // Ids predate the Royal Mail names; they stay so existing rows and orders
+  // keep pointing at the same methods.
   {
     id: "standard-uk",
-    name: "Standard Delivery",
-    description: "Royal Mail Tracked 48",
+    name: "Tracked 48",
+    description: "Royal Mail, tracked",
     carrier: "ROYAL_MAIL",
-    price: 3.95,
+    price: 4, // £3.75
     freeThreshold: 50,
     minDays: 2,
     maxDays: 4,
@@ -23,10 +85,10 @@ const SHIPPING_METHODS = [
   },
   {
     id: "express-uk",
-    name: "Express Delivery",
-    description: "Royal Mail Tracked 24",
+    name: "Tracked 24",
+    description: "Royal Mail, tracked",
     carrier: "ROYAL_MAIL",
-    price: 6.95,
+    price: 5, // £4.80
     freeThreshold: null,
     minDays: 1,
     maxDays: 2,
@@ -34,44 +96,39 @@ const SHIPPING_METHODS = [
     sortOrder: 1,
   },
   {
-    id: "ireland",
-    name: "Ireland Delivery",
-    description: "Tracked international",
+    id: "special-delivery-uk",
+    name: "Special Delivery",
+    description: "Royal Mail, guaranteed by 1pm, signed for",
     carrier: "ROYAL_MAIL",
-    price: 9.95,
+    price: 11, // £10.85
     freeThreshold: null,
-    minDays: 3,
-    maxDays: 7,
-    countries: "IE",
+    minDays: 1,
+    maxDays: 1,
+    countries: "GB",
     sortOrder: 2,
   },
+  ...INTERNATIONAL_METHODS,
   {
-    id: "europe",
-    name: "Europe Delivery",
-    description: "Royal Mail International Tracked",
-    carrier: "ROYAL_MAIL",
-    price: 12.95,
-    freeThreshold: null,
-    minDays: 5,
-    maxDays: 10,
-    // Ireland has its own cheaper rate above, and specificity wins.
-    countries: codesInRegion("Europe").join(","),
-    sortOrder: 3,
-  },
-  {
+    // Catch-all for anywhere not priced above, at the dearest band so an
+    // unlisted destination can never cost more to post than it is charged.
     id: "international",
-    name: "International Delivery",
-    description: "Royal Mail International Tracked",
+    name: "International Tracked",
+    description: "Royal Mail",
     carrier: "ROYAL_MAIL",
-    price: 19.95,
+    price: 28,
     freeThreshold: null,
     minDays: 7,
     maxDays: 21,
-    // Catch-all: used only where no zone names the country directly.
     countries: "*",
-    sortOrder: 4,
+    sortOrder: 99,
   },
 ];
+
+/**
+ * Methods an earlier seed created. Left active they would still name their
+ * countries and be offered alongside the per-country rates above.
+ */
+const RETIRED_METHOD_IDS = ["ireland", "europe"];
 
 const SETTINGS = {
   storeName: "Tengology",
@@ -95,6 +152,13 @@ async function main() {
     });
   }
   console.log(`✓ ${SHIPPING_METHODS.length} shipping methods`);
+
+  // Deactivate rather than delete: past orders still reference these ids.
+  const retired = await prisma.shippingMethod.updateMany({
+    where: { id: { in: RETIRED_METHOD_IDS }, isActive: true },
+    data: { isActive: false },
+  });
+  if (retired.count > 0) console.log(`✓ retired ${retired.count} old shipping methods`);
 
   for (const [key, value] of Object.entries(SETTINGS)) {
     await prisma.setting.upsert({
