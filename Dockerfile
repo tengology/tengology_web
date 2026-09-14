@@ -4,7 +4,7 @@
 FROM node:22-bookworm-slim AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci && npm install --no-save --package-lock=false @next/swc-linux-x64-gnu@16.2.1
 
 # ─── build ───────────────────────────────────────────
 FROM node:22-bookworm-slim AS builder
