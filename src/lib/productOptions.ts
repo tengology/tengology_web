@@ -24,6 +24,11 @@ export interface ProductChoice {
     image: string;
     /** One short line under the name, where the difference needs saying. */
     note?: string;
+    /**
+     * Product shots (and matching model photos) to show together when this
+     * option is picked. URLs already in ProductImage, in display order.
+     */
+    gallery?: string[];
   }[];
 }
 
@@ -41,11 +46,38 @@ export const PRODUCT_CHOICES: Record<string, ProductChoice> = {
     ],
   },
   "unicorn-flower-crown-headband": {
-    label: "Horn",
-    hint: "The flowers are the same; the horn and ear linings differ.",
+    label: "Colour",
+    hint: "Named by the centre flower and the horn metal.",
     options: [
-      { value: "Gold", image: "/products/unicorn/unicorn-crown-gold-hero.jpg" },
-      { value: "Silver", image: "/products/unicorn/unicorn-crown-silver-hero.jpg" },
+      {
+        value: "Light Pink / Gold",
+        image: "/products/unicorn/unicorn-crown-pink-hero.jpg",
+        note: "Pink band, gold horn",
+        gallery: [
+          "/products/unicorn/unicorn-crown-pink-hero.jpg",
+          "/products/unicorn/unicorn-crown-pink-detail.jpg",
+          "/products/model/unicorn-flower-crown-headband-gold-1.jpg",
+          "/products/model/unicorn-flower-crown-headband-gold-2.jpg",
+        ],
+      },
+      {
+        value: "Fuchsia / Silver",
+        image: "/products/unicorn/unicorn-crown-silver-hero.jpg",
+        gallery: [
+          "/products/unicorn/unicorn-crown-silver-hero.jpg",
+          "/products/unicorn/unicorn-crown-silver-detail.jpg",
+          "/products/model/unicorn-flower-crown-headband-silver-1.jpg",
+          "/products/model/unicorn-flower-crown-headband-silver-2.jpg",
+        ],
+      },
+      {
+        value: "Peach / Gold",
+        image: "/products/unicorn/unicorn-crown-gold-hero.jpg",
+        gallery: [
+          "/products/unicorn/unicorn-crown-gold-hero.jpg",
+          "/products/unicorn/unicorn-crown-gold-detail.jpg",
+        ],
+      },
     ],
   },
 };

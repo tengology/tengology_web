@@ -43,7 +43,11 @@ export function ProductChoicePicker({
   const setFocus = focus?.setFocus;
   useEffect(() => {
     if (!setFocus) return;
-    setFocus({ url: chosen?.image ?? null, month: null });
+    setFocus({
+      url: chosen?.image ?? null,
+      month: null,
+      urls: chosen ? (chosen.gallery ?? [chosen.image]) : null,
+    });
   }, [chosen, setFocus]);
 
   function handleAdd() {
@@ -72,7 +76,11 @@ export function ProductChoicePicker({
 
       <fieldset
         className={`grid gap-2 ${
-          choice.options.length > 2 ? "grid-cols-4" : "grid-cols-2"
+          choice.options.length === 3
+            ? "grid-cols-3"
+            : choice.options.length > 2
+              ? "grid-cols-4"
+              : "grid-cols-2"
         }`}
       >
         <legend className="sr-only">{choice.label}</legend>

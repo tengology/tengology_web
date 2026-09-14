@@ -1,4 +1,13 @@
 {
+  "heart-rose-plush-hair-clip": {
+    "label": "Colour",
+    "hint": "One pair (two matching clips) in your chosen colour.",
+    "options": [
+      { "value": "Cream / Pink Rose", "image": "/products/cat-ear-rose/img_9746.webp", "gallery": ["/products/cat-ear-rose/img_9746.webp", "/products/cat-ear-rose/img_9747.webp", "/products/cat-ear-rose/img_9756.webp"] },
+      { "value": "White / Red Rose", "image": "/products/cat-ear-rose/img_9748.webp", "gallery": ["/products/cat-ear-rose/img_9748.webp", "/products/cat-ear-rose/img_9750.webp", "/products/cat-ear-rose/img_9757.webp"] },
+      { "value": "Taupe / Purple Rose", "image": "/products/cat-ear-rose/img_9751.webp", "gallery": ["/products/cat-ear-rose/img_9751.webp", "/products/cat-ear-rose/img_9754.webp", "/products/cat-ear-rose/img_9758.webp"] }
+    ]
+  },
   "holly-berry-bow-felt-headband": {
     "label": "Colour",
     "hint": "Price is for one piece in your chosen colour.",
@@ -128,6 +137,85 @@
       {
         "value": "Pale with brown",
         "image": "/products/september-2026/img_8962.webp"
+      }
+    ]
+  },
+  "reindeer-antler-rose-hair-clips": {
+    "label": "Colour",
+    "hint": "Price is for one pair in your chosen colour.",
+    "options": [
+      {
+        "value": "Red / Christmas",
+        "image": "/products/sept8-2026/img_9505.webp"
+      },
+      {
+        "value": "Blush / pink",
+        "image": "/products/sept8-2026/img_9503.webp"
+      },
+      {
+        "value": "Purple / lavender",
+        "image": "/products/sept8-2026/img_9485.webp"
+      }
+    ]
+  },
+  "reindeer-antler-floral-headband": {
+    "label": "Colour",
+    "hint": "Price is for one headband in your chosen colour.",
+    "options": [
+      {
+        "value": "Red band",
+        "image": "/products/sept8-2026/img_9553.webp"
+      },
+      {
+        "value": "Blush / pink band",
+        "image": "/products/sept8-2026/img_9552.webp"
+      },
+      {
+        "value": "Purple / lavender band",
+        "image": "/products/sept8-2026/img_9551.webp"
+      }
+    ]
+  },
+  "layered-felt-flower-hair-clip": {
+    "label": "Colour",
+    "hint": "Price is for one clip in your chosen colour. Made to order.",
+    "options": [
+      {
+        "value": "Lavender",
+        "image": "/products/sept8-2026/img_9643.webp"
+      },
+      {
+        "value": "Pink / magenta",
+        "image": "/products/sept8-2026/img_9657.webp"
+      },
+      {
+        "value": "Deep red / burgundy",
+        "image": "/products/sept8-2026/img_9664.webp"
+      },
+      {
+        "value": "Colourway A",
+        "image": "/products/sept8-2026/img_9638.webp",
+        "note": "Confirm name"
+      },
+      {
+        "value": "Colourway B",
+        "image": "/products/sept8-2026/img_9639.webp",
+        "note": "Confirm name"
+      },
+      {
+        "value": "Colourway C",
+        "image": "/products/sept8-2026/img_9640.webp",
+        "note": "Confirm name"
+      },
+      {
+        "value": "Colourway D",
+        "image": "/products/sept8-2026/img_9641.webp",
+        "note": "Confirm name"
+      },
+      {
+        "value": "Colourway E",
+        "image": "/products/sept8-2026/img_9678.webp",
+        "note": "Confirm name"
       }
     ]
   }

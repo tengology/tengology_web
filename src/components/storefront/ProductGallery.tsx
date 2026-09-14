@@ -35,15 +35,24 @@ export function ProductGallery({
   const focus = useProductFocus();
   const focusUrl = focus?.focusUrl ?? null;
   const focusMonth = focus?.focusMonth ?? null;
+  const focusUrls = focus?.focusUrls ?? null;
 
   const shown = useMemo(() => {
+    if (focusUrls && focusUrls.length > 0) {
+      const byUrl = new Map(images.map((img) => [img.url, img]));
+      const matching = focusUrls
+        .map((url) => byUrl.get(url))
+        .filter((img): img is GalleryImage => Boolean(img));
+      // A colourway whose shots are not yet on the listing should not empty the gallery.
+      return matching.length > 0 ? matching : images;
+    }
     if (focusMonth == null) return images;
     const matching = images.filter(
       (img) => birthstoneMonthForImage(img.url) === focusMonth
     );
     // A stone we have barely shot yet should not empty the gallery.
     return matching.length > 0 ? matching : images;
-  }, [images, focusMonth]);
+  }, [images, focusMonth, focusUrls]);
 
   // Re-point at the chosen shot whenever the choice or the filtered set moves.
   useEffect(() => {

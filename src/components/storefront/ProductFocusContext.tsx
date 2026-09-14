@@ -11,6 +11,9 @@ import { createContext, useCallback, useContext, useMemo, useState } from "react
  * among the shots it already has and selects it — nothing new is loaded, and a
  * URL the gallery does not hold is simply ignored.
  *
+ * A colourway can also name a set of shots (`urls`) so the gallery strip
+ * narrows to that piece — product flats and the matching model photo together.
+ *
  * Both live in separate columns of a server-rendered page, so a context around
  * the pair is the least invasive way to join them.
  */
@@ -24,7 +27,17 @@ interface ProductFocus {
    * to scroll through.
    */
   focusMonth: number | null;
-  setFocus: (next: { url: string | null; month: number | null }) => void;
+  /**
+   * An explicit set of gallery URLs for the chosen option. When set, the
+   * gallery shows those shots (in this order, skipping any it does not hold)
+   * instead of the full list. Birthstone pickers leave this null.
+   */
+  focusUrls: string[] | null;
+  setFocus: (next: {
+    url: string | null;
+    month: number | null;
+    urls?: string[] | null;
+  }) => void;
 }
 
 const Ctx = createContext<ProductFocus | null>(null);
@@ -32,16 +45,18 @@ const Ctx = createContext<ProductFocus | null>(null);
 export function ProductFocusProvider({ children }: { children: React.ReactNode }) {
   const [focusUrl, setUrl] = useState<string | null>(null);
   const [focusMonth, setMonth] = useState<number | null>(null);
+  const [focusUrls, setUrls] = useState<string[] | null>(null);
   const setFocus = useCallback(
-    (next: { url: string | null; month: number | null }) => {
+    (next: { url: string | null; month: number | null; urls?: string[] | null }) => {
       setUrl(next.url);
       setMonth(next.month);
+      setUrls(next.urls ?? null);
     },
     []
   );
   const value = useMemo(
-    () => ({ focusUrl, focusMonth, setFocus }),
-    [focusUrl, focusMonth, setFocus]
+    () => ({ focusUrl, focusMonth, focusUrls, setFocus }),
+    [focusUrl, focusMonth, focusUrls, setFocus]
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

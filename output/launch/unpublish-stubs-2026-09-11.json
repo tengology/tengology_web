@@ -1,0 +1,225 @@
+{
+  "when": "2026-09-11T12:01:35.495Z",
+  "mandate": "Hide unfinished collections / sold-out stubs before Mon 29 Sep 2026",
+  "clearStubsUnpublished": [
+    {
+      "slug": "autumn-pumpkin-felt-headband",
+      "url": "https://tengology.com/product/autumn-pumpkin-felt-headband",
+      "before": {
+        "slug": "autumn-pumpkin-felt-headband",
+        "title": "Autumn Pumpkin Felt Headband",
+        "isPublished": true,
+        "stockCount": 0,
+        "shortDescription": "A felt pumpkin nestled with cream blooms and turning leaves.",
+        "fullDescription": "A felt pumpkin nestled with cream blooms and turning leaves.\n\nHandmade in Oxford. The gallery shows the piece and its details.",
+        "_count": {
+          "images": 4
+        }
+      },
+      "after": {
+        "slug": "autumn-pumpkin-felt-headband",
+        "title": "Autumn Pumpkin Felt Headband",
+        "isPublished": false,
+        "stockCount": 0,
+        "shortDescription": "A felt pumpkin nestled with cream blooms and turning leaves.",
+        "fullDescription": "A felt pumpkin nestled with cream blooms and turning leaves.\n\nHandmade in Oxford. The gallery shows the piece and its details.",
+        "_count": {
+          "images": 4
+        }
+      }
+    }
+  ],
+  "updateCount": 1,
+  "redeploy": {
+    "needed": false,
+    "reason": "DB-only isPublished flip on shared Neon. Storefront queries isPublished at request time; live Cache-Control is no-store. No image/asset rebuild required."
+  },
+  "alreadyHidden": {
+    "batikEmpty": [
+      {
+        "slug": "garden-bloom-batik-flower-brooch",
+        "isPublished": false,
+        "images": 0,
+        "stock": 1
+      },
+      {
+        "slug": "golden-amber-batik-flower-brooch",
+        "isPublished": false,
+        "images": 0,
+        "stock": 1
+      },
+      {
+        "slug": "plum-blossom-batik-flower-brooch",
+        "isPublished": false,
+        "images": 0,
+        "stock": 1
+      },
+      {
+        "slug": "golden-leaf-batik-bead-embroidered-earrings",
+        "isPublished": false,
+        "images": 0,
+        "stock": 1
+      },
+      {
+        "slug": "sunset-lotus-batik-statement-brooch",
+        "isPublished": false,
+        "images": 0,
+        "stock": 0
+      }
+    ],
+    "glass": [],
+    "note": "No GLASS products in catalog. All BATIK rows already isPublished=false (0 images)."
+  },
+  "doNotTouchLeftAsIs": [
+    "pink-sakura-felt-brooch",
+    "pink-sakura-felt-hair-clip",
+    "pink-sakura-felt-headband",
+    "pink-sakura-pearl-claw-clip",
+    "strawberry-cluster-hair-pin",
+    "alphabet-switch-fidget-keychain",
+    "blush-antler-rose-hair-clips",
+    "blush-antler-rose-headband",
+    "purple-antler-rose-hair-clips",
+    "purple-antler-rose-headband"
+  ],
+  "heldStillPublishedForTeng": [
+    {
+      "slug": "pink-sakura-felt-brooch",
+      "title": "Pink Sakura Felt Brooch",
+      "isPublished": true,
+      "stockCount": 1,
+      "url": "https://tengology.com/product/pink-sakura-felt-brooch",
+      "note": "Mandate: do not touch — held for naming/assets"
+    },
+    {
+      "slug": "pink-sakura-felt-headband",
+      "title": "Pink Sakura Felt Headband",
+      "isPublished": true,
+      "stockCount": 1,
+      "url": "https://tengology.com/product/pink-sakura-felt-headband",
+      "note": "Mandate: do not touch — held for naming/assets"
+    },
+    {
+      "slug": "pink-sakura-pearl-claw-clip",
+      "title": "Pink Sakura Pearl Claw Clip",
+      "isPublished": true,
+      "stockCount": 1,
+      "url": "https://tengology.com/product/pink-sakura-pearl-claw-clip",
+      "note": "Mandate: do not touch — held for naming/assets"
+    },
+    {
+      "slug": "strawberry-cluster-hair-pin",
+      "title": "Strawberry Cluster Hair Pin",
+      "isPublished": true,
+      "stockCount": 1,
+      "url": "https://tengology.com/product/strawberry-cluster-hair-pin",
+      "note": "Mandate: do not touch — held for naming/assets"
+    },
+    {
+      "slug": "pink-sakura-felt-hair-clip",
+      "title": "Pink Sakura Felt Hair Clip",
+      "isPublished": true,
+      "stockCount": 1,
+      "url": "https://tengology.com/product/pink-sakura-felt-hair-clip",
+      "note": "Mandate: do not touch — held for naming/assets"
+    }
+  ],
+  "ambiguousLeftPublished": [
+    {
+      "slug": "hetian-jade-beaded-ring",
+      "title": "Hetian Jade Beaded Ring",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/hetian-jade-beaded-ring"
+    },
+    {
+      "slug": "hetian-jade-bear-necklace-earring-set",
+      "title": "Hetian Jade Bear Necklace & Earring Set",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/hetian-jade-bear-necklace-earring-set"
+    },
+    {
+      "slug": "hetian-jade-butterfly-bracelet-earring-set",
+      "title": "Hetian Jade Butterfly Bracelet & Earring Set",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/hetian-jade-butterfly-bracelet-earring-set"
+    },
+    {
+      "slug": "holly-rose-faux-fur-claw-clip",
+      "title": "Holly Rose Faux-Fur Claw Clip",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/holly-rose-faux-fur-claw-clip"
+    },
+    {
+      "slug": "orange-pumpkin-felt-brooch",
+      "title": "Orange Pumpkin Felt Brooch",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/orange-pumpkin-felt-brooch"
+    },
+    {
+      "slug": "pastel-blossom-statement-headband",
+      "title": "Pastel Blossom Statement Headband",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/pastel-blossom-statement-headband"
+    },
+    {
+      "slug": "peach-hibiscus-felt-brooch",
+      "title": "Peach Hibiscus Felt Brooch",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/peach-hibiscus-felt-brooch"
+    },
+    {
+      "slug": "pink-pumpkin-felt-brooch",
+      "title": "Pink Pumpkin Felt Brooch",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/pink-pumpkin-felt-brooch"
+    },
+    {
+      "slug": "pumpkin-felt-hair-clip",
+      "title": "Pumpkin Felt Hair Clip",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/pumpkin-felt-hair-clip"
+    },
+    {
+      "slug": "pumpkin-patch-faux-fur-claw-clip",
+      "title": "Pumpkin Patch Faux-Fur Claw Clip",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/pumpkin-patch-faux-fur-claw-clip"
+    },
+    {
+      "slug": "white-hetian-jade-jewellery-set",
+      "title": "White Hetian Jade Jewellery Set",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/white-hetian-jade-jewellery-set"
+    },
+    {
+      "slug": "woodland-toadstool-felt-brooch",
+      "title": "Woodland Toadstool Felt Brooch",
+      "stockCount": 1,
+      "imageCount": 1,
+      "reason": "Thin gallery (≤1 image) but stocked with real copy — unsure unfinished vs intentionally shown; left published",
+      "url": "https://tengology.com/product/woodland-toadstool-felt-brooch"
+    }
+  ]
+}
