@@ -278,6 +278,7 @@ model OrderItem {
   productTitleSnapshot String
   productSlugSnapshot  String?
   productImageSnapshot String?
+  designSnapshot       String? // immutable JSON: design, bead names, sizes, colours, sequence
   quantity             Int
   unitPrice            Float
   totalPrice           Float

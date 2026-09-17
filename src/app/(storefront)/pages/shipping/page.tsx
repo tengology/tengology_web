@@ -16,6 +16,8 @@ import {
   POLICIES_UPDATED,
 } from "@/lib/legal";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Delivery",
   description:
@@ -131,10 +133,15 @@ export default async function ShippingPage() {
           <p>
             UK Tracked 48 is free once your basket reaches{" "}
             {formatMoney(freeThreshold)}. The free rate applies to Tracked 48
-            only &mdash; Tracked 24 and Special Delivery stay chargeable, so an
-            upgrade is never given away by accident.
+            only &mdash; Tracked 24 stays chargeable, so an upgrade is never
+            given away by accident.
           </p>
         )}
+        <p>
+          Need something sooner? Royal Mail Special Delivery can be arranged
+          on request and is quoted case by case &mdash; it is not offered as a
+          flat rate at checkout.
+        </p>
       </PolicySection>
 
       <PolicySection title="Customs and duties outside the UK">

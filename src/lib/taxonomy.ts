@@ -66,6 +66,15 @@ export type CategoryCollection = {
    * one, so a collection is never blocked on photography.
    */
   image?: { src: string; alt: string; aspectRatio?: string };
+  /** Photographs shown under the collection's grid as decoration — earlier
+   *  work, not for sale. Same shape as a family's gallery. */
+  gallery?: Category["gallery"];
+  /**
+   * A tile that is really one of the family's types rather than a named line —
+   * it opens that type's filter instead of a collection page, and is shown
+   * only while the type has something published.
+   */
+  subcategory?: SubcategoryKey;
 };
 
 export type Category = {
@@ -123,8 +132,54 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       alt: "A teal crystal bead necklace with a gold initial charm, presented in a Tengology gift box",
       aspect: "4/5",
     },
-    subcategories: ["JEWELLERY"],
+    subcategories: ["JEWELLERY", "ORNAMENTS"],
     hasIntentions: true,
+    collections: [
+      {
+        name: "Jewellery",
+        subcategory: "JEWELLERY",
+        tagline: "Stones strung, wired and worn",
+        detail:
+          "Bracelets, necklaces, earrings and rings built around a single stone or a small cluster — pearl, jade, rose quartz, carnelian and obsidian among them.",
+        tags: ["Bracelets", "Necklaces", "Earrings", "Rings"],
+        image: {
+          src: "/products/comet/pearl-carnelian-cluster-earrings-hero.jpg",
+          alt: "Freshwater pearl and carnelian cluster earrings on a pale background",
+          aspectRatio: "3 / 4",
+        },
+      },
+      {
+        name: "Crysprout",
+        // Portrait hero for the collection page (CategoryHero right column).
+        image: {
+          src: "/products/crysprout/img_9305.webp",
+          alt: "A clear quartz Crysprout on a wood slice among garden daisies",
+          aspectRatio: "3 / 4",
+        },
+        tagline: "Little clay sprouts, crowned in crystal",
+        detail:
+          "Round clay figures with sleepy faces, each wearing a raw crystal on its head, tufted with moss and tiny flowers. Every sprout is made around its own stone, so no two are alike.",
+        tags: ["Clay", "Raw crystal", "One of a kind", "Desk companion"],
+        gallery: {
+          heading: "From the Sprout Patch",
+          body: "Earlier sprouts, photographed among the daisies. Each one is made around its own stone, so none of these will be made again quite the same way.",
+          items: [
+            { kind: "image", src: "/products/crysprout/img_9322.webp", alt: "A small and a tall clear quartz Crysprout side by side on wood slices" },
+            { kind: "image", src: "/products/crysprout/img_9303.webp", alt: "A Crysprout crowned with twin amethyst points and pink dried flowers" },
+            { kind: "image", src: "/products/crysprout/img_9312.webp", alt: "A small Crysprout wearing a block of black tourmaline" },
+            { kind: "image", src: "/products/crysprout/img_9306.webp", alt: "A Crysprout crowned with rough rose and lavender quartz" },
+            { kind: "image", src: "/products/crysprout/img_9314.webp", alt: "A small Crysprout with bright orange rough stone and a red dried flower" },
+            { kind: "image", src: "/products/crysprout/img_9305.webp", alt: "A Crysprout with a tall clear quartz point among daisies" },
+            { kind: "image", src: "/products/crysprout/img_9315.webp", alt: "A small Crysprout with smoky quartz and lilac dried flowers" },
+            { kind: "image", src: "/products/crysprout/img_9307.webp", alt: "A Crysprout crowned with a honey-gold citrine cluster" },
+            { kind: "image", src: "/products/crysprout/img_9311.webp", alt: "A small Crysprout wearing deep blue lapis on a moss tuft" },
+            { kind: "image", src: "/products/crysprout/img_9320.webp", alt: "A small and a large amethyst Crysprout side by side among daisies" },
+            { kind: "image", src: "/products/crysprout/img_9308.webp", alt: "A Crysprout with sea-green fluorite and a red dried flower" },
+            { kind: "image", src: "/products/crysprout/img_9317.webp", alt: "A small Crysprout with rough pink rose quartz" },
+          ],
+        },
+      },
+    ],
   },
 
   FELT: {
@@ -236,28 +291,32 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
         tags: ["Headbands", "Hair clips", "Easter"],
       },
       {
-        name: "Flower Headband",
+        name: "Signature Flower Collection",
         image: { src: "/lookbook/felt-flower-headbands-group.jpg", alt: "Colourful felt flower headbands arranged together", aspectRatio: "2400 / 1800" },
-        tagline: "A whole bouquet, worn",
+        tagline: "Our signature felt blooms",
         detail:
-          "Mixed-bloom headbands that aren't any one flower — hydrangea, anemone, dahlia, and full spring bouquets, built on satin-wrapped bands.",
+          "The Felt Flower Garden Headband and Single Flower Headband — our signature handmade felt flowers, gathered in one collection.",
         tags: ["Headbands", "Mixed blooms", "Statement"],
       },
       {
-        name: "Flower Hairclip",
-        image: { src: "/products/cottage-garden/hydrangea-clip-group.jpg", alt: "Pink felt flower hair accessories on a wooden tray", aspectRatio: "3024 / 4032" },
-        tagline: "One bloom, clipped in",
+        name: "Hibiscus",
+        tagline: "Soft petals, tropical colour",
         detail:
-          "Clips, claw clips, barrettes, and scrunchies carrying mixed florals — the pieces to reach for when a headband is too much.",
-        tags: ["Hair clips", "Claw clips", "Barrettes", "Scrunchies"],
+          "Handmade felt hibiscus flowers in peach tones, available as hair clips and brooches.",
+        tags: ["Hair clips", "Brooches", "Peach"],
       },
       {
-        name: "Flower Brooch",
-        image: { src: "/products/cottage-garden/hydrangea-brooch-group.jpg", alt: "Pink felt flower brooches arranged on a wooden tray", aspectRatio: "3024 / 4032" },
-        tagline: "A garden on the lapel",
+        name: "Spring Bouquet",
+        tagline: "A little spring garden",
         detail:
-          "Mixed-bloom brooches backed with a pin, sized to move between a coat, a blazer, and the strap of a bag.",
-        tags: ["Brooches", "Mixed blooms", "Lapel"],
+          "Coordinating spring bouquet headbands, claw clips and brooches, with handmade felt flowers gathered together.",
+        tags: ["Headbands", "Claw clips", "Brooches"],
+      },
+      {
+        name: "Woodland",
+        tagline: "Little treasures from the woodland",
+        detail: "Felt toadstools, flowers and leaves, made into playful hair clips and brooches.",
+        tags: ["Toadstools", "Hair clips", "Brooches"],
       },
       {
         name: "Forget-me-not",
@@ -526,7 +585,12 @@ export function categoryLabel(value: string | undefined | null): string | null {
   return getCategory(value)?.label ?? null;
 }
 
-export function subcategoryLabel(value: string | undefined | null): string | null {
+export function subcategoryLabel(
+  value: string | undefined | null,
+  category?: string | null
+): string | null {
+  // Keep the stored key and other families' ornament labels unchanged.
+  if (getCategory(category)?.key === "GEMSTONE" && value === "ORNAMENTS") return "Crysprout";
   return isSubcategoryKey(value) ? SUBCATEGORY_LABELS[value] : null;
 }
 
@@ -539,7 +603,7 @@ export function bucketLabel(
   subcategory: string | undefined | null
 ): string | null {
   const cat = categoryLabel(category);
-  const sub = subcategoryLabel(subcategory);
+  const sub = subcategoryLabel(subcategory, category);
   if (cat && sub) return `${cat} ${sub}`;
   return cat ?? sub;
 }

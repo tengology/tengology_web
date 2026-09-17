@@ -275,6 +275,32 @@ export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
   });
 
   if (!result.ok) {
+    if (result.uncertain) {
+      // Keep the stock claim and take the shopper to their private status page.
+      // Retrying with a new order could charge them again after a network timeout.
+      await prisma.payment.update({
+        where: { id: payment.id },
+        data: {
+          squarePaymentId: result.paymentId ?? null,
+          errorCode: result.errorCode ?? null,
+          errorMessage: "Payment result awaiting reconciliation with Square",
+        },
+      });
+      await recordOrderEvent({
+        orderId: order.id,
+        type: ORDER_EVENT.NOTE,
+        message: "Payment result is pending. Check Square before requesting another payment or releasing stock.",
+        actor: "system",
+        isCustomerVisible: false,
+      });
+      return {
+        ok: true,
+        orderNumber: order.orderNumber,
+        orderId: order.id,
+        guestToken: userId ? null : order.guestToken,
+        total: order.total,
+      };
+    }
     // 5a. Payment refused — release the stock, keep the order for the record.
     await prisma.payment.update({
       where: { id: payment.id },
@@ -313,7 +339,7 @@ export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
   }
 
   // 5b. Paid.
-  await prisma.payment.update({
+  await prisma.$transaction([prisma.payment.update({
     where: { id: payment.id },
     data: {
       status: "COMPLETED",
@@ -324,9 +350,7 @@ export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
       walletType: result.walletType ?? null,
       raw: result.raw ? serialiseError(result.raw) : null,
     },
-  });
-
-  await prisma.order.update({
+  }), prisma.order.update({
     where: { id: order.id },
     data: {
       status: ORDER_STATUS.PAID,
@@ -335,7 +359,7 @@ export async function placeOrder(input: unknown): Promise<PlaceOrderResult> {
       squarePaymentId: result.paymentId ?? null,
       squareReceiptUrl: result.receiptUrl ?? null,
     },
-  });
+  })]);
 
   await recordOrderEvent({
     orderId: order.id,

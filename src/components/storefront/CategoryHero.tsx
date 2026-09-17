@@ -6,19 +6,28 @@ import type { Category, CategoryCollection } from "@/lib/taxonomy";
  * The head of a category page: the craft on the left, a portrait of it on the
  * right — the same split the home page opens with.
  *
- * It replaces a wide banner strip that carried the title over a 40%-opacity
- * crop. That treatment washed out the photograph and letterboxed work that was
- * shot portrait; here the image is given its full height and the copy is read
- * rather than overlaid.
- *
- * The visual is the family's `card` — the crop already cut portrait for the
- * home page — except where the family has a process clip, which is worth more
- * than a still and is already shot vertical.
+ * When a collection (or a subcategory mapped to a collection tile) is open,
+ * the hero speaks for that line — name, tagline, detail, photo — instead of
+ * the parent family's "Grounded Luxury" story.
  */
-export function CategoryHero({ category, collection }: { category: Category; collection?: CategoryCollection }) {
-  const { label, blurb, intro, card, media } = category;
-  const photo = collection?.image ?? card;
-  const useVideo = !collection?.image && media.kind === "video";
+export function CategoryHero({
+  category,
+  collection,
+}: {
+  category: Category;
+  collection?: CategoryCollection;
+}) {
+  const label = collection?.name ?? category.label;
+  const blurb = collection ? category.label : category.blurb;
+  const heading = collection?.tagline ?? category.intro.heading;
+  const body = collection?.detail ?? category.intro.body;
+  const photo = collection?.image ?? category.card;
+  const useVideo = !collection?.image && category.media.kind === "video";
+  const media = category.media;
+  // Portrait hero crops for collection photos unless the taxonomy names a ratio.
+  const figureStyle = collection?.image?.aspectRatio
+    ? { aspectRatio: collection.image.aspectRatio }
+    : undefined;
 
   return (
     <section className="xuan-paper border-b">
@@ -30,17 +39,17 @@ export function CategoryHero({ category, collection }: { category: Category; col
               {label}
             </h1>
             <p className="mt-6 font-heading text-2xl leading-tight text-muted-foreground lg:text-3xl">
-              {intro.heading}
+              {heading}
             </p>
             <p className="mt-6 max-w-md leading-relaxed text-muted-foreground">
-              {intro.body}
+              {body}
             </p>
           </div>
 
           <div className="lg:col-span-6">
             <figure
               className="relative aspect-[4/5] overflow-hidden bg-muted lg:aspect-[3/4]"
-              style={collection?.image ? { aspectRatio: collection.image.aspectRatio ?? "4 / 3" } : undefined}
+              style={figureStyle}
             >
               {useVideo && media.kind === "video" ? (
                 <ProcessVideo
@@ -56,7 +65,7 @@ export function CategoryHero({ category, collection }: { category: Category; col
                   fill
                   preload
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className={collection?.image ? "object-contain" : "object-cover motion-safe:animate-[hero-zoom_14s_var(--ease-soft)_forwards]"}
+                  className="object-cover motion-safe:animate-[hero-zoom_14s_var(--ease-soft)_forwards]"
                 />
               )}
             </figure>

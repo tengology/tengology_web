@@ -211,9 +211,9 @@ export default function AboutPage() {
             </div>
             <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">
               <p>
-                I was born in Sabah, Malaysia &mdash; right on the edge of
-                Borneo, close enough to Indonesia that the cultures blend
-                into one another. Growing up, Batik was everywhere. Not the
+                I was born in Sabah, Malaysia, into a Malaysian Chinese
+                family &mdash; right on the edge of Borneo, close enough to
+                Indonesia that the cultures blend into one another. Growing up, Batik was everywhere. Not the
                 Malaysian style most people picture, but Indonesian Batik
                 &mdash; bolder, more intricate, with flowers and patterns
                 that feel almost alive on the cloth.
@@ -241,7 +241,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Chapter 4: Stained Glass */}
+      {/* Chapter 4: Chinese heritage */}
       <section className="border-t bg-muted/30">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
@@ -250,14 +250,71 @@ export default function AboutPage() {
                 Chapter Four
               </p>
               <h2 className="font-heading text-4xl leading-[0.95] mb-6 lg:text-5xl">
+                Knots, lions
+                <br />
+                &amp; <span className="italic">new year</span>
+              </h2>
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <Image
+                  src="/products/lion-dance/lion-dance-charm-lineup-hero.jpg"
+                  alt="A row of little lion dance heads twisted from pipe cleaners, in red, pink, orange and purple"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="mt-4 relative aspect-[4/3] overflow-hidden">
+                <Image
+                  src="/studio/knot-brooches-bench.jpg"
+                  alt="Chinese knot brooches and tassels laid out with pliers on the workbench"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 320px"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">
+              <p>
+                Growing up Malaysian Chinese, I grew up with Chinese culture
+                as much as anything else. Chinese New Year was the high point
+                of the year &mdash; red everywhere, the drums and cymbals of
+                the lion dance, Chinese knots hung up for good luck. I still
+                celebrate it every year, even here in England.
+              </p>
+              <p>
+                So not everything I make is beads and stones. Some of it comes
+                straight from that side of me: Chinese knots, tied by hand and
+                turned into hair clips and brooches, and little lion dance
+                heads twisted together from pipe cleaners &mdash; bright,
+                bold, and a bit cheeky, just like the real thing.
+              </p>
+              <p>
+                These are the crafts of the festivals I grew up with, made
+                small enough to wear or to hang up at home, so a piece of that
+                celebration can travel with you wherever you are.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Chapter 5: Stained Glass */}
+      <section className="border-t">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+            <div className="lg:col-span-2">
+              <p className="eyebrow mb-4">
+                Chapter Five
+              </p>
+              <h2 className="font-heading text-4xl leading-[0.95] mb-6 lg:text-5xl">
                 My father&rsquo;s
                 <br />
                 <span className="italic">glass</span>
               </h2>
               <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
-                  src="/Gemini_Generated_Image_9yivvq9yivvq9yiv.png"
-                  alt="Sunlight streaming through begonia-patterned stained glass with handmade glass earrings and pendants"
+                  src="/lookbook/story-stained-glass-earrings.webp"
+                  alt="Handmade rose-pink stained glass earrings with silver-coloured edges on a clear display stand"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
@@ -294,7 +351,7 @@ export default function AboutPage() {
       </section>
 
       {/* The Thread: The Connection */}
-      <section className="border-t">
+      <section className="border-t bg-muted/30">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="grid lg:grid-cols-5 gap-10 lg:gap-16 items-start">
             <div className="lg:col-span-2">
@@ -309,8 +366,8 @@ export default function AboutPage() {
             </div>
             <div className="lg:col-span-3 space-y-5 text-muted-foreground leading-relaxed">
               <p>
-                Wool felt, crystals, Batik, stained glass &mdash; people
-                sometimes ask how they all belong together. To me, the
+                Wool felt, crystals, Batik, Chinese knots, stained glass
+                &mdash; people sometimes ask how they all belong together. To me, the
                 answer has always been obvious: every collection starts with
                 a material that means something. Something I&rsquo;ve
                 touched, grown up with, or inherited.
@@ -318,8 +375,9 @@ export default function AboutPage() {
               <p>
                 Wool felt is the warmth I found in England. Crystals are the
                 earth&rsquo;s quiet energy. Batik is the culture I carried
-                with me from Sabah. Stained glass is my father&rsquo;s
-                legacy. They&rsquo;re different materials, but they arrive
+                with me from Sabah. Chinese knots and lion dance are the
+                festivals I grew up celebrating as a Malaysian Chinese.
+                Stained glass is my father&rsquo;s legacy. They&rsquo;re different materials, but they arrive
                 in my hands the same way &mdash; with their own texture,
                 colour, and story &mdash; and they leave as something
                 personal, something you choose to wear because it means
@@ -339,7 +397,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="border-t bg-muted/30">
+      <section className="border-t">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <h2 className="font-heading text-4xl leading-[0.95] text-center mb-12 lg:text-5xl">
             What I believe in

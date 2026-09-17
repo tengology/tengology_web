@@ -120,6 +120,8 @@ export interface CreatePaymentInput {
 
 export interface SquarePaymentResult {
   ok: boolean;
+  /** A timeout or pending authorisation is not a declined payment. */
+  uncertain?: boolean;
   paymentId?: string;
   status?: string;
   receiptUrl?: string;
@@ -156,7 +158,7 @@ export async function createSquarePayment(input: CreatePaymentInput): Promise<Sq
     const payment = response.payment;
 
     if (!payment) {
-      return { ok: false, errorCode: "NO_PAYMENT", errorMessage: "Square did not return a payment." };
+      return { ok: false, uncertain: true, errorCode: "NO_PAYMENT", errorMessage: "We are checking your payment. Please do not pay again." };
     }
 
     // COMPLETED means captured. APPROVED means authorised but not captured —
@@ -165,6 +167,7 @@ export async function createSquarePayment(input: CreatePaymentInput): Promise<Sq
 
     return {
       ok: captured,
+      uncertain: !captured && payment.status !== "FAILED" && payment.status !== "CANCELED",
       paymentId: payment.id,
       status: payment.status,
       receiptUrl: payment.receiptUrl,
@@ -178,7 +181,13 @@ export async function createSquarePayment(input: CreatePaymentInput): Promise<Sq
     };
   } catch (error) {
     const { code, message } = describeSquareError(error);
-    return { ok: false, errorCode: code, errorMessage: message, raw: serialiseError(error) };
+    return {
+      ok: false,
+      uncertain: !(error instanceof SquareError) || !error.statusCode || error.statusCode >= 500,
+      errorCode: code,
+      errorMessage: message,
+      raw: serialiseError(error),
+    };
   }
 }
 

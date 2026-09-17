@@ -51,6 +51,7 @@ export interface OrderLineInput {
   productId: string;
   quantity: number;
   personalisation?: string;
+  designEncoded?: string;
 }
 
 /**
@@ -72,6 +73,7 @@ export function buildOrderLines(items: CartItem[]): OrderLineInput[] {
       byLine.set(key, {
         productId: item.productId,
         quantity: item.quantity,
+        ...(item.design ? { designEncoded: item.design.encoded } : {}),
         ...(item.personalisation?.length
           ? {
               personalisation: item.personalisation

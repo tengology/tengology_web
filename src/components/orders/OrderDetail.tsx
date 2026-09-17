@@ -7,6 +7,7 @@ import { CUSTOMER_CANCELLABLE, trackingUrlFor } from "@/lib/constants";
 import { OrderStatusBadge } from "./OrderStatusBadge";
 import { OrderTimeline } from "./OrderTimeline";
 import { CancelOrderButton, ReorderButton } from "./OrderActions";
+import { DesignSheet } from "./DesignSheet";
 
 interface OrderDetailOrder {
   id: string;
@@ -34,11 +35,13 @@ interface OrderDetailOrder {
   shippedAt: Date | null;
   deliveredAt: Date | null;
   email: string;
+  phone?: string | null;
   items: Array<{
     id: string;
     productTitleSnapshot: string;
     productSlugSnapshot: string | null;
     productImageSnapshot: string | null;
+    designSnapshot?: string | null;
     quantity: number;
     unitPrice: number;
     totalPrice: number;
@@ -117,6 +120,7 @@ export function OrderDetail({
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
+          {order.items.map(item => <DesignSheet key={item.id} snapshot={item.designSnapshot} quantity={item.quantity} />)}
           {/* Items */}
           <section className="rounded-sm border">
             <h2 className="border-b px-5 py-3 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
@@ -225,8 +229,8 @@ export function OrderDetail({
                 </span>
               ))}
             </address>
-            {shipping?.phone && (
-              <p className="mt-2 text-sm text-muted-foreground">{shipping.phone}</p>
+            {(order.phone || shipping?.phone) && (
+              <p className="mt-2 text-sm text-muted-foreground">Mobile for delivery updates: {order.phone || shipping?.phone}</p>
             )}
           </section>
 

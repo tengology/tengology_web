@@ -31,7 +31,17 @@ export default function SignInPage() {
     if (res?.error) {
       setError("Invalid email or password");
     } else {
-      router.push("/account");
+      // Keep order/packing-list deep links after sign-in, but never redirect
+      // to an external address supplied in a query parameter.
+      const requested = new URLSearchParams(window.location.search).get("callbackUrl");
+      let destination = "/account";
+      if (requested) {
+        try {
+          const url = new URL(requested, window.location.origin);
+          if (url.origin === window.location.origin) destination = url.pathname + url.search + url.hash;
+        } catch { /* malformed redirect: use account overview */ }
+      }
+      router.push(destination);
       router.refresh();
     }
   };

@@ -23,7 +23,7 @@ PUBLISH="-p 127.0.0.1:3000:3000"
 ROOT=/opt/tengology
 REL=$(date +%Y%m%d-%H%M%S)
 IMAGE="tengology:$REL"
-RUN_ENV="--env-file $ROOT/shared/prod.env -e NODE_ENV=production -e PORT=3000 -e HOSTNAME=0.0.0.0"
+RUN_ENV="--env-file $ROOT/shared/prod.env -e NODE_ENV=production -e PORT=3000 -e HOSTNAME=0.0.0.0 --mount type=bind,src=$ROOT/shared/image-cache,dst=/app/.next/cache/images"
 
 SSH=(ssh -i "$KEY" -o IdentitiesOnly=yes -o BatchMode=yes "$HOST")
 say() { printf '\n\033[1m▸ %s\033[0m\n' "$*"; }
@@ -32,7 +32,7 @@ cd "$(dirname "$0")/.."
 [[ -f .env.local ]] || { echo "no .env.local — cannot build"; exit 1; }
 
 say "1/6  ship source → $HOST:$ROOT/releases/$REL"
-"${SSH[@]}" "mkdir -p $ROOT/releases/$REL/source $ROOT/shared"
+"${SSH[@]}" "mkdir -p $ROOT/releases/$REL/source $ROOT/shared/image-cache && chown 1000:1000 $ROOT/shared/image-cache"
 # NOTE: macOS ships rsync 2.6.9, which exits 0 while transferring nothing on
 # unknown flags. tar over ssh is the reliable path here.
 # --no-xattrs: macOS tar otherwise emits an extended-attribute header per

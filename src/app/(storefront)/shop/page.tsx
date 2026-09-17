@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/storefront/Reveal";
 import { SectionHeading } from "@/components/storefront/SectionHeading";
@@ -13,7 +12,7 @@ import {
   AUDIENCE_LABELS,
   CATEGORY_LIST,
   INTENTIONS,
-  SUBCATEGORY_LABELS,
+  subcategoryLabel,
   audienceLabel,
   bucketLabel,
   getCategory,
@@ -218,12 +217,25 @@ export default async function ShopPage({
    * broken shop, and a line kept only in the taxonomy is not a real collection.
    */
   const shownCollections =
-    family?.collections?.filter((col) => stockedCollections.has(col.name)) ?? [];
+    family?.collections?.filter((col) =>
+      col.subcategory ? stockedTypes.includes(col.subcategory) : stockedCollections.has(col.name)
+    ) ?? [];
 
   /** The collection being viewed, when the URL names one this family defines. */
   const openCollection = collection
-    ? family?.collections?.find((col) => col.name === collection)
+    ? family?.collections?.find((col) => !col.subcategory && col.name === collection)
     : undefined;
+
+  /**
+   * Story for the hero: a named collection page, or a subcategory that maps to
+   * a collection tile (Jewellery under Gemstone). When set, CategoryHero speaks
+   * for that line instead of the parent family's intro.
+   */
+  const storyCollection =
+    openCollection ??
+    (subcategory
+      ? family?.collections?.find((col) => col.subcategory === subcategory)
+      : undefined);
 
   /** The family, when it has nothing published at all — as opposed to a filter
    *  that happens to exclude everything. */
@@ -266,9 +278,9 @@ export default async function ShopPage({
 
   return (
     <div>
-      {/* Felt collections open directly on their own name and products. */}
+      {/* Felt collections open on their own name; other story lines use CategoryHero. */}
       {isFeltCollection ? null : family ? (
-        <CategoryHero category={family} />
+        <CategoryHero category={family} collection={storyCollection} />
       ) : (
         <div className="border-b">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -295,7 +307,11 @@ export default async function ShopPage({
             {shownCollections.map((col) => (
               <Link
                 key={col.name}
-                href={`/shop?category=${family!.key}&collection=${encodeURIComponent(col.name)}`}
+                href={
+                  col.subcategory
+                    ? `/shop?category=${family!.key}&sub=${col.subcategory}`
+                    : `/shop?category=${family!.key}&collection=${encodeURIComponent(col.name)}`
+                }
                 className="group rounded-sm border px-5 py-4 transition-colors hover:bg-muted/50"
               >
                 <h4 className="font-heading text-lg font-light transition-colors lg:text-xl">
@@ -310,7 +326,7 @@ export default async function ShopPage({
         </div>
       )}
 
-      {/* Collection back link, and the copy the showcase tile is too small for */}
+      {/* Collection back link. Felt still titles here; other lines already have CategoryHero. */}
       {family && collection && (
         <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
           <Link
@@ -324,18 +340,7 @@ export default async function ShopPage({
               {collection}
             </h1>
           )}
-          {openCollection?.image && family.key !== "FELT" && (
-            <div className="relative mt-6 aspect-[2/1] w-full overflow-hidden bg-muted">
-              <Image
-                src={openCollection.image.src}
-                alt={openCollection.image.alt}
-                fill
-                sizes="(max-width: 1280px) 100vw, 1280px"
-                className="object-cover"
-              />
-            </div>
-          )}
-          {openCollection && (
+          {isFeltCollection && openCollection && (
             <div className="mt-6 max-w-2xl">
               <p className="text-sm italic text-muted-foreground">
                 {openCollection.tagline}
@@ -355,6 +360,18 @@ export default async function ShopPage({
               </div>
             </div>
           )}
+          {!isFeltCollection && openCollection && (
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {openCollection.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-sm border px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -368,7 +385,7 @@ export default async function ShopPage({
             <div />
           ) : (
             <div>
-              {!isFeltCollection && (
+              {!isFeltCollection && !storyCollection && (
                 <h2 className="font-heading text-3xl font-light lg:text-4xl">{title}</h2>
               )}
               {!isAllView && (
@@ -408,7 +425,7 @@ export default async function ShopPage({
                 href={`/shop?category=${family.key}&sub=${type}`}
                 active={subcategory === type}
               >
-                {SUBCATEGORY_LABELS[type]}
+                {subcategoryLabel(type, family.key)}
               </FilterPill>
             ))}
           </div>
@@ -545,6 +562,11 @@ export default async function ShopPage({
           <ProductGrid products={products} />
         )}
       </div>
+
+      {/* Earlier work under a collection's grid — decoration, not for sale. */}
+      {openCollection?.gallery && !subcategory && (
+        <CategoryGallery gallery={openCollection.gallery} />
+      )}
     </div>
   );
 }

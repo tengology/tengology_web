@@ -61,18 +61,6 @@ const FALLBACK_METHODS = [
     countries: "GB",
     sortOrder: 1,
   },
-  {
-    id: "special-delivery",
-    name: "Special Delivery",
-    description: "Royal Mail, guaranteed by 1pm, signed for",
-    carrier: "ROYAL_MAIL",
-    price: 11,
-    freeThreshold: null as number | null,
-    minDays: 1,
-    maxDays: 1,
-    countries: "GB",
-    sortOrder: 2,
-  },
 ];
 
 function describeEstimate(minDays: number | null, maxDays: number | null): string {

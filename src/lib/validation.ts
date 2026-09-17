@@ -20,6 +20,7 @@ export const cartLineSchema = z.object({
    * quote and the shopper sees a £0.00 basket with no explanation.
    */
   personalisation: z.string().trim().max(200).optional(),
+  designEncoded: z.string().max(60000).optional(),
 });
 
 /**

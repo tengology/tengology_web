@@ -5,6 +5,7 @@ import { formatMoney } from "./money";
 import { formatAddress, parseAddress, type StoredAddress } from "./orders";
 import { getSettings } from "./settings";
 import { trackingUrlFor } from "./constants";
+import { beadPickList, readDesignSnapshot } from "./design-snapshot";
 
 /**
  * Transactional email.
@@ -30,9 +31,12 @@ type OrderForEmail = {
   shippingAddress: string | null;
   guestToken: string | null;
   userId: string | null;
+  giftMessage?: string | null;
+  phone?: string | null;
   trackingNumber?: string | null;
   shippingCarrier?: string | null;
   items: Array<{
+    designSnapshot?: string | null;
     productTitleSnapshot: string;
     quantity: number;
     unitPrice: number;
@@ -100,7 +104,7 @@ async function send({
       to,
       subject,
       html,
-      replyTo: replyTo ?? settings.supportEmail,
+      replyTo: replyTo ?? process.env.EMAIL_REPLY_TO ?? settings.supportEmail,
     });
 
     if (result.error) throw new Error(result.error.message);
@@ -226,17 +230,29 @@ export function escapeHtml(value: string): string {
 }
 
 // ─── Public senders ─────────────────────────────────
+function designDetails(order: OrderForEmail): string {
+  return order.items.map(item => {
+    const d = readDesignSnapshot(item.designSnapshot);
+    if (!d) return "";
+    const picks = beadPickList(d, item.quantity).map(b => `<li>${escapeHtml(b.name)} · ${escapeHtml(b.color)} · ${b.sizeMm} mm × ${b.count}</li>`).join("");
+    const sequence = d.beads.map(b => `<tr><td style="padding:6px;border-bottom:1px solid #eee">${b.position}</td><td><img src="${escapeHtml(new URL(b.image, process.env.EMAIL_ASSET_URL ?? siteUrl()).href)}" width="28" height="28" alt="${escapeHtml(b.name)}"></td><td style="font-size:13px">${escapeHtml(b.name)} · ${b.sizeMm} mm · reference ${b.variant}</td></tr>`).join("");
+    return `<h2 style="font-size:18px">Your DIY bracelet design</h2>${p(`${item.quantity} bracelet(s) · Wrist ${d.wristMm} mm · Elastic · ${d.beads.length} beads each`)}${p("Bead quantities below cover all bracelets on this line. Stringing sequence is for one bracelet; bead 1 is the starting point.")}<ul>${picks}</ul><table role="presentation" width="100%">${sequence}</table>${p("Natural bead colours and markings may vary. View the saved design diagram on your order page.")}`;
+  }).join("");
+}
 
 export async function sendOrderConfirmation(order: OrderForEmail) {
   const settings = await getSettings();
   const address = parseAddress(order.shippingAddress);
+  const sandbox = process.env.SQUARE_ENVIRONMENT === "sandbox";
 
   const html = layout(
     "Thank you for your order",
     [
+      ...(sandbox ? [p("<strong>Sandbox test — no real payment was taken and nothing will be dispatched.</strong>")] : []),
       p(`Your order <strong>${escapeHtml(order.orderNumber)}</strong> is confirmed and we've started preparing it.`),
       p("Everything is made by hand, so please allow a few days before it ships. We'll email you as soon as it's on its way."),
       itemsTable(order),
+      designDetails(order),
       addressBlock(address),
       button(orderUrl(order), "View your order"),
       p(`<span style="color:${BRAND.muted};font-size:13px;">Questions? Just reply to this email.</span>`),
@@ -246,7 +262,7 @@ export async function sendOrderConfirmation(order: OrderForEmail) {
 
   return send({
     to: order.email,
-    subject: `Order confirmed — ${order.orderNumber}`,
+    subject: `${sandbox ? "[TEST] " : ""}Order confirmed — ${order.orderNumber}`,
     html,
     template: "order-confirmation",
     orderId: order.id,
@@ -270,6 +286,7 @@ export async function sendOrderShipped(order: OrderForEmail) {
         : "",
       itemsTable(order),
       addressBlock(parseAddress(order.shippingAddress)),
+      ...(order.phone ? [p(`Mobile for delivery updates (include when booking postage): ${escapeHtml(order.phone)}`)] : []),
       button(tracking ?? orderUrl(order), tracking ? "Track your parcel" : "View your order"),
     ].join(""),
     settings.storeName
@@ -365,7 +382,11 @@ export async function sendAdminNewOrder(order: OrderForEmail) {
     [
       p(`<strong>${formatMoney(order.total, order.currency)}</strong> from ${escapeHtml(order.email)}`),
       itemsTable(order),
+      designDetails(order),
       addressBlock(parseAddress(order.shippingAddress)),
+      ...(process.env.SQUARE_ENVIRONMENT === "sandbox" ? [p("<strong>Sandbox test — do not dispatch.</strong>")] : []),
+      ...(order.giftMessage ? [p(`Gift message: ${escapeHtml(order.giftMessage)}`)] : []),
+      button(`${siteUrl()}/admin/orders/${order.id}/packing-slip`, "Print packing list"),
       button(`${siteUrl()}/admin/orders/${order.id}`, "Open in admin"),
     ].join(""),
     settings.storeName
@@ -377,6 +398,7 @@ export async function sendAdminNewOrder(order: OrderForEmail) {
     html,
     template: "admin-new-order",
     orderId: order.id,
+    replyTo: order.email,
   });
 }
 

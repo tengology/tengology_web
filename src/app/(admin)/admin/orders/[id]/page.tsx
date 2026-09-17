@@ -9,6 +9,7 @@ import { trackingUrlFor } from "@/lib/constants";
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
 import { OrderTimeline } from "@/components/orders/OrderTimeline";
 import { AdminOrderActions } from "@/components/admin/AdminOrderActions";
+import { DesignSheet } from "@/components/orders/DesignSheet";
 
 export default async function AdminOrderDetailPage({
   params,
@@ -131,6 +132,7 @@ export default async function AdminOrderDetailPage({
           </section>
 
           {/* Timeline */}
+          {order.items.map(item => <DesignSheet key={item.id} snapshot={item.designSnapshot} quantity={item.quantity} />)}
           <section className="rounded-md border p-4">
             <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
               Timeline

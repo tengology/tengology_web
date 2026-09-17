@@ -10,7 +10,7 @@ import { prisma } from "../src/lib/db";
 /**
  * Every delivery price is Royal Mail's online price from 5 October 2026,
  * rounded up to the next whole pound: a small parcel up to 2kg in the UK, up
- * to 500g for Special Delivery, and up to 1kg abroad.
+ * and up to 1kg abroad. Special Delivery is quoted case by case — not a flat checkout rate.
  */
 
 const IRELAND = { zone: "europe", minDays: 3, maxDays: 7 };
@@ -95,18 +95,6 @@ const SHIPPING_METHODS = [
     countries: "GB",
     sortOrder: 1,
   },
-  {
-    id: "special-delivery-uk",
-    name: "Special Delivery",
-    description: "Royal Mail, guaranteed by 1pm, signed for",
-    carrier: "ROYAL_MAIL",
-    price: 11, // £10.85
-    freeThreshold: null,
-    minDays: 1,
-    maxDays: 1,
-    countries: "GB",
-    sortOrder: 2,
-  },
   ...INTERNATIONAL_METHODS,
   {
     // Catch-all for anywhere not priced above, at the dearest band so an
@@ -128,7 +116,7 @@ const SHIPPING_METHODS = [
  * Methods an earlier seed created. Left active they would still name their
  * countries and be offered alongside the per-country rates above.
  */
-const RETIRED_METHOD_IDS = ["ireland", "europe"];
+const RETIRED_METHOD_IDS = ["ireland", "europe", "special-delivery-uk"];
 
 const SETTINGS = {
   storeName: "Tengology",

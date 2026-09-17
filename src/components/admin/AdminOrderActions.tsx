@@ -189,7 +189,7 @@ export function AdminOrderActions({ order }: Props) {
 
           <Button asChild size="sm" variant="outline">
             <a href={`/admin/orders/${order.id}/packing-slip`} target="_blank" rel="noreferrer">
-              Packing slip
+              Packing list
             </a>
           </Button>
         </div>

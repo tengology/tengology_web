@@ -6,6 +6,7 @@ import { resolveShippingOption, type ShippingOption } from "./shipping";
 import { validateDiscountCode, recordRedemption, type DiscountResult } from "./discounts";
 import { ORDER_EVENT, ORDER_STATUS, PAYMENT_STATUS, FULFILLMENT_STATUS } from "./constants";
 import { HOME_COUNTRY, countryName, isDomestic } from "./countries";
+import { createDesignSnapshot } from "./design-snapshot";
 
 /**
  * Order pricing and lifecycle.
@@ -17,6 +18,7 @@ import { HOME_COUNTRY, countryName, isDomestic } from "./countries";
  */
 
 export interface CartLineInput {
+  designEncoded?: string;
   productId: string;
   quantity: number;
   /** Made-to-order choice, e.g. the initial on a letter pendant. */
@@ -24,6 +26,7 @@ export interface CartLineInput {
 }
 
 export interface PricedLine {
+  designSnapshot?: string;
   productId: string;
   slug: string;
   title: string;
@@ -104,6 +107,17 @@ export async function priceCart({
 
   for (const item of wanted) {
     const product = byId.get(item.productId);
+
+    if (item.designEncoded) {
+      try {
+        if (product?.slug !== "bespoke-crystal-design") throw Error("Invalid design product.");
+        const design = createDesignSnapshot(item.designEncoded);
+        lines.push({ productId: product.id, slug: product.slug, title: `Bespoke Bracelet — ${design.beads.length} beads`, image: null, unitPrice: design.unitPrice, quantity: item.quantity, totalPrice: round2(design.unitPrice * item.quantity), stockCount: 99, designSnapshot: JSON.stringify(design) });
+      } catch (error) {
+        issues.push({ productId: item.productId, title: "Bespoke bracelet", type: "UNAVAILABLE", message: error instanceof Error ? error.message : "Please review your design." });
+      }
+      continue;
+    }
 
     if (!product || !product.isPublished) {
       issues.push({
@@ -291,6 +305,7 @@ export async function createPendingOrder(input: CreateOrderInput) {
       // latest committed row, so exactly one of them claims the stock and the
       // loser gets count = 0.
       for (const line of priced.lines) {
+        if (line.designSnapshot) continue; // made to order, not finished-product stock
         const claimed = await tx.product.updateMany({
           where: {
             id: line.productId,
@@ -314,7 +329,7 @@ export async function createPendingOrder(input: CreateOrderInput) {
       const stockAfter = new Map(after.map((p) => [p.id, p.stockCount]));
 
       await tx.inventoryLog.createMany({
-        data: priced.lines.map((line) => {
+        data: priced.lines.filter(line => !line.designSnapshot).map((line) => {
           const quantityAfter = stockAfter.get(line.productId) ?? 0;
           return {
             productId: line.productId,
@@ -365,6 +380,7 @@ export async function createPendingOrder(input: CreateOrderInput) {
               : line.title,
             productSlugSnapshot: line.slug,
             productImageSnapshot: line.image,
+            designSnapshot: line.designSnapshot ?? null,
             quantity: line.quantity,
             unitPrice: line.unitPrice,
             totalPrice: line.totalPrice,
@@ -448,6 +464,7 @@ export async function releaseOrderStock(orderId: string, reason: string, actor =
 
   await prisma.$transaction(async (tx) => {
     for (const item of order.items) {
+      if (item.designSnapshot) continue;
       const restoreQty = item.quantity - item.quantityRefunded;
       if (restoreQty <= 0) continue;
 

@@ -8,9 +8,10 @@ import { getAccessibleOrder } from "@/lib/order-access";
 import { formatMoney } from "@/lib/money";
 import { formatAddress, parseAddress } from "@/lib/orders";
 import { ORDER_STATUS_LABELS } from "@/lib/constants";
+import { prisma } from "@/lib/db";
 
 export const metadata: Metadata = {
-  title: "Order confirmed | Tengology",
+  title: "Order status | Tengology",
   robots: { index: false, follow: false },
 };
 
@@ -30,14 +31,13 @@ export default async function ConfirmationPage({
   if (!access) {
     return (
       <div className="mx-auto max-w-xl px-4 py-24 text-center">
-        <CheckCircle2 className="mx-auto mb-6 h-12 w-12 text-emerald-600" />
-        <h1 className="mb-3 font-heading text-3xl font-light">Thank you for your order</h1>
+        <LockNotice />
+        <h1 className="mb-3 font-heading text-3xl font-light">Check your order</h1>
         <p className="mb-8 leading-relaxed text-muted-foreground">
-          Order <span className="font-mono">{params.order}</span> is confirmed. We&apos;ve emailed
-          your receipt.
+          Use your private order link, or look up your order using the email address you entered at checkout. We can&apos;t confirm a payment from this link alone.
         </p>
         <Button asChild>
-          <Link href="/shop">Continue shopping</Link>
+          <Link href="/orders/lookup">Look up your order</Link>
         </Button>
       </div>
     );
@@ -46,15 +46,21 @@ export default async function ConfirmationPage({
   const { order } = access;
   const address = parseAddress(order.shippingAddress);
   const isPaid = order.paymentStatus === "PAID";
+  const confirmationEmail = await prisma.emailLog.findFirst({
+    where: { orderId: order.id, template: "order-confirmation" },
+    orderBy: { createdAt: "desc" },
+    select: { status: true },
+  });
+  const emailSent = confirmationEmail?.status === "SENT";
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-14 sm:px-6 lg:py-20">
       <div className="mb-10 text-center">
-        <CheckCircle2 className="mx-auto mb-5 h-12 w-12 text-emerald-600" />
+        {isPaid ? <CheckCircle2 className="mx-auto mb-5 h-12 w-12 text-emerald-600" /> : <Clock className="mx-auto mb-5 h-12 w-12 text-amber-600" />}
         <h1 className="mb-2 font-heading text-3xl font-light">Thank you, {address?.firstName ?? "friend"}</h1>
         <p className="text-muted-foreground">
           Your order <span className="font-mono text-foreground">{order.orderNumber}</span> is
-          confirmed.
+          {isPaid ? "paid and confirmed." : "not confirmed as paid."}
         </p>
       </div>
 
@@ -62,8 +68,8 @@ export default async function ConfirmationPage({
         <div className="mb-6 flex items-start gap-3 rounded-sm border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
           <Clock className="mt-0.5 h-4 w-4 shrink-0" />
           <div>
-            <p className="font-medium">Awaiting payment</p>
-            <p>We&apos;ll email you shortly to arrange payment for this order.</p>
+            <p className="font-medium">Payment status: {order.paymentStatus.toLowerCase().replaceAll("_", " ")}</p>
+            <p>Check the order status below. If your bank shows a charge, contact us before paying again.</p>
           </div>
         </div>
       )}
@@ -145,9 +151,10 @@ export default async function ConfirmationPage({
         <div className="rounded-sm border p-5">
           <h2 className="mb-2 flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-muted-foreground">
             <Mail className="h-3.5 w-3.5" />
-            Confirmation sent to
+            {emailSent ? "Confirmation email submitted" : "Order contact email"}
           </h2>
           <p className="text-sm text-muted-foreground">{order.email}</p>
+          <p className="mt-2 text-xs text-muted-foreground">{emailSent ? "Your confirmation has been sent to our email provider. Check your inbox and junk folder." : "We haven't confirmed that your email was sent. Keep this page and use the order tracking link below."}</p>
           <p className="mt-3 text-xs text-muted-foreground">
             Everything is handmade, so please allow a few days before dispatch. We&apos;ll email you
             tracking as soon as it ships.
@@ -180,6 +187,10 @@ export default async function ConfirmationPage({
       )}
     </div>
   );
+}
+
+function LockNotice() {
+  return <Package className="mx-auto mb-6 h-12 w-12 text-muted-foreground" />;
 }
 
 function Row({ label, value }: { label: string; value: string }) {

@@ -14,7 +14,7 @@ import { formatMoney } from "@/lib/money";
 import { useHydrated } from "@/lib/use-hydrated";
 import { countriesByRegion, countryName, isPostcodeRequired, HOME_COUNTRY } from "@/lib/countries";
 import { quoteCheckout, placeOrder, type QuoteResult } from "@/actions/checkout";
-import { SquareCardForm, type SquareCardFormHandle } from "./SquareCardForm";
+import { SquareCardForm, type SquareCardFormHandle, type SquarePaymentMethod } from "./SquareCardForm";
 
 interface SavedAddress {
   id: string;
@@ -102,6 +102,7 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
   const [cardReady, setCardReady] = useState(false);
 
   const cardRef = useRef<SquareCardFormHandle>(null);
+  const paymentInFlight = useRef(false);
   const errorRef = useRef<HTMLDivElement>(null);
   /** One-way latch, set the moment an order is created. See the render guard. */
   const orderPlaced = useRef(false);
@@ -233,8 +234,11 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
     });
   }
 
-  async function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent | React.MouseEvent, method: SquarePaymentMethod = "card") {
     event.preventDefault();
+    if (paymentInFlight.current || submitting || quoting || orderPlaced.current) return;
+    const form = (event.currentTarget as HTMLElement).closest("form");
+    if (form && !form.reportValidity()) return;
     setFormError("");
     setErrors({});
 
@@ -243,7 +247,9 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
       return;
     }
 
+    paymentInFlight.current = true;
     startSubmit(async () => {
+      try {
       let sourceId: string | undefined;
       let verificationToken: string | undefined;
 
@@ -265,7 +271,7 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
             postalCode: (billingSame ? address : billing).postcode,
             countryCode: (billingSame ? address : billing).country,
           },
-        });
+        }, method);
 
         if (!tokenResult?.ok) {
           setFormError(tokenResult?.error ?? "Please check your card details.");
@@ -309,6 +315,12 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
       const query = new URLSearchParams({ order: result.orderNumber });
       if (result.guestToken) query.set("token", result.guestToken);
       router.push(`/checkout/confirmation?${query.toString()}`);
+      } catch {
+        setFormError("We couldn't confirm the result. Please check your email or track your order before trying again, to avoid paying twice.");
+        scrollToError();
+      } finally {
+        paymentInFlight.current = false;
+      }
     });
   }
 
@@ -353,7 +365,11 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
-      <h1 className="mb-10 font-heading text-3xl font-light lg:text-4xl">Checkout</h1>
+      <div className="mb-8 border-b pb-6">
+        <p className="mb-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">Secure checkout · GBP</p>
+        <h1 className="font-heading text-3xl font-light lg:text-4xl">Almost yours</h1>
+        <p className="mt-3 text-sm text-muted-foreground">Handmade in Oxford. Review your delivery and total before paying securely with Square.</p>
+      </div>
 
       <form onSubmit={handleSubmit} className="grid gap-10 lg:grid-cols-5 lg:gap-16">
         <div className="space-y-10 lg:col-span-3">
@@ -381,7 +397,7 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
           <section>
             <SectionHeading step={1}>Contact</SectionHeading>
             <div className="grid gap-3 sm:grid-cols-2">
-              <Field label="Email" error={errors.email} className="sm:col-span-2">
+              <Field label="Email" hint="Your order confirmation will be sent here." error={errors.email} className="sm:col-span-2">
                 <Input
                   type="email"
                   value={email}
@@ -392,9 +408,12 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
                   readOnly={Boolean(user?.email)}
                 />
               </Field>
-              <Field label="Phone (optional)" hint="For delivery updates">
+              <Field label="Mobile number (optional)" error={errors.phone} className="sm:col-span-2" hint="Prefer delivery updates by text? Add your mobile number so we can pass it to Royal Mail when booking your delivery. SMS updates depend on the delivery service. Leave blank for email only. Your order confirmation will still be sent by email.">
                 <Input
                   type="tel"
+                  inputMode="tel"
+                  maxLength={30}
+                  placeholder="UK mobile number or +44…"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   autoComplete="tel"
@@ -549,6 +568,15 @@ export function CheckoutClient({ squareConfig, user, savedAddresses }: Props) {
                   environment={squareConfig.environment}
                   postalCode={(billingSame ? address : billing).postcode}
                   onReadyChange={setCardReady}
+                  amount={(quote?.total ?? 0).toFixed(2)}
+                  disabled={disabled}
+                  onWalletPay={handleSubmit}
+                  shippingContact={{
+                    givenName: address.firstName, familyName: address.lastName,
+                    addressLines: [address.line1, address.line2].filter(Boolean),
+                    city: address.city, state: address.county, postalCode: address.postcode,
+                    countryCode: address.country, email, phone: phone || undefined,
+                  }}
                 />
 
                 <label className="mt-4 flex items-center gap-2 text-sm">
@@ -896,6 +924,8 @@ function AddressFields({
           value={value.postcode}
           onChange={(e) => onChange("postcode", e.target.value.toUpperCase())}
           autoComplete="postal-code"
+          type="text"
+          inputMode="text"
           required={postcodeRequired}
         />
       </Field>

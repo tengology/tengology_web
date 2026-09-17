@@ -228,11 +228,12 @@ async function finaliseRefund({
 
 /** Return refunded pieces to sellable stock. */
 async function restockOrderItems(
-  order: { id: string; orderNumber: string; items: Array<{ productId: string; quantity: number; quantityRefunded: number }> },
+  order: { id: string; orderNumber: string; items: Array<{ productId: string; quantity: number; quantityRefunded: number; designSnapshot?: string | null }> },
   actor: string
 ) {
   await prisma.$transaction(async (tx) => {
     for (const item of order.items) {
+      if (item.designSnapshot) continue;
       const outstanding = item.quantity - item.quantityRefunded;
       if (outstanding <= 0) continue;
 

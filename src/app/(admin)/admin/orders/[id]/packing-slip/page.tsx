@@ -4,6 +4,7 @@ import { formatMoney } from "@/lib/money";
 import { formatAddress, parseAddress } from "@/lib/orders";
 import { getSettings } from "@/lib/settings";
 import { PrintButton } from "@/components/admin/PrintButton";
+import { DesignSheet } from "@/components/orders/DesignSheet";
 
 /**
  * Print-ready packing slip. Prices are shown for the seller's records but the
@@ -20,11 +21,14 @@ export default async function PackingSlipPage({ params }: { params: Promise<{ id
   return (
     <div className="mx-auto max-w-2xl print:max-w-none">
       <div className="mb-6 flex items-center justify-between print:hidden">
-        <p className="text-sm text-muted-foreground">Packing slip for {order.orderNumber}</p>
+        <p className="text-sm text-muted-foreground">Packing list for {order.orderNumber} — Print / Save as PDF</p>
         <PrintButton />
       </div>
 
       <div className="rounded-md border p-8 print:rounded-none print:border-0 print:p-0">
+        <h1 className="mb-3 text-xl font-medium">Packing list · {order.orderNumber}</h1>
+        <p className="mb-4 text-sm">Payment: {order.paymentStatus} · Fulfilment: {order.fulfillmentStatus}</p>
+        {order.paymentStatus !== "PAID" && <p className="mb-4 border-2 p-3 font-bold">HOLD — check payment / refund status before dispatch.</p>}
         <header className="mb-8 flex items-start justify-between border-b pb-6">
           <div>
             <p className="font-heading text-xl font-light uppercase tracking-[0.2em]">
@@ -56,7 +60,7 @@ export default async function PackingSlipPage({ params }: { params: Promise<{ id
                 </span>
               ))}
             </address>
-            {shipping?.phone && <p className="mt-1">{shipping.phone}</p>}
+            {(order.phone || shipping?.phone) && <p className="mt-2">Mobile for delivery updates: {order.phone || shipping?.phone}</p>}
           </div>
           <div>
             <p className="mb-2 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
@@ -80,7 +84,7 @@ export default async function PackingSlipPage({ params }: { params: Promise<{ id
           <tbody>
             {order.items.map((item) => (
               <tr key={item.id} className="border-b">
-                <td className="py-3">{item.productTitleSnapshot}</td>
+                <td className="py-3">☐ {item.productTitleSnapshot}<small className="block">Product ID: {item.productId}</small></td>
                 <td className="py-3 text-center">{item.quantity}</td>
                 <td className="py-3 text-right">{formatMoney(item.totalPrice, order.currency)}</td>
               </tr>
@@ -117,6 +121,8 @@ export default async function PackingSlipPage({ params }: { params: Promise<{ id
             </tr>
           </tfoot>
         </table>
+        {order.items.map(item => <DesignSheet key={item.id} snapshot={item.designSnapshot} quantity={item.quantity} />)}
+        <p className="my-6 text-sm">Packed by: ____________________ &nbsp; Date: ______________<br />☐ Items / quantities checked &nbsp; ☐ Address checked &nbsp; ☐ Gift message included</p>
 
         {order.giftMessage && (
           <div className="mb-6 rounded-sm border-2 border-dashed p-4">
