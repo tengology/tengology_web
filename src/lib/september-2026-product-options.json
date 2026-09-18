@@ -1,88 +1,296 @@
 {
   "pumpkin-cluster-felt-brooch": {
-    "label": "Colourway",
-    "hint": "Choose your pumpkin colour combination. Price is for one brooch.",
+    "label": "Colour",
+    "hint": "Choose your colour. Price is for one brooch.",
     "options": [
-      { "value": "Orange, Peach & Cream", "image": "/products/pumpkin-brooch/autumn-crop.webp" },
-      { "value": "Blue", "image": "/products/pumpkin-brooch/blue-crop.webp" },
-      { "value": "Purple & Lilac", "image": "/products/pumpkin-brooch/purple-crop.webp" },
-      { "value": "Pink & Blush", "image": "/products/pumpkin-brooch/pink-crop.webp" },
-      { "value": "Peach, Coral & Cream", "image": "/products/pumpkin-brooch/peach-crop.webp" }
+      {
+        "value": "Orange",
+        "image": "/products/pumpkin-brooch/autumn-crop.webp"
+      },
+      {
+        "value": "Blue",
+        "image": "/products/pumpkin-brooch/blue-crop.webp"
+      },
+      {
+        "value": "Pink",
+        "image": "/products/pumpkin-brooch/pink-crop.webp"
+      },
+      {
+        "value": "Purple",
+        "image": "/products/pumpkin-brooch/purple-crop.webp"
+      }
     ]
   },
   "brussels-sprout-felt-christmas-ornament": {
     "label": "Character",
     "hint": "Choose your sprout character. Price is for one ornament.",
     "options": [
-      { "value": "Red Gingham Bow", "image": "/products/ornaments/sprout-bow-gingham.jpg" },
-      { "value": "Red Satin Bow", "image": "/products/ornaments/sprout-bow-red.jpg" },
-      { "value": "Gold Glasses", "image": "/products/ornaments/sprout-glasses.jpg" },
-      { "value": "White Moustache", "image": "/products/ornaments/sprout-moustache-white.jpg" },
-      { "value": "Brown Moustache", "image": "/products/ornaments/sprout-moustache-brown.jpg" },
-      { "value": "Black Moustache", "image": "/products/ornaments/sprout-moustache-black.jpg" }
+      {
+        "value": "Red Gingham Bow",
+        "image": "/products/ornaments/sprout-bow-gingham.jpg"
+      },
+      {
+        "value": "Red Satin Bow",
+        "image": "/products/ornaments/sprout-bow-red.jpg"
+      },
+      {
+        "value": "Gold Glasses",
+        "image": "/products/ornaments/sprout-glasses.jpg"
+      },
+      {
+        "value": "White Moustache",
+        "image": "/products/ornaments/sprout-moustache-white.jpg"
+      },
+      {
+        "value": "Brown Moustache",
+        "image": "/products/ornaments/sprout-moustache-brown.jpg"
+      },
+      {
+        "value": "Black Moustache",
+        "image": "/products/ornaments/sprout-moustache-black.jpg"
+      }
     ]
   },
   "halloween-pumpkin-felt-headband": {
     "label": "Colourway",
     "hint": "Choose your pumpkin colours. Price is for one headband.",
     "options": [
-      { "value": "Halloween — Orange & Purple", "image": "/products/september-2026/img_9052.webp", "gallery": ["/products/september-2026/img_9052.webp", "/products/september-2026/img_9053.webp"] },
-      { "value": "Pink", "image": "/products/september-2026/img_8825.webp", "gallery": ["/products/september-2026/img_8825.webp", "/products/september-2026/img_8827.webp", "/products/september-2026/img_8863.webp"] },
-      { "value": "Lavender", "image": "/products/september-2026/img_8822.webp", "gallery": ["/products/september-2026/img_8822.webp", "/products/september-2026/img_8824.webp", "/products/september-2026/img_8864.webp"] },
-      { "value": "Blue", "image": "/products/september-2026/img_8818.webp", "gallery": ["/products/september-2026/img_8818.webp", "/products/september-2026/img_8820.webp"] },
-      { "value": "Purple & Cream", "image": "/products/september-2026/img_8802.webp", "gallery": ["/products/september-2026/img_8802.webp", "/products/september-2026/img_8806.webp", "/products/september-2026/img_9054.webp"] }
+      {
+        "value": "Halloween \u2014 Orange & Purple",
+        "image": "/products/september-2026/img_9052.webp",
+        "gallery": [
+          "/products/september-2026/img_9052.webp",
+          "/products/september-2026/img_9053.webp"
+        ]
+      },
+      {
+        "value": "Pink",
+        "image": "/products/september-2026/img_8825.webp",
+        "gallery": [
+          "/products/september-2026/img_8825.webp",
+          "/products/september-2026/img_8827.webp",
+          "/products/september-2026/img_8863.webp"
+        ]
+      },
+      {
+        "value": "Lavender",
+        "image": "/products/september-2026/img_8822.webp",
+        "gallery": [
+          "/products/september-2026/img_8822.webp",
+          "/products/september-2026/img_8824.webp",
+          "/products/september-2026/img_8864.webp"
+        ]
+      },
+      {
+        "value": "Blue",
+        "image": "/products/september-2026/img_8818.webp",
+        "gallery": [
+          "/products/september-2026/img_8818.webp",
+          "/products/september-2026/img_8820.webp"
+        ]
+      },
+      {
+        "value": "Purple & Cream",
+        "image": "/products/september-2026/img_8802.webp",
+        "gallery": [
+          "/products/september-2026/img_8802.webp",
+          "/products/september-2026/img_8806.webp",
+          "/products/september-2026/img_9054.webp"
+        ]
+      }
     ]
   },
   "bumblebee-garden-felt-headband": {
     "label": "Headband colour",
     "hint": "Choose Berry or Lilac. Price is for one headband.",
     "options": [
-      { "value": "Berry", "image": "/products/bumblebee-headband/img_9565-full.webp", "gallery": ["/products/bumblebee-headband/img_9565-full.webp", "/products/bumblebee-headband/img_9564-full.webp", "/products/bumblebee-headband/img_9566-full.webp", "/products/bumblebee-headband/img_9567-full.webp"] },
-      { "value": "Lilac", "image": "/products/bumblebee-headband/img_9569-full.webp", "gallery": ["/products/bumblebee-headband/img_9569-full.webp", "/products/bumblebee-headband/img_9568-full.webp", "/products/bumblebee-headband/img_9570-full.webp", "/products/bumblebee-headband/img_9572-full.webp"] }
+      {
+        "value": "Berry",
+        "image": "/products/bumblebee-headband/img_9565-full.webp",
+        "gallery": [
+          "/products/bumblebee-headband/img_9565-full.webp",
+          "/products/bumblebee-headband/img_9564-full.webp",
+          "/products/bumblebee-headband/img_9566-full.webp",
+          "/products/bumblebee-headband/img_9567-full.webp"
+        ]
+      },
+      {
+        "value": "Lilac",
+        "image": "/products/bumblebee-headband/img_9569-full.webp",
+        "gallery": [
+          "/products/bumblebee-headband/img_9569-full.webp",
+          "/products/bumblebee-headband/img_9568-full.webp",
+          "/products/bumblebee-headband/img_9570-full.webp",
+          "/products/bumblebee-headband/img_9572-full.webp"
+        ]
+      }
     ]
   },
   "bumblebee-garden-faux-fur-claw-clip": {
     "label": "Faux-fur colour",
     "hint": "Choose Cream or White. Price is for one claw clip.",
     "options": [
-      { "value": "Cream", "image": "/products/bumblebee-garden/img_9560-full.webp", "gallery": ["/products/bumblebee-garden/img_9560-full.webp", "/products/bumblebee-garden/img_9561-full.webp"] },
-      { "value": "White", "image": "/products/bumblebee-garden/img_9562-full.webp", "gallery": ["/products/bumblebee-garden/img_9562-full.webp", "/products/bumblebee-garden/img_9563-full.webp"] }
+      {
+        "value": "Cream",
+        "image": "/products/bumblebee-garden/img_9560-full.webp",
+        "gallery": [
+          "/products/bumblebee-garden/img_9560-full.webp",
+          "/products/bumblebee-garden/img_9561-full.webp"
+        ]
+      },
+      {
+        "value": "White",
+        "image": "/products/bumblebee-garden/img_9562-full.webp",
+        "gallery": [
+          "/products/bumblebee-garden/img_9562-full.webp",
+          "/products/bumblebee-garden/img_9563-full.webp"
+        ]
+      }
     ]
   },
   "lilac-rose-garden-felt-headband": {
     "label": "Flower & colour",
     "hint": "Choose the main flower. Small accent flowers may vary with availability. One headband per order.",
     "options": [
-      { "value": "Pastel Blossom — Blush / Yellow Centre", "image": "/products/september-2026/img_3796.webp", "gallery": ["/products/september-2026/img_3796.webp"] },
-      { "value": "Layered flower — Pale Blue / Purple Centre", "image": "/products/flower-garden/img_6364-full.webp", "gallery": ["/products/flower-garden/img_6364-full.webp", "/products/flower-garden/img_6362-full.webp", "/products/flower-garden/img_6363-full.webp", "/products/flower-garden/img_6366-full.webp"] },
-      { "value": "Layered flower — Lilac / Purple Centre", "image": "/products/flower-garden/img_6361-full.webp", "gallery": ["/products/flower-garden/img_6361-full.webp", "/products/flower-garden/img_6344-full.webp", "/products/flower-garden/img_6345-full.webp"] },
-      { "value": "Layered flower — Blush / Rose Centre", "image": "/products/flower-garden/img_6359-full.webp", "gallery": ["/products/flower-garden/img_6359-full.webp", "/products/flower-garden/img_6360-full.webp", "/products/flower-garden/img_6349-full.webp"] },
-      { "value": "Layered flower — Peach Pink / Bright Pink Centre", "image": "/products/flower-garden/img_6354-full.webp", "gallery": ["/products/flower-garden/img_6354-full.webp", "/products/flower-garden/img_6350-full.webp", "/products/flower-garden/img_6351-full.webp"] },
-      { "value": "Layered flower — Cream / Peach Centre", "image": "/products/flower-garden/img_6357-full.webp", "gallery": ["/products/flower-garden/img_6357-full.webp", "/products/flower-garden/img_6355-full.webp", "/products/flower-garden/img_6356-full.webp", "/products/flower-garden/img_6358-full.webp"] },
-      { "value": "Daisy-style flower — Blue / Yellow Centre", "image": "/products/flower-garden/img_6346-full.webp", "gallery": ["/products/flower-garden/img_6346-full.webp", "/products/flower-garden/img_6367-full.webp", "/products/flower-garden/img_6369-full.webp"] },
-      { "value": "Daisy-style flower — Mint / Yellow Centre", "image": "/products/flower-garden/img_6348-full.webp", "gallery": ["/products/flower-garden/img_6348-full.webp", "/products/flower-garden/img_6347-full.webp", "/products/flower-garden/img_6368-full.webp"] }
+      {
+        "value": "Pastel Blossom \u2014 Blush / Yellow Centre",
+        "image": "/products/september-2026/img_3796.webp",
+        "gallery": [
+          "/products/september-2026/img_3796.webp"
+        ]
+      },
+      {
+        "value": "Layered flower \u2014 Pale Blue / Purple Centre",
+        "image": "/products/flower-garden/img_6364-full.webp",
+        "gallery": [
+          "/products/flower-garden/img_6364-full.webp",
+          "/products/flower-garden/img_6362-full.webp",
+          "/products/flower-garden/img_6363-full.webp",
+          "/products/flower-garden/img_6366-full.webp"
+        ]
+      },
+      {
+        "value": "Layered flower \u2014 Lilac / Purple Centre",
+        "image": "/products/flower-garden/img_6361-full.webp",
+        "gallery": [
+          "/products/flower-garden/img_6361-full.webp",
+          "/products/flower-garden/img_6344-full.webp",
+          "/products/flower-garden/img_6345-full.webp"
+        ]
+      },
+      {
+        "value": "Layered flower \u2014 Blush / Rose Centre",
+        "image": "/products/flower-garden/img_6359-full.webp",
+        "gallery": [
+          "/products/flower-garden/img_6359-full.webp",
+          "/products/flower-garden/img_6360-full.webp",
+          "/products/flower-garden/img_6349-full.webp"
+        ]
+      },
+      {
+        "value": "Layered flower \u2014 Peach Pink / Bright Pink Centre",
+        "image": "/products/flower-garden/img_6354-full.webp",
+        "gallery": [
+          "/products/flower-garden/img_6354-full.webp",
+          "/products/flower-garden/img_6350-full.webp",
+          "/products/flower-garden/img_6351-full.webp"
+        ]
+      },
+      {
+        "value": "Layered flower \u2014 Cream / Peach Centre",
+        "image": "/products/flower-garden/img_6357-full.webp",
+        "gallery": [
+          "/products/flower-garden/img_6357-full.webp",
+          "/products/flower-garden/img_6355-full.webp",
+          "/products/flower-garden/img_6356-full.webp",
+          "/products/flower-garden/img_6358-full.webp"
+        ]
+      },
+      {
+        "value": "Daisy-style flower \u2014 Blue / Yellow Centre",
+        "image": "/products/flower-garden/img_6346-full.webp",
+        "gallery": [
+          "/products/flower-garden/img_6346-full.webp",
+          "/products/flower-garden/img_6367-full.webp",
+          "/products/flower-garden/img_6369-full.webp"
+        ]
+      },
+      {
+        "value": "Daisy-style flower \u2014 Mint / Yellow Centre",
+        "image": "/products/flower-garden/img_6348-full.webp",
+        "gallery": [
+          "/products/flower-garden/img_6348-full.webp",
+          "/products/flower-garden/img_6347-full.webp",
+          "/products/flower-garden/img_6368-full.webp"
+        ]
+      }
     ]
   },
   "spaghetti-meatball-felt-ornament": {
     "label": "Plate stitching colour",
     "hint": "Choose the stitching around the plate. Price is for one handmade ornament.",
     "options": [
-      { "value": "Red", "image": "/products/spaghetti/img_9285-full.webp" },
-      { "value": "Green", "image": "/products/spaghetti/img_9286-full.webp" },
-      { "value": "Light Blue", "image": "/products/spaghetti/img_9287-full.webp" },
-      { "value": "Blue", "image": "/products/spaghetti/img_9288-full.webp" },
-      { "value": "Peach", "image": "/products/spaghetti/img_9289-full.webp" },
-      { "value": "Pink", "image": "/products/spaghetti/img_9290-full.webp" },
-      { "value": "Lavender", "image": "/products/spaghetti/img_9291-full.webp" }
+      {
+        "value": "Red",
+        "image": "/products/spaghetti/img_9285-full.webp"
+      },
+      {
+        "value": "Green",
+        "image": "/products/spaghetti/img_9286-full.webp"
+      },
+      {
+        "value": "Light Blue",
+        "image": "/products/spaghetti/img_9287-full.webp"
+      },
+      {
+        "value": "Blue",
+        "image": "/products/spaghetti/img_9288-full.webp"
+      },
+      {
+        "value": "Peach",
+        "image": "/products/spaghetti/img_9289-full.webp"
+      },
+      {
+        "value": "Pink",
+        "image": "/products/spaghetti/img_9290-full.webp"
+      },
+      {
+        "value": "Lavender",
+        "image": "/products/spaghetti/img_9291-full.webp"
+      }
     ]
   },
   "heart-rose-plush-hair-clip": {
     "label": "Colour",
     "hint": "One pair (two matching clips) in your chosen colour.",
     "options": [
-      { "value": "Cream / Pink Rose", "image": "/products/cat-ear-rose/img_9746-full.webp", "gallery": ["/products/cat-ear-rose/img_9746-full.webp", "/products/cat-ear-rose/img_9747-full.webp", "/products/cat-ear-rose/img_9756-full.webp"] },
-      { "value": "White / Red Rose", "image": "/products/cat-ear-rose/img_9748-full.webp", "gallery": ["/products/cat-ear-rose/img_9748-full.webp", "/products/cat-ear-rose/img_9750-full.webp", "/products/cat-ear-rose/img_9757-full.webp"] },
-      { "value": "Taupe / Purple Rose", "image": "/products/cat-ear-rose/img_9751-full.webp", "gallery": ["/products/cat-ear-rose/img_9751-full.webp", "/products/cat-ear-rose/img_9754-full.webp", "/products/cat-ear-rose/img_9758-full.webp"] }
+      {
+        "value": "Cream / Pink Rose",
+        "image": "/products/cat-ear-rose/img_9746-full.webp",
+        "gallery": [
+          "/products/cat-ear-rose/img_9746-full.webp",
+          "/products/cat-ear-rose/img_9747-full.webp",
+          "/products/cat-ear-rose/img_9756-full.webp"
+        ]
+      },
+      {
+        "value": "White / Red Rose",
+        "image": "/products/cat-ear-rose/img_9748-full.webp",
+        "gallery": [
+          "/products/cat-ear-rose/img_9748-full.webp",
+          "/products/cat-ear-rose/img_9750-full.webp",
+          "/products/cat-ear-rose/img_9757-full.webp"
+        ]
+      },
+      {
+        "value": "Taupe / Purple Rose",
+        "image": "/products/cat-ear-rose/img_9751-full.webp",
+        "gallery": [
+          "/products/cat-ear-rose/img_9751-full.webp",
+          "/products/cat-ear-rose/img_9754-full.webp",
+          "/products/cat-ear-rose/img_9758-full.webp"
+        ]
+      }
     ]
   },
   "holly-berry-bow-felt-headband": {
@@ -103,16 +311,45 @@
     "label": "Flower",
     "hint": "Price is for one hair clip.",
     "options": [
-      {"value":"White daisy","image":"/products/woodland/toadstool-daisy-hero.jpg","gallery":["/products/woodland/toadstool-daisy-hero.jpg","/products/woodland/toadstool-daisy-2.jpg"]},
-      {"value":"Yellow buttercup","image":"/products/woodland/toadstool-buttercup-hero.jpg"}
+      {
+        "value": "White daisy",
+        "image": "/products/woodland/toadstool-daisy-hero.jpg",
+        "gallery": [
+          "/products/woodland/toadstool-daisy-hero.jpg",
+          "/products/woodland/toadstool-daisy-2.jpg"
+        ]
+      },
+      {
+        "value": "Yellow buttercup",
+        "image": "/products/woodland/toadstool-buttercup-hero.jpg"
+      }
     ]
   },
   "strawberry-felt-headband-sage": {
     "label": "Colour",
     "hint": "One headband in your chosen colourway. Select again to see all photos.",
     "options": [
-      {"value":"Sage Ribbon — Red Strawberries","image":"/products/strawberry-headband/img_9610-full.webp","gallery":["/products/strawberry-headband/img_9610-full.webp","/products/strawberry-headband/img_9611-full.webp","/products/strawberry-headband/img_9605-full.webp","/products/model/strawberry-felt-headband-sage-1.jpg","/products/september-2026/img_3813.webp"]},
-      {"value":"Red Ribbon — Red & Pink Strawberries","image":"/products/strawberry-headband/img_9608-full.webp","gallery":["/products/strawberry-headband/img_9608-full.webp","/products/strawberry-headband/img_9613-full.webp","/products/strawberries/headband-red-hero.jpg","/products/september-2026/img_3001.webp"]}
+      {
+        "value": "Sage Ribbon \u2014 Red Strawberries",
+        "image": "/products/strawberry-headband/img_9610-full.webp",
+        "gallery": [
+          "/products/strawberry-headband/img_9610-full.webp",
+          "/products/strawberry-headband/img_9611-full.webp",
+          "/products/strawberry-headband/img_9605-full.webp",
+          "/products/model/strawberry-felt-headband-sage-1.jpg",
+          "/products/september-2026/img_3813.webp"
+        ]
+      },
+      {
+        "value": "Red Ribbon \u2014 Red & Pink Strawberries",
+        "image": "/products/strawberry-headband/img_9608-full.webp",
+        "gallery": [
+          "/products/strawberry-headband/img_9608-full.webp",
+          "/products/strawberry-headband/img_9613-full.webp",
+          "/products/strawberries/headband-red-hero.jpg",
+          "/products/september-2026/img_3001.webp"
+        ]
+      }
     ]
   },
   "pumpkin-patch-faux-fur-claw-clip": {
@@ -166,12 +403,19 @@
       {
         "value": "Red Strawberries / Cream Faux Fur",
         "image": "/products/strawberry-blossom/img_9598-full.webp",
-        "gallery": ["/products/strawberry-blossom/img_9598-full.webp", "/products/strawberry-blossom/img_9601-full.webp", "/products/strawberry-blossom/img_9602-full.webp"]
+        "gallery": [
+          "/products/strawberry-blossom/img_9598-full.webp",
+          "/products/strawberry-blossom/img_9601-full.webp",
+          "/products/strawberry-blossom/img_9602-full.webp"
+        ]
       },
       {
         "value": "Pink Strawberries / White Faux Fur",
         "image": "/products/strawberry-blossom/img_9604-full.webp",
-        "gallery": ["/products/strawberry-blossom/img_9604-full.webp", "/products/strawberry-blossom/img_9603-full.webp"]
+        "gallery": [
+          "/products/strawberry-blossom/img_9604-full.webp",
+          "/products/strawberry-blossom/img_9603-full.webp"
+        ]
       }
     ]
   },
@@ -242,17 +486,31 @@
       {
         "value": "Red / Christmas",
         "image": "/products/reindeer-antler-rose/img_9505-full.webp",
-        "gallery": ["/products/reindeer-antler-rose/img_9505-full.webp", "/products/reindeer-antler-rose/img_9512-full.webp", "/products/reindeer-antler-rose/img_9507-full.webp", "/products/reindeer-headband/customer-4692.webp", "/products/reindeer-headband/customer-4711.webp"]
+        "gallery": [
+          "/products/reindeer-antler-rose/img_9505-full.webp",
+          "/products/reindeer-antler-rose/img_9512-full.webp",
+          "/products/reindeer-antler-rose/img_9507-full.webp",
+          "/products/reindeer-headband/customer-4692.webp",
+          "/products/reindeer-headband/customer-4711.webp"
+        ]
       },
       {
         "value": "Blush / pink",
         "image": "/products/reindeer-antler-rose/img_9503-full.webp",
-        "gallery": ["/products/reindeer-antler-rose/img_9503-full.webp", "/products/reindeer-antler-rose/img_9514-full.webp", "/products/reindeer-antler-rose/img_9504-full.webp"]
+        "gallery": [
+          "/products/reindeer-antler-rose/img_9503-full.webp",
+          "/products/reindeer-antler-rose/img_9514-full.webp",
+          "/products/reindeer-antler-rose/img_9504-full.webp"
+        ]
       },
       {
         "value": "Purple / lavender",
         "image": "/products/reindeer-antler-rose/img_9486-full.webp",
-        "gallery": ["/products/reindeer-antler-rose/img_9486-full.webp", "/products/reindeer-antler-rose/img_9508-full.webp", "/products/reindeer-antler-rose/img_9509-full.webp"]
+        "gallery": [
+          "/products/reindeer-antler-rose/img_9486-full.webp",
+          "/products/reindeer-antler-rose/img_9508-full.webp",
+          "/products/reindeer-antler-rose/img_9509-full.webp"
+        ]
       }
     ]
   },
@@ -263,60 +521,207 @@
       {
         "value": "Red band",
         "image": "/products/reindeer-headband/img_9545-full.webp",
-        "gallery": ["/products/reindeer-headband/img_9545-full.webp", "/products/reindeer-headband/img_9546-full.webp", "/products/festive/reindeer-antler-headband-hero.jpg", "/products/reindeer-headband/img_9553-full.webp", "/products/model/reindeer-antler-felt-headband-1.jpg", "/products/model/reindeer-antler-felt-headband-2.jpg", "/products/reindeer-headband/customer-4701.webp"]
+        "gallery": [
+          "/products/reindeer-headband/img_9545-full.webp",
+          "/products/reindeer-headband/img_9546-full.webp",
+          "/products/festive/reindeer-antler-headband-hero.jpg",
+          "/products/reindeer-headband/img_9553-full.webp",
+          "/products/model/reindeer-antler-felt-headband-1.jpg",
+          "/products/model/reindeer-antler-felt-headband-2.jpg",
+          "/products/reindeer-headband/customer-4701.webp"
+        ]
       },
       {
         "value": "Blush / pink band",
         "image": "/products/reindeer-headband/img_9547-full.webp",
-        "gallery": ["/products/reindeer-headband/img_9547-full.webp", "/products/reindeer-headband/img_9548-full.webp", "/products/reindeer-headband/img_9552-full.webp", "/products/reindeer-headband/blush-model.webp", "/products/reindeer-headband/customer-4114.webp", "/products/reindeer-headband/customer-4117.webp", "/products/reindeer-headband/customer-4170.webp", "/products/reindeer-headband/customer-4178.webp", "/products/reindeer-headband/customer-4688.webp", "/products/reindeer-headband/customer-pink-adult.webp"]
+        "gallery": [
+          "/products/reindeer-headband/img_9547-full.webp",
+          "/products/reindeer-headband/img_9548-full.webp",
+          "/products/reindeer-headband/img_9552-full.webp",
+          "/products/reindeer-headband/blush-model.webp",
+          "/products/reindeer-headband/customer-4114.webp",
+          "/products/reindeer-headband/customer-4117.webp",
+          "/products/reindeer-headband/customer-4170.webp",
+          "/products/reindeer-headband/customer-4178.webp",
+          "/products/reindeer-headband/customer-4688.webp",
+          "/products/reindeer-headband/customer-pink-adult.webp"
+        ]
       },
       {
         "value": "Purple / lavender band",
         "image": "/products/reindeer-headband/img_9549-full.webp",
-        "gallery": ["/products/reindeer-headband/img_9549-full.webp", "/products/reindeer-headband/img_9550-full.webp", "/products/reindeer-headband/img_9551-full.webp"]
+        "gallery": [
+          "/products/reindeer-headband/img_9549-full.webp",
+          "/products/reindeer-headband/img_9550-full.webp",
+          "/products/reindeer-headband/img_9551-full.webp"
+        ]
       }
     ]
   },
   "layered-felt-flower-hair-clip": {
     "label": "Colour",
-    "hint": "Price is for one clip in your chosen colour. Made to order.",
+    "hint": "Price is for one piece in your chosen colour.",
     "options": [
       {
-        "value": "Lavender",
-        "image": "/products/sept8-2026/img_9643.webp"
-      },
-      {
         "value": "Pink / magenta",
-        "image": "/products/sept8-2026/img_9657.webp"
+        "image": "/products/sept8-2026/img_9657.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9657.webp",
+          "/products/sept8-2026/img_9658.webp"
+        ]
       },
       {
         "value": "Deep red / burgundy",
-        "image": "/products/sept8-2026/img_9664.webp"
+        "image": "/products/sept8-2026/img_9664.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9664.webp",
+          "/products/sept8-2026/img_9685.webp"
+        ]
       },
       {
-        "value": "Colourway A",
-        "image": "/products/sept8-2026/img_9638.webp",
-        "note": "Confirm name"
+        "value": "Soft pink",
+        "image": "/products/sept8-2026/img_9672.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9672.webp",
+          "/products/sept8-2026/img_9671.webp"
+        ]
       },
       {
-        "value": "Colourway B",
-        "image": "/products/sept8-2026/img_9639.webp",
-        "note": "Confirm name"
-      },
-      {
-        "value": "Colourway C",
-        "image": "/products/sept8-2026/img_9640.webp",
-        "note": "Confirm name"
-      },
-      {
-        "value": "Colourway D",
-        "image": "/products/sept8-2026/img_9641.webp",
-        "note": "Confirm name"
-      },
-      {
-        "value": "Colourway E",
+        "value": "Yellow bud",
         "image": "/products/sept8-2026/img_9678.webp",
-        "note": "Confirm name"
+        "gallery": [
+          "/products/sept8-2026/img_9678.webp",
+          "/products/sept8-2026/img_9679.webp"
+        ]
+      },
+      {
+        "value": "Lilac yellow centre",
+        "image": "/products/sept8-2026/img_9680.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9680.webp"
+        ]
+      },
+      {
+        "value": "Blue / cream",
+        "image": "/products/sept8-2026/img_9686.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9686.webp"
+        ]
+      },
+      {
+        "value": "Lilac with berries",
+        "image": "/products/sept8-2026/img_9688.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9688.webp"
+        ]
+      }
+    ]
+  },
+  "layered-felt-flower-brooch": {
+    "label": "Colour",
+    "hint": "Price is for one piece in your chosen colour.",
+    "options": [
+      {
+        "value": "Pink / magenta",
+        "image": "/products/sept8-2026/img_9638.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9638.webp",
+          "/products/sept8-2026/img_9639.webp",
+          "/products/sept8-2026/img_9640.webp"
+        ]
+      },
+      {
+        "value": "Burgundy",
+        "image": "/products/sept8-2026/img_9641.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9641.webp",
+          "/products/sept8-2026/img_9642.webp"
+        ]
+      },
+      {
+        "value": "Lavender",
+        "image": "/products/sept8-2026/img_9643.webp",
+        "gallery": [
+          "/products/sept8-2026/img_9643.webp"
+        ]
+      }
+    ]
+  },
+  "single-flower-headband": {
+    "label": "Colour",
+    "hint": "Price is for one headband in your chosen colour.",
+    "options": [
+      {
+        "value": "Red",
+        "image": "/products/single-flower-headband-2026/img_0377.jpg",
+        "gallery": [
+          "/products/single-flower-headband-2026/img_0377.jpg",
+          "/products/single-flower-headband-2026/img_0375.jpg",
+          "/products/single-flower-headband-2026/img_0376.jpg"
+        ]
+      },
+      {
+        "value": "Pink",
+        "image": "/products/single-flower-headband-2026/img_0378.jpg",
+        "gallery": [
+          "/products/single-flower-headband-2026/img_0378.jpg",
+          "/products/single-flower-headband-2026/img_0375.jpg",
+          "/products/single-flower-headband-2026/img_0376.jpg"
+        ]
+      },
+      {
+        "value": "Teal",
+        "image": "/products/single-flower-headband-2026/img_0379.jpg",
+        "gallery": [
+          "/products/single-flower-headband-2026/img_0379.jpg",
+          "/products/single-flower-headband-2026/img_0375.jpg",
+          "/products/single-flower-headband-2026/img_0376.jpg"
+        ]
+      },
+      {
+        "value": "Mint",
+        "image": "/products/single-flower-headband-2026/img_0380.jpg",
+        "gallery": [
+          "/products/single-flower-headband-2026/img_0380.jpg",
+          "/products/single-flower-headband-2026/img_0375.jpg",
+          "/products/single-flower-headband-2026/img_0376.jpg"
+        ]
+      },
+      {
+        "value": "Lavender",
+        "image": "/products/single-flower-headband-2026/img_0381.jpg",
+        "gallery": [
+          "/products/single-flower-headband-2026/img_0381.jpg",
+          "/products/single-flower-headband-2026/img_0375.jpg",
+          "/products/single-flower-headband-2026/img_0376.jpg"
+        ]
+      },
+      {
+        "value": "Light blue",
+        "image": "/products/single-flower-headband-2026/img_0382.jpg",
+        "gallery": [
+          "/products/single-flower-headband-2026/img_0382.jpg",
+          "/products/single-flower-headband-2026/img_0375.jpg",
+          "/products/single-flower-headband-2026/img_0376.jpg"
+        ]
+      },
+      {
+        "value": "Yellow",
+        "image": "/products/single-flower-headband-2026/img_0383.jpg",
+        "gallery": [
+          "/products/single-flower-headband-2026/img_0383.jpg",
+          "/products/single-flower-headband-2026/img_0375.jpg",
+          "/products/single-flower-headband-2026/img_0376.jpg"
+        ]
+      },
+      {
+        "value": "Light blue and gold",
+        "image": "/products/statement-blooms/anemone-blue-hero.jpg",
+        "note": "Original listing colour",
+        "gallery": [
+          "/products/statement-blooms/anemone-blue-hero.jpg",
+          "/products/model/blue-anemone-headband-1.jpg"
+        ]
       }
     ]
   }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/storefront/Reveal";
 import { SectionHeading } from "@/components/storefront/SectionHeading";
@@ -5,7 +6,6 @@ import { CategoryHero } from "@/components/storefront/CategoryHero";
 import { CHRISTMAS_COLLECTION_FILTER } from "@/lib/christmas-collection";
 import { CategoryGallery } from "@/components/storefront/CategoryGallery";
 import { prisma } from "@/lib/db";
-import { gemstoneCollectionFilter, GEMSTONE_TYPES } from "@/lib/gemstone-collections";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import {
   AUDIENCE_BLURBS,
@@ -105,11 +105,9 @@ export default async function ShopPage({
   const family = getCategory(params.category);
   const subcategory = isSubcategoryKey(params.sub) ? params.sub : undefined;
   const collection = params.collection;
-  const isGemstone = family?.key === "GEMSTONE";
-  const gemstoneTypeFilter = isGemstone ? gemstoneCollectionFilter(collection) : undefined;
   const isFeltCollection = family?.key === "FELT" && Boolean(collection);
   const isChristmasCollection = family?.key === "FELT" && collection === "Christmas";
-  const intention = isGemstone ? undefined : params.intention;
+  const intention = params.intention;
   const audience = isAudienceKey(params.audience) ? params.audience : undefined;
   const sortBy = params.sort || "newest";
   const query = params.q;
@@ -134,7 +132,7 @@ export default async function ShopPage({
       isPublished: true,
       ...(family ? { category: family.key } : {}),
       ...(subcategory ? { subcategory } : {}),
-      ...(gemstoneTypeFilter ? { AND: [gemstoneTypeFilter] } : isChristmasCollection
+      ...(isChristmasCollection
         ? { AND: [CHRISTMAS_COLLECTION_FILTER] }
         : collection ? { collection } : {}),
       ...(intention ? { intention } : {}),
@@ -221,24 +219,13 @@ export default async function ShopPage({
    */
   const shownCollections =
     family?.collections?.filter((col) =>
-      isGemstone ? (GEMSTONE_TYPES as readonly string[]).includes(col.name) || col.name === "Crysprout" : col.subcategory ? stockedTypes.includes(col.subcategory) : stockedCollections.has(col.name)
+      col.subcategory ? stockedTypes.includes(col.subcategory) : stockedCollections.has(col.name)
     ) ?? [];
 
   /** The collection being viewed, when the URL names one this family defines. */
   const openCollection = collection
     ? family?.collections?.find((col) => !col.subcategory && col.name === collection)
     : undefined;
-
-  /**
-   * Story for the hero: a named collection page, or a subcategory that maps to
-   * a collection tile (Jewellery under Gemstone). When set, CategoryHero speaks
-   * for that line instead of the parent family's intro.
-   */
-  const storyCollection =
-    openCollection ??
-    (subcategory
-      ? family?.collections?.find((col) => col.subcategory === subcategory)
-      : undefined);
 
   /** The family, when it has nothing published at all — as opposed to a filter
    *  that happens to exclude everything. */
@@ -281,9 +268,9 @@ export default async function ShopPage({
 
   return (
     <div>
-      {/* Felt collections open on their own name; other story lines use CategoryHero. */}
+      {/* Felt collections open directly on their own name and products. */}
       {isFeltCollection ? null : family ? (
-        <CategoryHero category={family} collection={storyCollection} />
+        <CategoryHero category={family} />
       ) : (
         <div className="border-b">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -329,7 +316,7 @@ export default async function ShopPage({
         </div>
       )}
 
-      {/* Collection back link. Felt still titles here; other lines already have CategoryHero. */}
+      {/* Collection back link, and the copy the showcase tile is too small for */}
       {family && collection && (
         <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
           <Link
@@ -343,7 +330,18 @@ export default async function ShopPage({
               {collection}
             </h1>
           )}
-          {isFeltCollection && openCollection && (
+          {openCollection?.image && family.key !== "FELT" && (
+            <div className="relative mt-6 aspect-[2/1] w-full overflow-hidden bg-muted">
+              <Image
+                src={openCollection.image.src}
+                alt={openCollection.image.alt}
+                fill
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="object-cover"
+              />
+            </div>
+          )}
+          {openCollection && (
             <div className="mt-6 max-w-2xl">
               <p className="text-sm italic text-muted-foreground">
                 {openCollection.tagline}
@@ -363,18 +361,6 @@ export default async function ShopPage({
               </div>
             </div>
           )}
-          {!isFeltCollection && openCollection && (
-            <div className="mt-4 flex flex-wrap gap-1.5">
-              {openCollection.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-sm border px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
         </div>
       )}
 
@@ -388,7 +374,7 @@ export default async function ShopPage({
             <div />
           ) : (
             <div>
-              {!isFeltCollection && !storyCollection && (
+              {!isFeltCollection && (
                 <h2 className="font-heading text-3xl font-light lg:text-4xl">{title}</h2>
               )}
               {!isAllView && (
@@ -400,7 +386,7 @@ export default async function ShopPage({
           )}
 
           {/* Material family — the top level */}
-          {!isGemstone && <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             <FilterPill href="/shop" active={!family}>
               All
             </FilterPill>
@@ -413,11 +399,11 @@ export default async function ShopPage({
                 {entry.label}
               </FilterPill>
             ))}
-          </div>}
+          </div>
         </div>
 
         {/* Product type — the second level, within the chosen family */}
-        {family && !isGemstone && stockedTypes.length > 1 && (
+        {family && stockedTypes.length > 1 && (
           <div className="mb-8 flex flex-wrap gap-2">
             <FilterPill href={`/shop?category=${family.key}`} active={!subcategory}>
               All {family.label}

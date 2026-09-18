@@ -1,0 +1,2 @@
+FROM tengology:20260915-204454
+COPY --chown=node:node img_*-garden.webp /app/public/products/crysprout/

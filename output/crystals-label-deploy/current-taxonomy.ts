@@ -133,23 +133,21 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
       aspect: "4/5",
     },
     subcategories: ["JEWELLERY", "ORNAMENTS"],
-    hasIntentions: false,
+    hasIntentions: true,
     collections: [
       {
-        name: "Necklaces",
-        tagline: "Gemstones, close to the heart",
+        name: "Jewellery",
+        subcategory: "JEWELLERY",
+        tagline: "Stones strung, wired and worn",
         detail:
-          "Handmade gemstone necklaces, chokers and pendants.",
-        tags: ["Necklaces", "Chokers", "Pendants"],
+          "Bracelets, necklaces, earrings and rings built around a single stone or a small cluster — pearl, jade, rose quartz, carnelian and obsidian among them.",
+        tags: ["Bracelets", "Necklaces", "Earrings", "Rings"],
         image: {
-          src: "/products/initial/initial-letter-necklace-teal-gift-box.jpg",
-          alt: "A gemstone initial necklace presented in a Tengology gift box",
+          src: "/products/comet/pearl-carnelian-cluster-earrings-hero.jpg",
+          alt: "Freshwater pearl and carnelian cluster earrings on a pale background",
           aspectRatio: "3 / 4",
         },
       },
-      { name: "Bracelets", tagline: "Gemstones for every day", detail: "Handmade gemstone bracelets and bangles.", tags: ["Bracelets", "Bangles"] },
-      { name: "Rings", tagline: "A small, personal statement", detail: "Handmade gemstone rings.", tags: ["Rings"] },
-      { name: "Earrings", tagline: "Colour, movement and a little sparkle", detail: "Handmade gemstone drop and cluster earrings.", tags: ["Earrings"], image: { src: "/products/comet/pearl-carnelian-cluster-earrings-hero.jpg", alt: "Pearl and carnelian cluster earrings", aspectRatio: "3 / 4" } },
       {
         name: "Crysprout",
         // Portrait hero for the collection page (CategoryHero right column).
@@ -293,32 +291,28 @@ export const CATEGORIES: Record<CategoryKey, Category> = {
         tags: ["Headbands", "Hair clips", "Easter"],
       },
       {
-        name: "Signature Flower Collection",
+        name: "Flower Headband",
         image: { src: "/lookbook/felt-flower-headbands-group.jpg", alt: "Colourful felt flower headbands arranged together", aspectRatio: "2400 / 1800" },
-        tagline: "Our signature felt blooms",
+        tagline: "A whole bouquet, worn",
         detail:
-          "Felt Flower Garden and Single Flower headbands, plus layered flower hair clips and brooches — our signature handmade felt blooms, gathered in one collection.",
+          "Mixed-bloom headbands that aren't any one flower — hydrangea, anemone, dahlia, and full spring bouquets, built on satin-wrapped bands.",
         tags: ["Headbands", "Mixed blooms", "Statement"],
       },
       {
-        name: "Hibiscus",
-        tagline: "Soft petals, tropical colour",
+        name: "Flower Hairclip",
+        image: { src: "/products/cottage-garden/hydrangea-clip-group.jpg", alt: "Pink felt flower hair accessories on a wooden tray", aspectRatio: "3024 / 4032" },
+        tagline: "One bloom, clipped in",
         detail:
-          "Handmade felt hibiscus flowers in peach tones, available as hair clips and brooches.",
-        tags: ["Hair clips", "Brooches", "Peach"],
+          "Clips, claw clips, barrettes, and scrunchies carrying mixed florals — the pieces to reach for when a headband is too much.",
+        tags: ["Hair clips", "Claw clips", "Barrettes", "Scrunchies"],
       },
       {
-        name: "Spring Bouquet",
-        tagline: "A little spring garden",
+        name: "Flower Brooch",
+        image: { src: "/products/cottage-garden/hydrangea-brooch-group.jpg", alt: "Pink felt flower brooches arranged on a wooden tray", aspectRatio: "3024 / 4032" },
+        tagline: "A garden on the lapel",
         detail:
-          "Coordinating spring bouquet headbands, claw clips and brooches, with handmade felt flowers gathered together.",
-        tags: ["Headbands", "Claw clips", "Brooches"],
-      },
-      {
-        name: "Woodland",
-        tagline: "Little treasures from the woodland",
-        detail: "Felt toadstools, flowers and leaves, made into playful hair clips and brooches.",
-        tags: ["Toadstools", "Hair clips", "Brooches"],
+          "Mixed-bloom brooches backed with a pin, sized to move between a coat, a blazer, and the strap of a bag.",
+        tags: ["Brooches", "Mixed blooms", "Lapel"],
       },
       {
         name: "Forget-me-not",

@@ -12,6 +12,7 @@ import { WishlistButton } from "@/components/storefront/WishlistButton";
 import { bucketLabel } from "@/lib/taxonomy";
 import { hasInitialLetterOption, isFunctionalTag } from "@/lib/personalisation";
 import { productChoiceFor } from "@/lib/productOptions";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -180,6 +181,24 @@ export default async function ProductPage({
                     </span>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {/* Size guide — bracelets */}
+            {(
+              /bracelet/i.test(product.title) ||
+              /bracelet/i.test(product.slug) ||
+              (product.materials || "").toLowerCase().includes("elastic")
+            ) && (
+              <div className="border-t pt-6">
+                <h3 className="eyebrow mb-3">Size</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Bracelets are sized by 內圍 (inner circumference).{" "}
+                  <Link href="/pages/sizing" className="link-underline text-foreground">
+                    How to measure your wrist
+                  </Link>
+                  .
+                </p>
               </div>
             )}
 

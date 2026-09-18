@@ -7,7 +7,6 @@ import {
 } from "@/components/storefront/PolicyPage";
 import {
   CANCEL_NOTICE_DAYS,
-  CANCEL_RETURN_DAYS,
   CONTACT_EMAIL,
   POLICIES_UPDATED,
   REFUND_DAYS,
@@ -16,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: "Returns & Cancellations",
   description:
-    "Fourteen days to change your mind, and fourteen more to post it back. How to return something to Tengology, what it costs, and what happens if a piece arrives faulty.",
+    "Fourteen days from delivery to tell me you have changed your mind, then please post the piece back promptly. How to return something to Tengology, what it costs, and what happens if a piece arrives faulty.",
 };
 
 export default function ReturnsPage() {
@@ -28,15 +27,14 @@ export default function ReturnsPage() {
           If it isn&rsquo;t <em>right</em>
         </>
       }
-      lead="Everything here is made by hand, so I would rather you had the piece you actually wanted. You have fourteen days from delivery to tell me you have changed your mind, and fourteen more to post it back."
+      lead="Everything here is made by hand, so I would rather you had the piece you actually wanted. You have fourteen days from delivery to tell me you have changed your mind, and then please post the piece back promptly."
       updated={POLICIES_UPDATED}
     >
       <PolicySection title="Changing your mind">
         <p>
           You have {CANCEL_NOTICE_DAYS} days from the day your parcel arrives to
-          tell me you want to cancel. You do not need a reason. Once you have
-          told me, you have a further {CANCEL_RETURN_DAYS} days to get the item
-          back to me.
+          tell me you have changed your mind. You do not need a reason. Once you
+          have told me, please post the piece back as soon as you can.
         </p>
         <p>
           Email{" "}
@@ -66,16 +64,25 @@ export default function ReturnsPage() {
         <p>
           Please return pieces unworn and in their original packaging, with any
           card or tag still attached. You are welcome to try something on the
-          way you would in a shop; a piece that has been worn out for an evening
-          is a different matter, and I may reduce the refund to reflect its
-          condition.
+          way you would in a shop &mdash; that is enough to see if it suits you.
+        </p>
+        <p>
+          If a piece has already been worn, or taken out for an evening, it is
+          no longer in new condition. I cannot accept it for a change-of-mind
+          refund, and I will decline the return.
+        </p>
+        <p>
+          This applies only when you are changing your mind. If something is
+          faulty, damaged in transit, or not what you ordered, your rights are
+          unchanged &mdash; see{" "}
+          <strong className="font-normal text-foreground">If something is faulty</strong>{" "}
+          below.
         </p>
       </PolicySection>
 
       <PolicySection title="Pieces that cannot be returned">
         <p>
-          Two things are excluded, because they are made to your specification
-          and cannot be sold to anyone else:
+          A few pieces cannot come back for a change of mind:
         </p>
         <PolicyList
           items={[
@@ -87,32 +94,70 @@ export default function ReturnsPage() {
               <strong className="font-normal text-foreground">Bespoke designs</strong>{" "}
               made in the online designer to a strand you laid out yourself.
             </>,
+            <>
+              <strong className="font-normal text-foreground">Earrings</strong>{" "}
+              &mdash; for hygiene reasons, earrings cannot be returned. Please
+              choose carefully before you order.
+            </>,
           ]}
         />
         <p>
-          This is the personalised-goods exception in the Consumer Contracts
-          Regulations 2013, and it is why it is written here rather than sprung
-          on you afterwards. Everything else in the shop can be returned.
+          The first two are the personalised-goods exception in the Consumer
+          Contracts Regulations 2013 &mdash; made to your specification and
+          cannot be sold to anyone else. Earrings are held back for hygiene.
+          Everything else in the shop can be returned unused and as new.
         </p>
         <p>
           It does not touch your rights if something arrives faulty. A
-          personalised piece that is broken, wrong, or not as described is
-          still my problem to fix.
+          personalised piece or a pair of earrings that is broken, wrong, or
+          not as described is still my problem to fix.
         </p>
       </PolicySection>
 
       <PolicySection title="If something is faulty">
         <p>
-          Tell me within 30 days of delivery and you can reject the piece
-          outright for a full refund. After that, I will repair or replace it.
-          These are your rights under the Consumer Rights Act 2015 and nothing
-          on this page reduces them.
+          If something is wrong within{" "}
+          <strong className="font-normal text-foreground">30 days of purchase</strong>{" "}
+          &mdash; a craftsmanship fault, damage in transit, or not what you
+          ordered &mdash; write to me with a photo and your order number if you
+          have it.
+        </p>
+        <p>
+          I will usually offer to{" "}
+          <strong className="font-normal text-foreground">repair</strong> it
+          first. If I cannot put it right, you can have a{" "}
+          <strong className="font-normal text-foreground">refund</strong>. We
+          agree{" "}
+          <strong className="font-normal text-foreground">one fair remedy</strong>{" "}
+          for the same issue: you will not receive a full refund and a repair or
+          replacement together.
+        </p>
+        <p>
+          If you would rather return an{" "}
+          <strong className="font-normal text-foreground">unused</strong> faulty
+          piece for a refund in those first 30 days, your short-term right to
+          reject still applies &mdash; tell me, and we will sort it that way
+          instead.
+        </p>
+        <p>
+          Damage from accident, alteration or misuse after delivery is not
+          treated as a fault &mdash; I can still quote a paid repair if you want.
         </p>
         <p>
           Handmade work varies &mdash; a bead sits slightly differently, a felt
           petal curls its own way, natural stone is never twice the same colour.
           That is the nature of the thing rather than a fault. A clasp that
           fails or a hook that bends is a fault, and I want to know.
+        </p>
+        <p>
+          These are your rights under the Consumer Rights Act 2015, and nothing
+          on this page reduces them. For how studio repairs work after purchase
+          &mdash; what is free in the first 30 days, paid repairs, and postage
+          &mdash; see the{" "}
+          <Link href="/pages/faq#repair" className="link-underline text-foreground">
+            repair section of the FAQ
+          </Link>
+          .
         </p>
       </PolicySection>
 

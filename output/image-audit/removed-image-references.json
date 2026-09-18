@@ -1,0 +1,20 @@
+[
+  {
+    "id": "cmtbgq1r2000i4semw5c9p767",
+    "productId": "cmt0p0o1q000b0gemi6h58eqh",
+    "url": "/products/strawberries/claw-clip-worn.jpg",
+    "altText": "Strawberry cluster claw clip worn in a half-up hairstyle",
+    "sortOrder": 1,
+    "isPrimary": false,
+    "cloudinaryId": null
+  },
+  {
+    "id": "cmtbgq1r2000k4semwybwuaao",
+    "productId": "cmt0p0o1q000b0gemi6h58eqh",
+    "url": "/products/strawberries/collection-flatlay-white.jpg",
+    "altText": "Strawberry cluster clip shown with the rest of the family",
+    "sortOrder": 2,
+    "isPrimary": false,
+    "cloudinaryId": null
+  }
+]

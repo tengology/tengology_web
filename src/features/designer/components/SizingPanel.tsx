@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useDesignerStore } from '../store/designerStore';
 import { UK_RING_SIZES } from '../engine/sizing';
 import { innerCircumferenceMm } from '../engine/wristFit';
@@ -222,16 +223,54 @@ function WristInput({
   onChange: (mm: number) => void;
 }) {
   return (
-    <SizeInput
-      mm={mm}
-      beads={beads}
-      onChange={onChange}
-      minMm={WRIST_MIN_MM}
-      maxMm={WRIST_MAX_MM}
-      label="Your wrist size"
-      helper="Measure the narrowest part of your wrist with a soft tape."
-      looseToleranceMm={10}
-    />
+    <div className="space-y-3">
+      <SizeInput
+        mm={mm}
+        beads={beads}
+        onChange={onChange}
+        minMm={WRIST_MIN_MM}
+        maxMm={WRIST_MAX_MM}
+        label="Your wrist size"
+        helper="Measure at the wrist bone — snug, or add about 1 cm for a looser fit."
+        looseToleranceMm={10}
+      />
+      <details className="rounded-lg border border-border bg-white/70">
+        <summary className="cursor-pointer rounded-lg px-3 py-3 text-sm font-medium text-rose-dark outline-none hover:bg-rose/5 focus-visible:ring-2 focus-visible:ring-rose">
+          How to measure your wrist
+        </summary>
+        <div className="space-y-3 border-t border-border p-3">
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Use a soft tape, string or a strip of paper. Measure snugly at the narrowest point, without adding extra space.
+          </p>
+          <a
+            href="/guides/wrist-measurement-en.png"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block rounded-md outline-none focus-visible:ring-2 focus-visible:ring-rose"
+            aria-label="Open the full-size wrist measurement guide in a new tab"
+          >
+            <Image
+              src="/guides/wrist-measurement-en.png"
+              width={1086}
+              height={1449}
+              sizes="(min-width: 1280px) 230px, (min-width: 1024px) 60vw, 90vw"
+              alt="Two ways to measure your wrist: wrap a tape snugly around the narrowest part and read it, or wrap string or paper, mark where it meets and measure with a ruler. The example reads 14.5 cm."
+              className="h-auto w-full rounded-md"
+            />
+            <span className="mt-2 block text-center text-xs font-medium text-rose-dark underline underline-offset-4">
+              View full-size guide ↗
+            </span>
+          </a>
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            Listing sizes use 內圍 (inner circumference) from 15–19 cm. See the{" "}
+            <a href="/pages/sizing" className="font-medium text-rose-dark underline underline-offset-4">
+              size guide
+            </a>
+            .
+          </p>
+        </div>
+      </details>
+    </div>
   );
 }
 

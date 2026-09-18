@@ -60,13 +60,15 @@ export function PolicyPage({
 export function PolicySection({
   title,
   children,
+  id,
 }: {
   title: string;
   children: React.ReactNode;
+  id?: string;
 }) {
   return (
     <Reveal>
-      <section className="border-t pt-6">
+      <section id={id} className="scroll-mt-28 border-t pt-6">
         <h2 className="eyebrow mb-4 !text-foreground">{title}</h2>
         <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
           {children}

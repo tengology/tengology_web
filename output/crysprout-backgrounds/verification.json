@@ -1,0 +1,82 @@
+[
+  {
+    "source": "public/products/crysprout/img_5994.webp",
+    "output": "output/crysprout-backgrounds/img_5994-garden.webp",
+    "width": 772,
+    "height": 1016,
+    "opaqueForegroundPixels": 234762,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_5995.webp",
+    "output": "output/crysprout-backgrounds/img_5995-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 206383,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_5996.webp",
+    "output": "output/crysprout-backgrounds/img_5996-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 207166,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_5997.webp",
+    "output": "output/crysprout-backgrounds/img_5997-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 210869,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_5998.webp",
+    "output": "output/crysprout-backgrounds/img_5998-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 187801,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_5999.webp",
+    "output": "output/crysprout-backgrounds/img_5999-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 212980,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_6001.webp",
+    "output": "output/crysprout-backgrounds/img_6001-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 217990,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_6002.webp",
+    "output": "output/crysprout-backgrounds/img_6002-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 318185,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_6003.webp",
+    "output": "output/crysprout-backgrounds/img_6003-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 223380,
+    "changedForegroundChannels": 0
+  },
+  {
+    "source": "public/products/crysprout/img_6004.webp",
+    "output": "output/crysprout-backgrounds/img_6004-garden.webp",
+    "width": 768,
+    "height": 1024,
+    "opaqueForegroundPixels": 178133,
+    "changedForegroundChannels": 0
+  }
+]

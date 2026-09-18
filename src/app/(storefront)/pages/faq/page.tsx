@@ -11,7 +11,7 @@ import {
 export const metadata: Metadata = {
   title: "FAQ",
   description:
-    "Common questions about Tengology — materials, hallmarking, made-to-order times, care, gifts, and sensitive ears.",
+    "Common questions about Tengology — materials, hallmarking, made-to-order times, care, repairs, gifts, and sensitive ears.",
 };
 
 export default function FaqPage() {
@@ -137,12 +137,109 @@ export default function FaqPage() {
         </p>
       </PolicySection>
 
+      <PolicySection title="How do I choose a bracelet size?">
+        <p>
+          Measure at the wrist bone. For a snug fit, match your wrist; for a
+          slightly looser fit, add about 1 cm. Listings use 內圍 sizes from 15
+          to 19 cm (20 when needed). The full note is on the{" "}
+          <Link href="/pages/sizing" className="link-underline text-foreground">
+            size guide
+          </Link>
+          .
+        </p>
+      </PolicySection>
+
       <PolicySection title="How should I look after it?">
         <p>
           Take jewellery off before swimming, bathing and sleeping, and keep it
           away from perfume, hairspray and hand cream &mdash; plating dislikes
           all three. Store pieces apart so faceted beads cannot scratch softer
           stones. Felt is spot-clean only and will not survive a machine.
+        </p>
+      </PolicySection>
+
+      <PolicySection id="repair" title="If something needs a stitch">
+        <p>
+          Handmade pieces are made to be worn. If a clasp loosens or a cord
+          gives way under ordinary use, write to me &mdash; most of the time I
+          can put it right.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Do you repair pieces?">
+        <p>
+          Yes, for work I have made. Write to{" "}
+          <a href={`mailto:${CONTACT_EMAIL}`} className="link-underline text-foreground">
+            {CONTACT_EMAIL}
+          </a>{" "}
+          with your order number (if you have it), a photo of the piece, and
+          what happened. I will tell you honestly whether it is a free
+          craftsmanship repair, a paid repair, or something I cannot take on.
+        </p>
+        <p>
+          There is no lifetime free-repair promise. What follows is the fair
+          way I look after pieces that leave this studio.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="What is free in the first 30 days?">
+        <p>
+          Within <strong>30 days of purchase</strong>, repairs for{" "}
+          <strong>craftsmanship</strong> are free. That covers things like a
+          cord that breaks in normal wear, a clasp that comes loose, or an
+          assembly mistake on my side.
+        </p>
+        <p>
+          It does <strong>not</strong> cover accidental damage, a piece that
+          has been altered, or wear and tear beyond ordinary use &mdash; those
+          sit under paid repair below.
+        </p>
+        <p>
+          Your Consumer Rights Act rights for faulty goods are separate and
+          unchanged; see the{" "}
+          <Link href="/pages/returns" className="link-underline text-foreground">
+            returns page
+          </Link>
+          .
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Who pays for postage on a free repair?">
+        <p>
+          You pay the postage to send the piece back to the studio &mdash;
+          please use a tracked service and keep the receipt.
+        </p>
+        <p>
+          Once it is repaired, I send it home again by{" "}
+          <strong>UK Standard (tracked)</strong> at my cost. If you are outside
+          the UK, or you want a faster service, write to me and we will sort
+          the return postage before I post.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="What about after 30 days, or if I broke it?">
+        <p>
+          After 30 days &mdash; or sooner, if the break is accidental, from
+          alteration, or from heavy wear &mdash; I still often repair the
+          piece, as a <strong>paid</strong> job.
+        </p>
+        <p>
+          Labour is <strong>£20 per hour</strong>, charged in short blocks
+          (about <strong>15 minutes minimum, roughly £5</strong>), plus any
+          materials. Postage both ways is yours to pay.
+        </p>
+        <p>I will quote before I start, so there are no surprises.</p>
+      </PolicySection>
+
+      <PolicySection title="Will you repair everything?">
+        <p>
+          Not always. Pieces that are pure resale, or that are not built as
+          handmade structures from this studio, may be declined &mdash; I can
+          only stand behind what I know how to remake properly.
+        </p>
+        <p>
+          If I cannot take it on, I will say so plainly and still try to point
+          you somewhere useful.
         </p>
       </PolicySection>
 
@@ -171,9 +268,13 @@ export default function FaqPage() {
           <a href={`mailto:${CONTACT_EMAIL}`} className="link-underline text-foreground">
             {CONTACT_EMAIL}
           </a>
-          . For returns, see the{" "}
+          . For returns and faulty goods, see the{" "}
           <Link href="/pages/returns" className="link-underline text-foreground">
             returns page
+          </Link>
+          . For craftsmanship repairs, see{" "}
+          <Link href="/pages/faq#repair" className="link-underline text-foreground">
+            repair
           </Link>
           .
         </p>

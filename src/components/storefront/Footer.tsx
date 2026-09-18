@@ -15,7 +15,9 @@ const footerLinks = {
     { name: "My Account", href: "/account" },
     { name: "Shipping", href: "/pages/shipping" },
     { name: "Returns", href: "/pages/returns" },
+    { name: "Size guide", href: "/pages/sizing" },
     { name: "FAQ", href: "/pages/faq" },
+    { name: "Repair", href: "/pages/faq#repair" },
     { name: "Contact", href: "/pages/contact" },
   ],
   About: [
